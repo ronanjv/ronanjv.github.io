@@ -1,0 +1,823 @@
+---
+title: Lab Eleven -- Point Estimation and Resampling # Title of the document
+
+# Bibliography Details
+bibliography: Lab11References.bib  # Name of bib file in the same folder 
+bibliographystyle: apa            # Bibliography style
+
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("Lab10WriteUp.qmd")
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+  html:       # Specify HTML formatting options 
+    number-sections: true      # Number Sections
+    code-fold: true            # Button to show code
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables and figures
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+library(patchwork)
+```
+
+**Tips**
+
+* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
+* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
+* Make sure to use "enter" to make your code readable, so it doesn't run off the page. I switched the Quarto document to automatically render to .pdf, so you can see what you're submitting by default. You can switch back for the highlighting by moving the html block above the pdf block in the YAML header.
+* Don't forget that you can copy-and-paste code when you're doing something similar as we did in class!
+* Make sure to plot all computed probabilities. This is good `ggplot` practice AND will help make sure you don't make a mistake when computing the probability.
+
+
+# Introduction
+When performing point estimation, there isn't just one *right* answer. For example, the Method of Moments (MOM) and Maximum Likelihood Estimates (MLEs) aren't always the same.
+
+One question that comes up, is why we calculate the sample variance as
+$$S_{n-1}^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i -\bar{X})^2,$$
+when it is supposed to be the ``average squared distance from the mean, i.e., 
+$$S_n^2 = \frac{1}{n} \sum_{i=1}^n (X_i -\bar{X})^2.$$
+
+
+# Comparing Estimators
+
+## Initial Simulation
+In this lab, we will explore why we use $S_{n-1}^2$ and not $S_n^2$. To do this, we will generate data from four known distributions:
+
+* Poisson$(\lambda=2)$
+* Binomial$\left(n=50, p=\frac{5-\sqrt{21}}{10}\right)$
+* Normal$(\mu=0, \sigma=\sqrt{2})$
+* Exponential$\left(\lambda = \frac{1}{\sqrt{2}}\right).$
+
+**Remark**: Note that I have selected the parameters so that the true variance for all four models is 2.
+
+For each distribution, write a loop that completes the following 1000 times. Put `set.seed(7272)` at the top of your code chunk.
+
+* Generate a sample of size $n$ from the distribution.
+* Calculate and save $S_{n-1}^2$ and $S_n^2.$
+
+Start with $n=20$. Is there evidence that $S_{n-1}^2$ is a better estimator than $S_n^2$?
+
+**Solution**
+```{r}
+set.seed(7272)
+n = 20
+
+Sn1pois = numeric(1000)
+Snpois = numeric(1000)
+Sn1binom = numeric(1000)
+Snbinom = numeric(1000)
+Sn1norm = numeric(1000)
+Snnorm = numeric(1000)
+Sn1exp = numeric(1000)
+Snexp = numeric(1000)
+
+
+for(i in 1:1000){
+pois = rpois(n,2)
+binom = rbinom(n,50,(5-sqrt(21))/10)
+norm = rnorm(n,0,sqrt(2))
+exp = rexp(n,1/(sqrt(2)))
+
+          Sn1pois[i] = var(pois)
+          Snpois[i] = (n-1)/n * var(pois)
+          Sn1binom[i] = var(binom)
+          Snbinom[i] = (n-1)/n * var(binom)
+          Sn1norm[i] = var(norm)
+          Snnorm[i] = (n-1)/n * var(norm)
+          Sn1exp[i] = var(exp)
+          Snexp[i] = (n-1)/n * var(exp)
+
+}
+results = tibble(Sn1pois,
+                 Snpois,
+                 Sn1binom,
+                 Snbinom,
+                 Sn1norm,
+                 Snnorm,
+                 Sn1exp,
+                 Snexp)
+
+results
+```
+
+```{r}
+summary = tibble(
+  Distribution = c("Poisson", "Binomial", "Normal", "Exponential"),
+  
+  BiasSn1 = c(mean(Sn1pois)  - 2,
+               mean(Sn1binom) - 2,
+               mean(Sn1norm)  - 2,
+               mean(Sn1exp)   - 2),
+  
+  BiasSn = c(mean(Snpois)  - 2,
+              mean(Snbinom) - 2,
+              mean(Snnorm)  - 2,
+              mean(Snexp)   - 2),
+  
+  PrecisionSn1 = c(1/var(Sn1pois),
+                    1/var(Sn1binom),
+                    1/var(Sn1norm),
+                    1/var(Sn1exp)),
+  
+  PrecisionSn = c(1/var(Snpois),
+                   1/var(Snbinom),
+                   1/var(Snnorm),
+                   1/var(Snexp)),
+  
+  MSESn1 = c(BiasSn1[1]^2 + var(Sn1pois),
+              BiasSn1[2]^2 + var(Sn1binom),
+              BiasSn1[3]^2 + var(Sn1norm),
+              BiasSn1[4]^2 + var(Sn1exp)),
+  
+  MSESn = c(BiasSn[1]^2 + var(Snpois),
+             BiasSn[2]^2 + var(Snbinom),
+             BiasSn[3]^2 + var(Snnorm),
+             BiasSn[4]^2 + var(Snexp))
+)
+summary |>
+  knitr::kable(
+    col.names = c("Distribution", 
+                  "Bias (Sn1)", "Bias (Sn)", 
+                  "Precision (Sn1)", "Precision (Sn)",
+                  "MSE (Sn1)", "MSE (Sn)"))
+```
+
+
+
+Create a plot or combination of plots (using patchwork) to show the results across all four distributions. Make sure to create a corresponding table that numerically summarizes the results of the simulation. You should include
+\begin{align*}
+\textrm{Bias} &= \textrm{Average of Estimates} - \textrm{True Value}\\
+\textrm{Precision} &= \frac{1}{\textrm{Variance of Estimates}}\\
+\textrm{Mean Square Error} &= \textrm{Bias}^2 + \textrm{Variance of Estimates}.
+\end{align*}
+
+**Solution**
+```{r}
+#| label: plots
+#| fig-cap: "Comparison"
+#| fig-width: 7
+#| fig-height: 5
+#| scale: "110%"
+#| fig-align: "center"
+#| size: scriptsize
+
+p1 = ggplot(results) +
+  geom_density(aes(x = Sn1pois, color = "Sn1")) +
+  geom_density(aes(x = Snpois, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Poisson", x = "Estimate", y = "Density", fill = "Estimator")
+
+p2 = ggplot(results) +
+  geom_density(aes(x = Sn1binom, color = "Sn1")) +
+  geom_density(aes(x = Snbinom, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Binomial", x = "Estimate", y = "Density", fill = "Estimator")
+
+p3 = ggplot(results) +
+  geom_density(aes(x = Sn1norm, color = "Sn1")) +
+  geom_density(aes(x = Snnorm, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Normal", x = "Estimate", y = "Density", fill = "Estimator")
+
+p4 = ggplot(results) +
+  geom_density(aes(x = Sn1exp, color = "Sn1")) +
+  geom_density(aes(x = Snexp, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Exponential", x = "Estimate", y = "Density", fill = "Estimator")
+
+(p1 + p2) / (p3 + p4)
+```
+
+## Simulation over various sample sizes
+Consider the effect of the sample size have on these results. Provide a graphical and numerical summary of what happens as $n$ increases -- say $n=20$, $n=50$, $n=100$, and $n=500$. Does the result in your initial simulation hold across samples? Or, do things change as the sample size changes? Ensure to set your randomization seed.
+
+**Solution**
+```{r}
+# 20
+set.seed(7272)
+n = 20
+
+Sn1pois = numeric(1000)
+Snpois = numeric(1000)
+Sn1binom = numeric(1000)
+Snbinom = numeric(1000)
+Sn1norm = numeric(1000)
+Snnorm = numeric(1000)
+Sn1exp = numeric(1000)
+Snexp = numeric(1000)
+
+
+for(i in 1:1000){
+pois = rpois(n,2)
+binom = rbinom(n,50,(5-sqrt(21))/10)
+norm = rnorm(n,0,sqrt(2))
+exp = rexp(n,1/(sqrt(2)))
+
+          Sn1pois[i] = var(pois)
+          Snpois[i] = (n-1)/n * var(pois)
+          Sn1binom[i] = var(binom)
+          Snbinom[i] = (n-1)/n * var(binom)
+          Sn1norm[i] = var(norm)
+          Snnorm[i] = (n-1)/n * var(norm)
+          Sn1exp[i] = var(exp)
+          Snexp[i] = (n-1)/n * var(exp)
+
+}
+results = tibble(Sn1pois,
+                 Snpois,
+                 Sn1binom,
+                 Snbinom,
+                 Sn1norm,
+                 Snnorm,
+                 Sn1exp,
+                 Snexp)
+
+results
+```
+```{r}
+summary1 = tibble(
+  Distribution = c("Poisson", "Binomial", "Normal", "Exponential"),
+  
+  BiasSn1 = c(mean(Sn1pois)  - 2,
+               mean(Sn1binom) - 2,
+               mean(Sn1norm)  - 2,
+               mean(Sn1exp)   - 2),
+  
+  BiasSn = c(mean(Snpois)  - 2,
+              mean(Snbinom) - 2,
+              mean(Snnorm)  - 2,
+              mean(Snexp)   - 2),
+  
+  PrecisionSn1 = c(1/var(Sn1pois),
+                    1/var(Sn1binom),
+                    1/var(Sn1norm),
+                    1/var(Sn1exp)),
+  
+  PrecisionSn = c(1/var(Snpois),
+                   1/var(Snbinom),
+                   1/var(Snnorm),
+                   1/var(Snexp)),
+  
+  MSESn1 = c(BiasSn1[1]^2 + var(Sn1pois),
+              BiasSn1[2]^2 + var(Sn1binom),
+              BiasSn1[3]^2 + var(Sn1norm),
+              BiasSn1[4]^2 + var(Sn1exp)),
+  
+  MSESn = c(BiasSn[1]^2 + var(Snpois),
+             BiasSn[2]^2 + var(Snbinom),
+             BiasSn[3]^2 + var(Snnorm),
+             BiasSn[4]^2 + var(Snexp))
+)
+summary1 |>
+  knitr::kable(
+    col.names = c("Distribution", 
+                  "Bias (Sn1)", "Bias (Sn)", 
+                  "Precision (Sn1)", "Precision (Sn)",
+                  "MSE (Sn1)", "MSE (Sn)"))
+```
+```{r}
+#| label: n20
+#| fig-cap: "n = 20 graphs"
+#| fig-width: 7
+#| fig-height: 5
+#| scale: "110%"
+#| fig-align: "center"
+#| size: scriptsize
+
+p1 = ggplot(results) +
+  geom_density(aes(x = Sn1pois, color = "Sn1")) +
+  geom_density(aes(x = Snpois, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Poisson", x = "Estimate", y = "Density", fill = "Estimator")
+
+p2 = ggplot(results) +
+  geom_density(aes(x = Sn1binom, color = "Sn1")) +
+  geom_density(aes(x = Snbinom, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Binomial", x = "Estimate", y = "Density", fill = "Estimator")
+
+p3 = ggplot(results) +
+  geom_density(aes(x = Sn1norm, color = "Sn1")) +
+  geom_density(aes(x = Snnorm, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Normal", x = "Estimate", y = "Density", fill = "Estimator")
+
+p4 = ggplot(results) +
+  geom_density(aes(x = Sn1exp, color = "Sn1")) +
+  geom_density(aes(x = Snexp, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Exponential", x = "Estimate", y = "Density", fill = "Estimator")
+
+(p1 + p2) / (p3 + p4)
+```
+
+
+
+
+
+```{r}
+# 50
+set.seed(7272)
+n = 50
+
+Sn1pois = numeric(1000)
+Snpois = numeric(1000)
+Sn1binom = numeric(1000)
+Snbinom = numeric(1000)
+Sn1norm = numeric(1000)
+Snnorm = numeric(1000)
+Sn1exp = numeric(1000)
+Snexp = numeric(1000)
+
+
+for(i in 1:1000){
+pois = rpois(n,2)
+binom = rbinom(n,50,(5-sqrt(21))/10)
+norm = rnorm(n,0,sqrt(2))
+exp = rexp(n,1/(sqrt(2)))
+
+          Sn1pois[i] = var(pois)
+          Snpois[i] = (n-1)/n * var(pois)
+          Sn1binom[i] = var(binom)
+          Snbinom[i] = (n-1)/n * var(binom)
+          Sn1norm[i] = var(norm)
+          Snnorm[i] = (n-1)/n * var(norm)
+          Sn1exp[i] = var(exp)
+          Snexp[i] = (n-1)/n * var(exp)
+
+}
+results = tibble(Sn1pois,
+                 Snpois,
+                 Sn1binom,
+                 Snbinom,
+                 Sn1norm,
+                 Snnorm,
+                 Sn1exp,
+                 Snexp)
+
+results
+```
+```{r}
+summary2 = tibble(
+  Distribution = c("Poisson", "Binomial", "Normal", "Exponential"),
+  
+  BiasSn1 = c(mean(Sn1pois)  - 2,
+               mean(Sn1binom) - 2,
+               mean(Sn1norm)  - 2,
+               mean(Sn1exp)   - 2),
+  
+  BiasSn = c(mean(Snpois)  - 2,
+              mean(Snbinom) - 2,
+              mean(Snnorm)  - 2,
+              mean(Snexp)   - 2),
+  
+  PrecisionSn1 = c(1/var(Sn1pois),
+                    1/var(Sn1binom),
+                    1/var(Sn1norm),
+                    1/var(Sn1exp)),
+  
+  PrecisionSn = c(1/var(Snpois),
+                   1/var(Snbinom),
+                   1/var(Snnorm),
+                   1/var(Snexp)),
+  
+  MSESn1 = c(BiasSn1[1]^2 + var(Sn1pois),
+              BiasSn1[2]^2 + var(Sn1binom),
+              BiasSn1[3]^2 + var(Sn1norm),
+              BiasSn1[4]^2 + var(Sn1exp)),
+  
+  MSESn = c(BiasSn[1]^2 + var(Snpois),
+             BiasSn[2]^2 + var(Snbinom),
+             BiasSn[3]^2 + var(Snnorm),
+             BiasSn[4]^2 + var(Snexp))
+)
+summary2 |>
+  knitr::kable(
+    col.names = c("Distribution", 
+                  "Bias (Sn1)", "Bias (Sn)", 
+                  "Precision (Sn1)", "Precision (Sn)",
+                  "MSE (Sn1)", "MSE (Sn)"))
+```
+```{r}
+#| label: n50
+#| fig-cap: "n = 50 graphs"
+#| fig-width: 7
+#| fig-height: 5
+#| scale: "110%"
+#| fig-align: "center"
+#| size: scriptsize
+
+p1 = ggplot(results) +
+  geom_density(aes(x = Sn1pois, color = "Sn1")) +
+  geom_density(aes(x = Snpois, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Poisson", x = "Estimate", y = "Density", fill = "Estimator")
+
+p2 = ggplot(results) +
+  geom_density(aes(x = Sn1binom, color = "Sn1")) +
+  geom_density(aes(x = Snbinom, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Binomial", x = "Estimate", y = "Density", fill = "Estimator")
+
+p3 = ggplot(results) +
+  geom_density(aes(x = Sn1norm, color = "Sn1")) +
+  geom_density(aes(x = Snnorm, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Normal", x = "Estimate", y = "Density", fill = "Estimator")
+
+p4 = ggplot(results) +
+  geom_density(aes(x = Sn1exp, color = "Sn1")) +
+  geom_density(aes(x = Snexp, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Exponential", x = "Estimate", y = "Density", fill = "Estimator")
+
+(p1 + p2) / (p3 + p4)
+```
+
+
+
+
+
+```{r}
+# 100
+set.seed(7272)
+n = 100
+
+Sn1pois = numeric(1000)
+Snpois = numeric(1000)
+Sn1binom = numeric(1000)
+Snbinom = numeric(1000)
+Sn1norm = numeric(1000)
+Snnorm = numeric(1000)
+Sn1exp = numeric(1000)
+Snexp = numeric(1000)
+
+
+for(i in 1:1000){
+pois = rpois(n,2)
+binom = rbinom(n,50,(5-sqrt(21))/10)
+norm = rnorm(n,0,sqrt(2))
+exp = rexp(n,1/(sqrt(2)))
+
+          Sn1pois[i] = var(pois)
+          Snpois[i] = (n-1)/n * var(pois)
+          Sn1binom[i] = var(binom)
+          Snbinom[i] = (n-1)/n * var(binom)
+          Sn1norm[i] = var(norm)
+          Snnorm[i] = (n-1)/n * var(norm)
+          Sn1exp[i] = var(exp)
+          Snexp[i] = (n-1)/n * var(exp)
+
+}
+results = tibble(Sn1pois,
+                 Snpois,
+                 Sn1binom,
+                 Snbinom,
+                 Sn1norm,
+                 Snnorm,
+                 Sn1exp,
+                 Snexp)
+
+results
+```
+```{r}
+summary3 = tibble(
+  Distribution = c("Poisson", "Binomial", "Normal", "Exponential"),
+  
+  BiasSn1 = c(mean(Sn1pois)  - 2,
+               mean(Sn1binom) - 2,
+               mean(Sn1norm)  - 2,
+               mean(Sn1exp)   - 2),
+  
+  BiasSn = c(mean(Snpois)  - 2,
+              mean(Snbinom) - 2,
+              mean(Snnorm)  - 2,
+              mean(Snexp)   - 2),
+  
+  PrecisionSn1 = c(1/var(Sn1pois),
+                    1/var(Sn1binom),
+                    1/var(Sn1norm),
+                    1/var(Sn1exp)),
+  
+  PrecisionSn = c(1/var(Snpois),
+                   1/var(Snbinom),
+                   1/var(Snnorm),
+                   1/var(Snexp)),
+  
+  MSESn1 = c(BiasSn1[1]^2 + var(Sn1pois),
+              BiasSn1[2]^2 + var(Sn1binom),
+              BiasSn1[3]^2 + var(Sn1norm),
+              BiasSn1[4]^2 + var(Sn1exp)),
+  
+  MSESn = c(BiasSn[1]^2 + var(Snpois),
+             BiasSn[2]^2 + var(Snbinom),
+             BiasSn[3]^2 + var(Snnorm),
+             BiasSn[4]^2 + var(Snexp))
+)
+summary3 |>
+  knitr::kable(
+    col.names = c("Distribution", 
+                  "Bias (Sn1)", "Bias (Sn)", 
+                  "Precision (Sn1)", "Precision (Sn)",
+                  "MSE (Sn1)", "MSE (Sn)"))
+```
+```{r}
+#| label: n100
+#| fig-cap: "n = 100 graphs"
+#| fig-width: 7
+#| fig-height: 5
+#| scale: "110%"
+#| fig-align: "center"
+#| size: scriptsize
+
+p1 = ggplot(results) +
+  geom_density(aes(x = Sn1pois, color = "Sn1")) +
+  geom_density(aes(x = Snpois, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Poisson", x = "Estimate", y = "Density", fill = "Estimator")
+
+p2 = ggplot(results) +
+  geom_density(aes(x = Sn1binom, color = "Sn1")) +
+  geom_density(aes(x = Snbinom, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Binomial", x = "Estimate", y = "Density", fill = "Estimator")
+
+p3 = ggplot(results) +
+  geom_density(aes(x = Sn1norm, color = "Sn1")) +
+  geom_density(aes(x = Snnorm, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Normal", x = "Estimate", y = "Density", fill = "Estimator")
+
+p4 = ggplot(results) +
+  geom_density(aes(x = Sn1exp, color = "Sn1")) +
+  geom_density(aes(x = Snexp, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Exponential", x = "Estimate", y = "Density", fill = "Estimator")
+
+(p1 + p2) / (p3 + p4)
+```
+
+
+
+
+
+
+```{r}
+# 500
+set.seed(7272)
+n = 500
+
+Sn1pois = numeric(1000)
+Snpois = numeric(1000)
+Sn1binom = numeric(1000)
+Snbinom = numeric(1000)
+Sn1norm = numeric(1000)
+Snnorm = numeric(1000)
+Sn1exp = numeric(1000)
+Snexp = numeric(1000)
+
+
+for(i in 1:1000){
+pois = rpois(n,2)
+binom = rbinom(n,50,(5-sqrt(21))/10)
+norm = rnorm(n,0,sqrt(2))
+exp = rexp(n,1/(sqrt(2)))
+
+          Sn1pois[i] = var(pois)
+          Snpois[i] = (n-1)/n * var(pois)
+          Sn1binom[i] = var(binom)
+          Snbinom[i] = (n-1)/n * var(binom)
+          Sn1norm[i] = var(norm)
+          Snnorm[i] = (n-1)/n * var(norm)
+          Sn1exp[i] = var(exp)
+          Snexp[i] = (n-1)/n * var(exp)
+
+}
+results = tibble(Sn1pois,
+                 Snpois,
+                 Sn1binom,
+                 Snbinom,
+                 Sn1norm,
+                 Snnorm,
+                 Sn1exp,
+                 Snexp)
+
+results
+```
+```{r}
+summary4 = tibble(
+  Distribution = c("Poisson", "Binomial", "Normal", "Exponential"),
+  
+  BiasSn1 = c(mean(Sn1pois)  - 2,
+               mean(Sn1binom) - 2,
+               mean(Sn1norm)  - 2,
+               mean(Sn1exp)   - 2),
+  
+  BiasSn = c(mean(Snpois)  - 2,
+              mean(Snbinom) - 2,
+              mean(Snnorm)  - 2,
+              mean(Snexp)   - 2),
+  
+  PrecisionSn1 = c(1/var(Sn1pois),
+                    1/var(Sn1binom),
+                    1/var(Sn1norm),
+                    1/var(Sn1exp)),
+  
+  PrecisionSn = c(1/var(Snpois),
+                   1/var(Snbinom),
+                   1/var(Snnorm),
+                   1/var(Snexp)),
+  
+  MSESn1 = c(BiasSn1[1]^2 + var(Sn1pois),
+              BiasSn1[2]^2 + var(Sn1binom),
+              BiasSn1[3]^2 + var(Sn1norm),
+              BiasSn1[4]^2 + var(Sn1exp)),
+  
+  MSESn = c(BiasSn[1]^2 + var(Snpois),
+             BiasSn[2]^2 + var(Snbinom),
+             BiasSn[3]^2 + var(Snnorm),
+             BiasSn[4]^2 + var(Snexp))
+)
+summary4 |>
+  knitr::kable(
+    col.names = c("Distribution", 
+                  "Bias (Sn1)", "Bias (Sn)", 
+                  "Precision (Sn1)", "Precision (Sn)",
+                  "MSE (Sn1)", "MSE (Sn)"))
+```
+```{r}
+#| label: n500
+#| fig-cap: "n = 500 graphs"
+#| fig-width: 7
+#| fig-height: 5
+#| scale: "110%"
+#| fig-align: "center"
+#| size: scriptsize
+
+p1 = ggplot(results) +
+  geom_density(aes(x = Sn1pois, color = "Sn1")) +
+  geom_density(aes(x = Snpois, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Poisson", x = "Estimate", y = "Density", fill = "Estimator")
+
+p2 = ggplot(results) +
+  geom_density(aes(x = Sn1binom, color = "Sn1")) +
+  geom_density(aes(x = Snbinom, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Binomial", x = "Estimate", y = "Density", fill = "Estimator")
+
+p3 = ggplot(results) +
+  geom_density(aes(x = Sn1norm, color = "Sn1")) +
+  geom_density(aes(x = Snnorm, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Normal", x = "Estimate", y = "Density", fill = "Estimator")
+
+p4 = ggplot(results) +
+  geom_density(aes(x = Sn1exp, color = "Sn1")) +
+  geom_density(aes(x = Snexp, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Exponential", x = "Estimate", y = "Density", fill = "Estimator")
+
+(p1 + p2) / (p3 + p4)
+```
+As n increases from 20 to 500, the bias of Sn-1​ stays close to 0 across all four distributions, while the bias of Sn​ is consistently negative but larger than Sn-1(except at n=500). For example, in the Poisson case the bias of Sn​ goes from -0.1729 at n=20 down to 0.0010 at n=500. Both estimators become more precise and have lower MSE as n increases. Both are nearly identical across all four distributions, since n-1/n = 499/500 which is approximately 1. So yes, the result from the initial simulation holds that Sn-1 is better than Sn.
+
+ 
+## Simulation
+You have written code to draw a random sample of various sizes from each distribution, and to calculate and store the calculated estimates. Rework your code to produce a density plot of the $s_{n-1}^2$ and $s_{n}^2$. Do you have a guess about their distribution? Ensure to set your randomization seed. 
+
+**Solution**
+I had done density plots thoughout, here is the comments on those plots. The distributions are right-skewed at small n, but become more symmetric and bell-shaped as n increases. The graphs begin looking approximately normal for large degrees of freedom. This is similar to a chi-squared distribution.
+
+## Bootstrap
+Now, take *one* sample from each distribution. Instead of drawing a random sample at each iteration, sample *with replacement* from the one sample. Produce a density plot of the $s_{n-1}^2$ and $s_{n}^2$. Do we get roughly the same information as we do in the full simulation? Try this over several seeds -- what do you notice? Ensure to set your randomization seed.
+
+**Solution**
+```{r}
+set.seed(7272)
+n = 20
+
+pois_samp = rpois(n,2)
+binom_samp = rbinom(n,50,(5-sqrt(21))/10)
+norm_samp = rnorm(n,0,sqrt(2))
+exp_samp = rexp(n,1/(sqrt(2)))
+
+Sn1pois = numeric(1000)
+Snpois = numeric(1000)
+Sn1binom = numeric(1000)
+Snbinom = numeric(1000)
+Sn1norm = numeric(1000)
+Snnorm = numeric(1000)
+Sn1exp = numeric(1000)
+Snexp = numeric(1000)
+
+for(i in 1:1000){
+  pois = sample(pois_samp, n, replace = TRUE)
+  binom = sample(binom_samp, n, replace = TRUE)
+  norm = sample(norm_samp, n, replace = TRUE)
+  exp = sample(exp_samp, n, replace = TRUE)
+
+  Sn1pois[i] = var(pois)
+  Snpois[i] = (n-1)/n * var(pois)
+  Sn1binom[i] = var(binom)
+  Snbinom[i] = (n-1)/n * var(binom)
+  Sn1norm[i] = var(norm)
+  Snnorm[i] = (n-1)/n * var(norm)
+  Sn1exp[i] = var(exp)
+  Snexp[i] = (n-1)/n * var(exp)
+}
+
+boot_results = tibble(Sn1pois,
+                      Snpois,
+                      Sn1binom,
+                      Snbinom,
+                      Sn1norm,
+                      Snnorm,
+                      Sn1exp,
+                      Snexp)
+```
+```{r}
+#| label: Bootstrapping
+#| fig-cap: "Bootstrapping graphs"
+#| fig-width: 7
+#| fig-height: 5
+#| scale: "110%"
+#| fig-align: "center"
+#| size: scriptsize
+
+p1 = ggplot(boot_results) +
+  geom_density(aes(x = Sn1pois, color = "Sn1")) +
+  geom_density(aes(x = Snpois, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Poisson", x = "Estimate", y = "Density", color = "Estimator")
+
+p2 = ggplot(boot_results) +
+  geom_density(aes(x = Sn1binom, color = "Sn1")) +
+  geom_density(aes(x = Snbinom, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Binomial", x = "Estimate", y = "Density", color = "Estimator")
+
+p3 = ggplot(boot_results) +
+  geom_density(aes(x = Sn1norm, color = "Sn1")) +
+  geom_density(aes(x = Snnorm, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Normal", x = "Estimate", y = "Density", color = "Estimator")
+
+p4 = ggplot(boot_results) +
+  geom_density(aes(x = Sn1exp, color = "Sn1")) +
+  geom_density(aes(x = Snexp, color = "Sn")) +
+  geom_vline(xintercept = 2, linetype = "dashed") +
+  labs(title = "Exponential", x = "Estimate", y = "Density", color = "Estimator")
+
+(p1 + p2) / (p3 + p4)
+```
+Trying this over several seeds, I notice that the bootstrap distributions are always centered around the sample variance of the original sample rather than the true variance of 2. When the original sample happens to have a variance close to 2, the bootstrap looks very similar to the full simulation. When the original sample has a variance far from 2, the bootstrap center shifts noticeably away from 2. 
+
+
+# Executive Summary
+Summarize the work you've done here to provide a brief (200-300 word) summary of the simulation and the results using your work in Lab 11. Your summary should be professional, clear, and all claims should be corroborated with statistical support.
+
+**Solution**
+This simulation study compared two estimators of population variance, Sn-1
+Sn​, across four distributions — Poisson(λ=2), Binomial(n=50, p=5−root21 / 10​​), Normal(μ=0, σ=2), and Exponential(λ=1/root2​), all with a true variance of 2. At n=20 Sn−1 was approximately unbiased across all four distributions, while Sn was consistently negatively biased. For example, in the Poisson graphs the bias of Sn​ was -0.1729 compared to -0.0767 for Sn−1​. As n increased to 50, 100, and 500, both estimators converged toward the true variance of 2 and became nearly indistinguishable, since 499/500 is basically 1. The density plots suggest both estimators follow a chi-squared distribution: right-skewed at small n but becoming approximately normal as n grows. Finally, the bootstrap analysis showed that resampling with replacement from a single sample captures a similar shape to the full simulation, but the center of the bootstrap distribution depends on the original sample drawn rather than the true variance of 2, shifting noticeably across different seeds.

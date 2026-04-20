@@ -1,0 +1,187 @@
+---
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+```
+
+<!-- Code For Building Menu Here -->
+```{r}
+#| include: false
+breakfasts <- c("website/BerryMelonSmoothie.html",
+                "website/BiscuitsAndGravy.html",
+                "website/BreakfastCheesecake.html",
+                "website/BreakfastMuffins.html",
+                "website/ChiaParfait.html",
+                "website/GardenTomatoQuiche.html",
+                "website/OvernightOats.html",
+                "website/PumpkinToast.html",
+                "website/TropicalSmoothie.html")
+dinner <- c("website/AfricanPeanutSoup.html",
+            "website/Alfredo.html",
+            "website/ArugulaPasta.html",
+            "website/AutumnGrainBowl.html",
+            "website/BakedZiti.html",
+            "website/BBQChili.html",
+            "website/Bibimbap.html",
+            "website/BLTSalad.html",
+            "website/Burgers.html",
+            "website/CapreseSandwiches.html",
+            "website/EggplantParmesan.html",
+            "website/Enchiladas.html",
+            "website/FloridaRolls.html",
+            "website/KimchiGrilledCheese.html",
+            "website/Lasagna.html",
+            "website/LatinBowl.html",
+            "website/Meatloaf.html",
+            "website/PadThai.html",
+            "website/PastaAndPeas.html",
+            "website/Pizza.html",
+            "website/RedWineRagu.html",
+            "website/SalmonChowder.html",
+            "website/Shakshuka.html")
+```
+
+```{r}
+#| include: false
+library("rvest")
+recipes = data.frame(
+  recipe = c(sample(dinner, 3), sample(breakfasts, 1)))
+
+title.list <- list()
+ingredients.list <- list()
+instructions.list <- list()
+image.list         <- list()
+
+for (i in 1:nrow(recipes)) {
+  recipe.item <- read_html(recipes$recipe[i])
+  ingredients.section <- html_element(recipe.item, "#ingredients")
+  ingredients <- html_elements(ingredients.section, "li") |>
+    html_text(trim = TRUE)
+  
+  title.list[[i]] <-  html_element(recipe.item, "h1") |> html_text()
+  ingredients.list[[i]] <- ingredients
+
+  instructions.section <- html_element(recipe.item, "#instructions")
+  instructions <- html_elements(instructions.section, "li") |>
+    html_text(trim = TRUE)
+  
+  instructions.list[[i]] <- instructions
+
+  img <- html_element(recipe.item, "img")
+  img.src <- html_attr(img, "src")
+  image.list[[i]] <- paste0("website/", img.src)
+}
+```
+
+# Ingredients
+```{r}
+#| echo: false
+ingredients.list
+```
+
+\newpage
+
+# Recipe One
+```{r}
+#| echo: false
+#| results: 'asis'
+# width="50%" shrinks the image for printing
+image.url = image.list[[1]]
+cat(paste('![', title.list[[1]], '](', image.url, "){width=50%}"))
+```
+```{r}
+#| echo: false
+ingredients.list[[1]]
+instructions.list[[1]]
+```
+
+\newpage
+
+# Recipe Two
+```{r}
+#| echo: false
+#| results: 'asis'
+# width="50%" shrinks the image for printing
+image.url = image.list[[2]]
+cat(paste('![', title.list[[2]], '](', image.url, "){width=50%}"))
+```
+```{r}
+#| echo: false
+ingredients.list[[2]]
+instructions.list[[2]]
+```
+
+\newpage
+
+# Recipe Three
+```{r}
+#| echo: false
+#| results: 'asis'
+# width="50%" shrinks the image for printing
+image.url = image.list[[3]]
+cat(paste('![', title.list[[3]], '](', image.url, "){width=50%}"))
+```
+```{r}
+#| echo: false
+ingredients.list[[3]]
+instructions.list[[3]]
+```
+
+\newpage
+
+# Breakfast Recipe
+```{r}
+#| echo: false
+#| results: 'asis'
+# width="50%" shrinks the image for printing
+image.url = image.list[[4]]
+cat(paste('![', title.list[[4]], '](', image.url, "){width=50%}"))
+```
+```{r}
+#| echo: false
+ingredients.list[[4]]
+instructions.list[[4]]
+```
