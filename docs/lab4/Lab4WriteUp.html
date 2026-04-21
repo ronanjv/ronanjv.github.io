@@ -394,7 +394,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>df[, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>df<span class="sc">$</span>x1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 8 3 5 3 2 3 1 2 6 2</code></pre>
@@ -427,7 +427,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>df[<span class="dv">5</span>,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>df<span class="sc">$</span>x1[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
@@ -555,7 +555,7 @@ window.Quarto = {
 <span id="cb23-2"><a href="#cb23-2"></a>  <span class="cf">if</span>(x <span class="sc">&lt;</span> <span class="dv">4</span>){</span>
 <span id="cb23-3"><a href="#cb23-3"></a>    <span class="fu">return</span> (<span class="st">"low"</span>)</span>
 <span id="cb23-4"><a href="#cb23-4"></a>  }</span>
-<span id="cb23-5"><a href="#cb23-5"></a>  <span class="cf">else</span> <span class="cf">if</span> ( x <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> <span class="dv">7</span>){</span>
+<span id="cb23-5"><a href="#cb23-5"></a>  <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">&lt;=</span> <span class="dv">7</span>){</span>
 <span id="cb23-6"><a href="#cb23-6"></a>    <span class="fu">return</span> (<span class="st">"mid"</span>)</span>
 <span id="cb23-7"><a href="#cb23-7"></a>  }</span>
 <span id="cb23-8"><a href="#cb23-8"></a>  <span class="cf">else</span>{</span>
@@ -621,7 +621,8 @@ window.Quarto = {
 </div>
 </div>
 <p></p>
-<p><em>Part j</em> Part j is not vectorizable. If/else statements are not vectorized which makes passing through a vector not work, only taking in the first value. However, you can, as we did, pass a vector through a function using the if/else statement, but on its own it is not vectorizable.</p>
+<p><em>Part j</em></p>
+<p>Part j is not vectorizable. If/else statements are not vectorized which makes passing through a vector not work, only taking in the first value. However, you can, as we did, pass a vector through a function using the if/else statement, but on its own it is not vectorizable.</p>
 </section>
 </section>
 <section id="complete-tasks-for-one-recipe" class="level1" data-number="2">
@@ -756,10 +757,7 @@ window.Quarto = {
 <section id="part-i-1" class="level2" data-number="2.9">
 <h2 data-number="2.9" class="anchored" data-anchor-id="part-i-1"><span class="header-section-number">2.9</span> Part i</h2>
 <p>Now that we have all the things we need, let’s try to print the recipe. Below, I have written code to print from the objects. One by one, remove <code>#| eval: false</code> from the YAML header and add <code>#| echo: false</code> and <code>#| results: 'asis'</code>, and test. Let me know if you’re stuck!</p>
-<p><strong>Image</strong></p>
-<p></p>
-<p><img src=" website/images/KimchiGrilledCheese.jpg " style="width: 50%; height: auto;"></p>
-<p></p>
+<p><strong>Image</strong> <img src="website/images/KimchiGrilledCheese.jpg" class="img-fluid" alt="yum"></p>
 <p><strong>Ingredients</strong></p>
 <p></p>
 <ul>

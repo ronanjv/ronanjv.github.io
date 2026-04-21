@@ -734,7 +734,7 @@
     "href": "lab4/Lab4WriteUp.html#part-c",
     "title": "Lab Four – Programming in R",
     "section": "1.4 Part c",
-    "text": "1.4 Part c\nAsk for the column x1.\nSolution\n\n\n\nCode\ndf[, 1]\n\n\n [1] 8 3 5 3 2 3 1 2 6 2",
+    "text": "1.4 Part c\nAsk for the column x1.\nSolution\n\n\n\nCode\ndf$x1\n\n\n [1] 8 3 5 3 2 3 1 2 6 2",
     "crumbs": [
       "Lab Four -- Programming in R"
     ]
@@ -754,7 +754,7 @@
     "href": "lab4/Lab4WriteUp.html#part-e",
     "title": "Lab Four – Programming in R",
     "section": "1.6 Part e",
-    "text": "1.6 Part e\nAsk for the the value of x1 in the fifth row of the data frame.\nSolution\n\n\n\nCode\ndf[5,1]\n\n\n[1] 2",
+    "text": "1.6 Part e\nAsk for the the value of x1 in the fifth row of the data frame.\nSolution\n\n\n\nCode\ndf$x1[5]\n\n\n[1] 2",
     "crumbs": [
       "Lab Four -- Programming in R"
     ]
@@ -804,7 +804,7 @@
     "href": "lab4/Lab4WriteUp.html#part-j",
     "title": "Lab Four – Programming in R",
     "section": "1.11 Part j",
-    "text": "1.11 Part j\nCreate a function called evaluate.row(...) that takes one argument and returns “low” when the argument is less than 4, “mid” when the argument is between 4 and 7 (inclusive), and “high” when the arguement is 8 or larger. Then, use sapply(...) to apply it to column x1.\nSolution\n\n\n\nCode\nevaluate.row = function(x){\n  if(x &lt; 4){\n    return (\"low\")\n  }\n  else if ( x &gt;= 4 & x &lt;= 7){\n    return (\"mid\")\n  }\n  else{\n    return (\"high\")\n  }\n}\n\nsapply(df[,1], evaluate.row)\n\n\n [1] \"high\" \"low\"  \"mid\"  \"low\"  \"low\"  \"low\"  \"low\"  \"low\"  \"mid\"  \"low\"",
+    "text": "1.11 Part j\nCreate a function called evaluate.row(...) that takes one argument and returns “low” when the argument is less than 4, “mid” when the argument is between 4 and 7 (inclusive), and “high” when the arguement is 8 or larger. Then, use sapply(...) to apply it to column x1.\nSolution\n\n\n\nCode\nevaluate.row = function(x){\n  if(x &lt; 4){\n    return (\"low\")\n  }\n  else if (x &lt;= 7){\n    return (\"mid\")\n  }\n  else{\n    return (\"high\")\n  }\n}\n\nsapply(df[,1], evaluate.row)\n\n\n [1] \"high\" \"low\"  \"mid\"  \"low\"  \"low\"  \"low\"  \"low\"  \"low\"  \"mid\"  \"low\"",
     "crumbs": [
       "Lab Four -- Programming in R"
     ]
@@ -814,7 +814,7 @@
     "href": "lab4/Lab4WriteUp.html#part-k",
     "title": "Lab Four – Programming in R",
     "section": "1.12 Part k",
-    "text": "1.12 Part k\nDid we need to use loops or functions in (h.)-(j.)? That is, can we use vectorization to attain the same results in 1 line each? Where it is possible, write the line of code. Where it is not, explain why.\nSolution\nPart h\n\n\n\nCode\ndf[,4] = df[,1] * df[,2]\n(df)\n\n\n   x1 x2 x3 x12 total.score\n1   8  1  8   8           9\n2   3  7  2  21          11\n3   5  3  3  15          10\n4   3  6  2  18          10\n5   2  2  3   4           3\n6   3  8 10  24           4\n7   1 10  1  10          11\n8   2  6  1  12           9\n9   6  2 10  12           4\n10  2  4  1   8           7\n\n\n\nPart i\n\n\n\nCode\ndf$total.score = (df[,1]*2) + df[,2] - df[,3]\n(df)\n\n\n   x1 x2 x3 x12 total.score\n1   8  1  8   8           9\n2   3  7  2  21          11\n3   5  3  3  15          10\n4   3  6  2  18          10\n5   2  2  3   4           3\n6   3  8 10  24           4\n7   1 10  1  10          11\n8   2  6  1  12           9\n9   6  2 10  12           4\n10  2  4  1   8           7\n\n\n\nPart j Part j is not vectorizable. If/else statements are not vectorized which makes passing through a vector not work, only taking in the first value. However, you can, as we did, pass a vector through a function using the if/else statement, but on its own it is not vectorizable.",
+    "text": "1.12 Part k\nDid we need to use loops or functions in (h.)-(j.)? That is, can we use vectorization to attain the same results in 1 line each? Where it is possible, write the line of code. Where it is not, explain why.\nSolution\nPart h\n\n\n\nCode\ndf[,4] = df[,1] * df[,2]\n(df)\n\n\n   x1 x2 x3 x12 total.score\n1   8  1  8   8           9\n2   3  7  2  21          11\n3   5  3  3  15          10\n4   3  6  2  18          10\n5   2  2  3   4           3\n6   3  8 10  24           4\n7   1 10  1  10          11\n8   2  6  1  12           9\n9   6  2 10  12           4\n10  2  4  1   8           7\n\n\n\nPart i\n\n\n\nCode\ndf$total.score = (df[,1]*2) + df[,2] - df[,3]\n(df)\n\n\n   x1 x2 x3 x12 total.score\n1   8  1  8   8           9\n2   3  7  2  21          11\n3   5  3  3  15          10\n4   3  6  2  18          10\n5   2  2  3   4           3\n6   3  8 10  24           4\n7   1 10  1  10          11\n8   2  6  1  12           9\n9   6  2 10  12           4\n10  2  4  1   8           7\n\n\n\nPart j\nPart j is not vectorizable. If/else statements are not vectorized which makes passing through a vector not work, only taking in the first value. However, you can, as we did, pass a vector through a function using the if/else statement, but on its own it is not vectorizable.",
     "crumbs": [
       "Lab Four -- Programming in R"
     ]
@@ -904,7 +904,7 @@
     "href": "lab4/Lab4WriteUp.html#part-i-1",
     "title": "Lab Four – Programming in R",
     "section": "2.9 Part i",
-    "text": "2.9 Part i\nNow that we have all the things we need, let’s try to print the recipe. Below, I have written code to print from the objects. One by one, remove #| eval: false from the YAML header and add #| echo: false and #| results: 'asis', and test. Let me know if you’re stuck!\nImage\n\n\n\nIngredients\n\n\n1/8 tsp chili flakes\n4 garlic cloves\n5 oz spinach\n1 tsp gochujang\n3 tsp mayonnaise\n2/3 cup kimchi\n4 slices of bread\n2/3 cup cheddar cheese\n4 tablespoons everything seasoning.\n\n\nInstructions\n\n\nIn a frying pan, heat 2 tablespoons olive oil with chili flakes.\nAdd spinach and cook until wilted.\nMix gochujang and mayonnaise in a small bowl and spread on one side of each slice of bread. Sprinkle with everything seasoning and press it into the bread.\nBuild sandwiches by layering spinach, kimchi, and cheese between two slices of bread.\nFry in butter until golden brown on both sides.",
+    "text": "2.9 Part i\nNow that we have all the things we need, let’s try to print the recipe. Below, I have written code to print from the objects. One by one, remove #| eval: false from the YAML header and add #| echo: false and #| results: 'asis', and test. Let me know if you’re stuck!\nImage \nIngredients\n\n\n1/8 tsp chili flakes\n4 garlic cloves\n5 oz spinach\n1 tsp gochujang\n3 tsp mayonnaise\n2/3 cup kimchi\n4 slices of bread\n2/3 cup cheddar cheese\n4 tablespoons everything seasoning.\n\n\nInstructions\n\n\nIn a frying pan, heat 2 tablespoons olive oil with chili flakes.\nAdd spinach and cook until wilted.\nMix gochujang and mayonnaise in a small bowl and spread on one side of each slice of bread. Sprinkle with everything seasoning and press it into the bread.\nBuild sandwiches by layering spinach, kimchi, and cheese between two slices of bread.\nFry in butter until golden brown on both sides.",
     "crumbs": [
       "Lab Four -- Programming in R"
     ]

@@ -116,7 +116,7 @@ Ask for the column `x1`.
 
 **Solution**
 ```{r}
-df[, 1]
+df$x1
 ```
 
 ## Part d
@@ -132,7 +132,7 @@ Ask for the the value of `x1` in the fifth row of the data frame.
 
 **Solution**
 ```{r}
-df[5,1]
+df$x1[5]
 ```
 
 ## Part f
@@ -191,7 +191,7 @@ evaluate.row = function(x){
   if(x < 4){
     return ("low")
   }
-  else if ( x >= 4 & x <= 7){
+  else if (x <= 7){
     return ("mid")
   }
   else{
@@ -220,6 +220,7 @@ df$total.score = (df[,1]*2) + df[,2] - df[,3]
 ```
 
 *Part j*
+
 Part j is not vectorizable. If/else statements are not vectorized which makes passing through a vector not work, only taking in the first value. However, you can, as we did, pass a vector through a function using the if/else statement, but on its own it is not vectorizable.
 
 # Complete Tasks for One Recipe
@@ -303,16 +304,10 @@ image.url = paste("website/", img.src, sep = "")
 ```
 
 ## Part i
-Now that we have all the things we need, let's try to print the recipe. Below, I have written code to print from the objects. One by one, remove `#| eval: false` from the YAML header and add `#| echo: false` and `#| results: 'asis'`, and test. Let me know if you're stuck!
+Now that we have all the things we need, let's try to print the recipe. Below, I have written code to print from the objects. Remove `#| eval: false` from the YAML header and test. Let me know if you're stuck!
 
 **Image**
-
-```{r}
-#| echo: false
-#| results: 'asis'
-# width="50%" shrinks the image for printing
-cat(paste('<img src="', image.url, '" style="width: 50%; height: auto;">'))
-```
+![yum](website/images/KimchiGrilledCheese.jpg)
 
 **Ingredients**
 
@@ -348,6 +343,9 @@ When you render this document, no code should be visible. Instead, you should se
 
 ## Why a fake website?
 Read [https://www.scrapingbee.com/blog/is-web-scraping-legal/](Is Web Sraping Legal?). Originally, I conceived doing this with recipes from Purple Carrot (my favorite subscription service). Being a large company, their terms of service are *very* long and precluded us from copying their recipes. We also checked a few smaller recipe websites we like and even they had terms of service that restricted automated collection of data.
+
+**Answer**
+While there is no strict yes or no to whether it is legal to scrape data from public websites, there is a lot of specific circumstances. For instance, the company may prohibit their data being used or if it is behind a paywall it is illegal. It depends more on how the data is being scraped. Here, however, it is easier to use a fake website in which we know there are no resctrictions by the website to scraping the public data.
 
 ## Conditionals
 Did you use conditional statements in your code? If yes, how. If not, are there places you could have used them but did something else?
