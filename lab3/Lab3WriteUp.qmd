@@ -324,7 +324,7 @@ ggplot() +
 
 Area
 ```{r}
-det(A)
+det(T)
 ```
 
 The shape is thin as it stretches vertically higher on the y-axis. The area stays the same however.
@@ -376,7 +376,7 @@ ggplot() +
 
 Area
 ```{r}
-det(A)
+det(T)
 ```
 
 The shape has the same area, however, it stretches horizontally. It is clearly a different shape leaning more to the left like a rhombus.
@@ -426,10 +426,10 @@ ggplot() +
 
 Area
 ```{r}
-det(A)
+det(T)
 ```
 
-The shape has the same area again. However, it reaches higher on the y-axis, while also leaning horizontally further left. It has a similar rhombus shape from part c.
+The shape has a smaller area. Tt reaches higher on the y-axis, while also leaning horizontally further left. It has a similar rhombus shape from part c, but thinner making its area smaller.
 
 # Question 4
 
@@ -452,7 +452,9 @@ Create a data frame `ladder` with the following data. Note your data frame shoul
 
 **Solution**
 ```{r}
-ladder = data.frame( x = c(0,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1), y = c(0,20,0,20,2,2,4,4,6,6,8,8,10,10,12,12,14,14,16,16,18,18), group = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11))
+ladder = data.frame( x = c(0,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1), 
+                     y = c(0,20,0,20,2,2,4,4,6,6,8,8,10,10,12,12,14,14,16,16,18,18), 
+                     group = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11))
 
 
 ```
