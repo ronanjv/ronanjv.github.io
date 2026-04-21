@@ -298,7 +298,7 @@ window.Quarto = {
 <section id="part-a" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="part-a"><span class="header-section-number">1.1</span> Part a</h2>
 <p>Install the <code>esquisse</code> package for <code>R</code>. Report the code below, ensuring to set the <code>eval</code> option to <code>false</code>, using “#| eval: false”, so that we don’t install the package every time you compile your Quarto document.</p>
-<p><strong>Solution</strong></p>
+<p><strong>Solution</strong> Here I am installing the esquisse packing to get started.</p>
 <p></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"esquisse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -308,7 +308,7 @@ window.Quarto = {
 <section id="part-b" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">1.2</span> Part b</h2>
 <p>Load the <code>esquisse</code> package for <code>R</code>. Report the code below. It does not matter whether you set “#| eval: false” because loading the package does not add a lot of time. Note you will not evaluate any code that uses the <code>esquisse</code> package, so there is no need to load it as you compile your Quarto document.</p>
-<p><strong>Solution</strong></p>
+<p><strong>Solution</strong> Here I am loading the esquisse package to be used later on.</p>
 <p></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(<span class="st">"esquisse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -318,7 +318,7 @@ window.Quarto = {
 <section id="part-c" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">1.3</span> Part c</h2>
 <p>How can you ask for help about the <code>esquisse</code> package for <code>R</code>? Report the code below, ensuring to set the <code>eval</code> option to <code>false</code>, using “#| eval: false”, so that the help document isn’t loaded every time you compile your Quarto document.</p>
-<p><strong>Solution</strong></p>
+<p><strong>Solution</strong> Testing the help function, here I am using help() to get more information on using the esquisse package.</p>
 <p></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">help</span>(<span class="st">"esquisse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -328,11 +328,11 @@ window.Quarto = {
 <section id="part-d" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">1.4</span> Part d</h2>
 <p>Is a demo or vignette available for the <code>esquisse</code> package for <code>R</code>? Report the code below, ensuring to set the <code>eval</code> option to <code>false</code>, using “#| eval: false”, so that the you don’t get errors when you compile your Quarto document.</p>
-<p><strong>Solution</strong></p>
+<p><strong>Solution</strong> There is no demo found for the equisse package, but a vignette is available.</p>
 <p></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">demo</span>(<span class="st">"esquisse"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">vignette</span>(<span class="st">"esquisse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">demo</span>(<span class="at">package =</span> <span class="st">"esquisse"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">vignette</span>(<span class="at">package =</span> <span class="st">"esquisse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p></p>
 </section>
@@ -488,7 +488,7 @@ the command instead of actually citing. --></p>
 <pre><code>[1] "character"</code></pre>
 </div>
 </div>
-<p> Because numeric and charater are different classes, R will automatically convert the entire vector to the furthest right class which is character from numeric.</p>
+<p> Because numeric and character are different classes, R will automatically convert the entire vector to the furthest right class which is character from MATH.</p>
 
 
 

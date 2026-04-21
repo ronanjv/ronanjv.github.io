@@ -79,7 +79,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 Install the `esquisse` package for `R`. Report the code below, ensuring to set the `eval` option to `false`, using "\#| eval: false", so that we don't install the package every time you compile your Quarto document.
 
 **Solution**
-
+Here I am installing the esquisse packing to get started.
 ```{r}
 #| eval: false
 #| code-fold: false
@@ -90,6 +90,7 @@ install.packages("esquisse")
 Load the `esquisse` package for `R`. Report the code below. It does not matter whether you set "\#| eval: false" because loading the package does not add a lot of time. Note you will not evaluate any code that uses the `esquisse` package, so there is no need to load it as you compile your Quarto document.
 
 **Solution**
+Here I am loading the esquisse package to be used later on.
 
 ```{r}
 #| code-fold: false
@@ -100,6 +101,7 @@ library("esquisse")
 How can you ask for help about the  `esquisse` package for `R`? Report the code below, ensuring to set the `eval` option to `false`, using "\#| eval: false", so that the help document isn't loaded every time you compile your Quarto document.
 
 **Solution**
+Testing the help function, here I am using help() to get more information on using the esquisse package.
 ```{r}
 #| eval: false
 #| code-fold: false
@@ -110,11 +112,12 @@ help("esquisse")
 Is a demo or vignette available for the  `esquisse` package for `R`? Report the code below, ensuring to set the `eval` option to `false`, using "\#| eval: false", so that the you don't get errors when you compile your Quarto document.
 
 **Solution**
+There is no demo found for the equisse package, but a vignette is available.
 ```{r}
 #| eval: false
 #| code-fold: false
-demo("esquisse")
-vignette("esquisse")
+demo(package = "esquisse")
+vignette(package = "esquisse")
 ```
 
 ## Part e
@@ -238,4 +241,4 @@ Create a vector containing the `character` "MATH" and the `numeric` 240. What is
 (vector = c("MATH", 240))
 class(vector)
 ```
-Because numeric and charater are different classes, R will automatically convert the entire vector to the furthest right class which is character from numeric.
+Because numeric and character are different classes, R will automatically convert the entire vector to the furthest right class which is character from MATH.
