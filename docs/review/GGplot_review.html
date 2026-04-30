@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>GGplot Review – Portfolio</title>
+<title>Unit 2: Tidyverse &amp; Ggplot Review – Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -81,9 +116,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      Portfolio
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../review/GGplot_review.html">Unit 2: Tidyverse &amp; Ggplot Review</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -154,20 +187,34 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Lab Eleven – Point Estimation and Resampling</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../review/GGplot_review.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Unit 2: Tidyverse &amp; Ggplot Review</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-tidyverse" id="toc-what-is-tidyverse" class="nav-link active" data-scroll-target="#what-is-tidyverse"><span class="header-section-number">1</span> What is Tidyverse?</a></li>
+  <li><a href="#what-is-ggplot" id="toc-what-is-ggplot" class="nav-link" data-scroll-target="#what-is-ggplot"><span class="header-section-number">2</span> What is Ggplot?</a></li>
+  <li><a href="#plotting-data" id="toc-plotting-data" class="nav-link" data-scroll-target="#plotting-data"><span class="header-section-number">3</span> Plotting Data</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="GGplot_review.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">GGplot Review</h1>
+<h1 class="title">Unit 2: Tidyverse &amp; Ggplot Review</h1>
 </div>
 
 
@@ -184,8 +231,312 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="what-is-tidyverse" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="what-is-tidyverse"><span class="header-section-number">1</span> What is Tidyverse?</h2>
+<p>The tidyverse package is a collection of libraries in R that streamline data manipulation. Some of the most common functions we used during labs include:</p>
+<ul>
+<li><strong>tibble()</strong>
+<ul>
+<li>Constructs an enhanced data frame called a tibble</li>
+</ul></li>
+<li><strong>read_csv()</strong>
+<ul>
+<li>Like read.csv() but returns a tibble and functions faster</li>
+</ul></li>
+<li><strong>mutate()</strong>
+<ul>
+<li>Used to create new or edit previous variables/columns</li>
+</ul></li>
+<li><strong>filter()</strong>
+<ul>
+<li>Can select rows that specify certain conditions</li>
+</ul></li>
+<li><strong>group_by()</strong>
+<ul>
+<li>For specifying grouped variables for data operations</li>
+</ul></li>
+<li><strong>|&gt;</strong>
+<ul>
+<li>A “pipe” which is used to make code easier to read by feeding previous operations to the next line</li>
+</ul></li>
+<li><strong>case_when()</strong>
+<ul>
+<li>When multiple if_else() conditions need to be checked</li>
+</ul></li>
+<li><strong>summarize()</strong>
+<ul>
+<li>Allows to ask for statistics calculated on selected columns of a data frame</li>
+</ul></li>
+<li><strong>separate()</strong>
+<ul>
+<li>Used to separate a column into multiple columns using a delimiter</li>
+</ul></li>
+</ul>
+<p><strong>Why use Tidyverse over Base R?</strong><br>
+Tidyverse notation is easier to read and write compared to base R. Using pipes, |&gt;, steps flow from line to line, making the code easier to follow and understand, which also makes comments more comprehensible because you can add descriptions to each step as you go.</p>
+</section>
+<section id="what-is-ggplot" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="what-is-ggplot"><span class="header-section-number">2</span> What is Ggplot?</h2>
+<p>Ggplot2 is a data visualization package in tidyverse used to create clear, customizable graphs. It is based on layers, where you build plots step by step by adding components like data, axes, and visual elements.<br>
+<strong>Things to keep in mind:</strong></p>
+<ul>
+<li>What shape will the data follow, if any</li>
+<li>Put the plot in a figure environment so it is nicely formatted. We will use a couple of parameters for the environment:
+<ul>
+<li>label: How we can refer to the figure later in the file</li>
+<li>fig-cap: What the title will show up as</li>
+<li>fig-width: how many inches wide the plot will be</li>
+<li>fig-height: how many inches high the plot will be</li>
+<li>fig-align: where relative to the page the figure will appear</li>
+</ul></li>
+</ul>
+<p>Let’s simulate random data following the normal distribution to work with. The seed will ensure it does not change.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">set.seed</span>(<span class="dv">61</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="at">var1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="at">var2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>First you tell your plot what data to use. I added theme_bw() and labs() to clean up the graph by making it black and white with custom axis labels:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2)) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"variable1 data"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>       <span class="at">y =</span> <span class="st">"variable2 data"</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Empty Plot</figcaption>
+<p><img src="GGplot_review_files/figure-html/emptyPlot-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Then use geom to actually add a shape to the plot:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"variable1 data"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>       <span class="at">y =</span> <span class="st">"variable2 data"</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Scatter Plot of Data</figcaption>
+<p><img src="GGplot_review_files/figure-html/withGeom-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One of the best uses for ggplot is data summarization, a key step in data analysis once you have cleaned the data set using tidyverse. One of the most important decisions is choosing which geom is right for your data. One way is to check what variables your data consists of.</p>
+<p><strong>1 Categorical Variable</strong><br>
+Go to plots would be either a bar plot or a doughnut plot.</p>
+<ul>
+<li>geom_bar()</li>
+<li>coord_polar()</li>
+</ul>
+<p><strong>1 Quantitative Variable</strong><br>
+Go to plots are a histogram, violin plot, and box plot. Helpful to overlay the violin plot on a box plot.</p>
+<ul>
+<li>geom_histogram()</li>
+<li>geom_violin()</li>
+<li>geom_boxplot()</li>
+</ul>
+<p><strong>2 Categorical Variables</strong><br>
+Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
+<ul>
+<li>ggmosaic::geom_mosaic()</li>
+<li>geom_bar()</li>
+<li>coord_polar()</li>
+</ul>
+<p><strong>2 Quantitative Variables</strong> Go to plot is the scatterplot.</p>
+<ul>
+<li>geom_point()</li>
+</ul>
+<p><strong>1 Categorical and 1 Quantitative Variable</strong> Go to plots are grouped histogram, grouped violin, and grouped box plots. Helpful to overlay a box plot on a violin plot.</p>
+<ul>
+<li>geom_historgram()</li>
+<li>geom_violin()</li>
+<li>geom_boxplot()</li>
+</ul>
+</section>
+<section id="plotting-data" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="plotting-data"><span class="header-section-number">3</span> Plotting Data</h2>
+<p>Let’s see these plots in action. But first, we will need some data.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">set.seed</span>(<span class="dv">61</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>n <span class="ot">=</span> <span class="dv">200</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="co"># One quantitative variable</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    <span class="at">score =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">75</span>, <span class="at">sd =</span> <span class="dv">10</span>),</span>
+<span id="cb4-7"><a href="#cb4-7"></a>  </span>
+<span id="cb4-8"><a href="#cb4-8"></a>    <span class="co"># Two quantitative variables</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>    <span class="at">study_hours =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>),</span>
+<span id="cb4-10"><a href="#cb4-10"></a>    <span class="at">exam_grade  =</span> <span class="dv">50</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="dv">5</span>),</span>
+<span id="cb4-11"><a href="#cb4-11"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12"></a>    <span class="co"># One categorical variable</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>    <span class="at">genre =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Rock"</span>, <span class="st">"Pop"</span>, <span class="st">"Jazz"</span>, <span class="st">"Classical"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-14"><a href="#cb4-14"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15"></a>    <span class="co"># Two categorical variables</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>    <span class="at">grade_level =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Freshman"</span>, <span class="st">"Sophomore"</span>, <span class="st">"Junior"</span>, <span class="st">"Senior"</span>), n,</span>
+<span id="cb4-17"><a href="#cb4-17"></a>                           <span class="at">replace =</span> <span class="cn">TRUE</span>), <span class="at">pass_fail   =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Pass"</span>, <span class="st">"Fail"</span>),</span>
+<span id="cb4-18"><a href="#cb4-18"></a>                           n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.75</span>, <span class="fl">0.25</span>)),</span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a>    <span class="co"># One categorical variable and one quantitative variable</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>    <span class="at">subject =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Math"</span>, <span class="st">"English"</span>, <span class="st">"Science"</span>, <span class="st">"History"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-22"><a href="#cb4-22"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now let’s make the graphs in order.</p>
+<p><strong>This is a Bar plot for data with one categorical variable!</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Bar Plot</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> genre)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Genre"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Bar Plot</figcaption>
+<p><img src="GGplot_review_files/figure-html/SingleBar-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>These are the histogram, violin, and box plots for data with one quantitative variable!</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Histogram</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"pink"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Histogram Plot</figcaption>
+<p><img src="GGplot_review_files/figure-html/Histogram-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Violin Plot and box plot overlay</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> score)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">geom_violin</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Violin Plot and Box Plot Overlay</figcaption>
+<p><img src="GGplot_review_files/figure-html/ViolinAndBox-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Here is the grouped bar plot for data with 2 categorical variables!</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Grouped Bar Plot</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> grade_level, <span class="at">fill =</span> pass_fail)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Grade Level"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, <span class="at">fill =</span> <span class="st">"Result"</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Grouped Bar Plot</figcaption>
+<p><img src="GGplot_review_files/figure-html/GroupBar-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Here is a scatterplot for data with one quantitative variable!</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> study_hours, <span class="at">y =</span> exam_grade)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Study Hours"</span>, <span class="at">y =</span> <span class="st">"Exam Grade"</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Scatter Plot of Data</figcaption>
+<p><img src="GGplot_review_files/figure-html/scatter-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Here are grouped histogram, violin, and box plots for data with one quantitative variable and one categorical variable!</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Grouped Histogram</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Grouped Histogram</figcaption>
+<p><img src="GGplot_review_files/figure-html/GroupedHistogram-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Grouped Violin Plot</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> subject, <span class="at">y =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Subject"</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Grouped Violin Plot with Grouped Box Plot</figcaption>
+<p><img src="GGplot_review_files/figure-html/GroupedViolinWithBox-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
