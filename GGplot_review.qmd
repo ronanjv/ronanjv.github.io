@@ -1,0 +1,282 @@
+---
+title: "Unit 2: Tidyverse & Ggplot Review"
+# Bibliography Details
+#bibliography: ReviewReferences.bib  # Name of bib file in the same folder 
+bibliographystyle: apa            # Bibliography style
+
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("Lab10WriteUp.qmd")
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+  html:       # Specify HTML formatting options 
+    number-sections: true      # Number Sections
+    code-fold: true            # Button to show code
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables and figures
+format-links: [pdf]
+---
+
+## What is Tidyverse?  
+The tidyverse package is a collection of libraries in R that streamline data manipulation. Some of the most common functions we used during labs include:
+
+* **tibble()**
+    * Constructs an enhanced data frame called a tibble
+* **read_csv()**
+    * Like read.csv() but returns a tibble and functions faster
+* **mutate()**
+    * Used to create new or edit previous variables/columns
+* **filter()**
+    * Can select rows that specify certain conditions
+* **group_by()**
+    * For specifying grouped variables for data operations
+* **|>**
+    * A "pipe" which is used to make code easier to read by feeding previous operations to the next line
+* **case_when()**
+    * When multiple if_else() conditions need to be checked
+* **summarize()**
+    * Allows to ask for statistics calculated on selected columns of a data frame
+* **separate()**
+    * Used to separate a column into multiple columns using a delimiter
+
+**Why use Tidyverse over Base R?**  
+Tidyverse notation is easier to read and write compared to base R. Using pipes, |>, steps flow from line to line, making the code easier to follow and understand, which also makes comments more comprehensible because you can add descriptions to each step as you go.
+
+
+## What is Ggplot?  
+Ggplot2 is a data visualization package in tidyverse used to create clear, customizable graphs. It is based on layers, where you build plots step by step by adding components like data, axes, and visual elements.  
+**Things to keep in mind:**  
+
+* What shape will the data follow, if any
+* Put the plot in a figure environment so it is nicely formatted. We will use a couple of parameters for the environment:
+    * label: How we can refer to the figure later in the file
+    * fig-cap: What the title will show up as
+    * fig-width: how many inches wide the plot will be
+    * fig-height: how many inches high the plot will be
+    * fig-align: where relative to the page the figure will appear
+
+Let's simulate random data following the normal distribution to work with. The seed will ensure it does not change.
+```{r}
+set.seed(61)
+data = data.frame(
+  var1 = rnorm(100),
+  var2 = rnorm(100)
+)
+``` 
+First you tell your plot what data to use. I added theme_bw() and labs() to clean up the graph by making it black and white with custom axis labels:
+```{r}
+#| label: emptyPlot
+#| fig-cap: "Empty Plot"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+library(ggplot2)
+ggplot(data, aes(x = var1, y = var2)) +
+    labs(x = "variable1 data",
+       y = "variable2 data") +
+    theme_bw()
+```  
+Then use geom to actually add a shape to the plot:
+```{r}
+#| label: withGeom
+#| fig-cap: "Scatter Plot of Data"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+ggplot(data, aes(x = var1, y = var2)) +
+  geom_point() +
+  labs(x = "variable1 data",
+       y = "variable2 data") +
+  theme_bw()
+```
+
+One of the best uses for ggplot is data summarization, a key step in data analysis once you have cleaned the data set using tidyverse. One of the most important decisions is choosing which geom is right for your data. One way is to check what variables your data consists of.
+
+**1 Categorical Variable**  
+Go to plots would be either a bar plot or a doughnut plot.
+
+* geom_bar()
+* coord_polar()
+
+**1 Quantitative Variable**  
+Go to plots are a histogram, violin plot, and box plot. Helpful to overlay the violin plot on a box plot.
+
+* geom_histogram()
+* geom_violin()
+* geom_boxplot()
+
+**2 Categorical Variables**  
+Go to plots are the mosaic, grouped bar, and grouped doughnut plots.
+
+* ggmosaic::geom_mosaic()
+* geom_bar()
+* coord_polar()
+
+**2 Quantitative Variables**
+Go to plot is the scatterplot.
+
+* geom_point()
+
+**1 Categorical and 1 Quantitative Variable**
+Go to plots are grouped histogram, grouped violin, and grouped box plots. Helpful to overlay a box plot on a violin plot.
+
+* geom_historgram()
+* geom_violin()
+* geom_boxplot()
+
+## Plotting Data
+Let's see these plots in action. But first, we will need some data.
+```{r}
+set.seed(61)
+n = 200
+
+data = data.frame(
+    # One quantitative variable
+    score = rnorm(n, mean = 75, sd = 10),
+  
+    # Two quantitative variables
+    study_hours = runif(n, 0, 10),
+    exam_grade  = 50 + 4 * runif(n, 0, 10) + rnorm(n, sd = 5),
+  
+    # One categorical variable
+    genre = sample(c("Rock", "Pop", "Jazz", "Classical"), n, replace = TRUE),
+  
+    # Two categorical variables
+    grade_level = sample(c("Freshman", "Sophomore", "Junior", "Senior"), n,
+                           replace = TRUE), pass_fail   = sample(c("Pass", "Fail"),
+                           n, replace = TRUE, prob = c(0.75, 0.25)),
+
+    # One categorical variable and one quantitative variable
+    subject = sample(c("Math", "English", "Science", "History"), n, replace = TRUE)
+)
+```
+
+Now let's make the graphs in order.
+
+**This is a Bar plot for data with one categorical variable!**
+```{r}
+#| label: SingleBar
+#| fig-cap: "Bar Plot"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+# Bar Plot
+ggplot(data, aes(x = genre)) +
+geom_bar(fill = "darkorchid") +
+labs(x = "Genre", y = "Count") +
+theme_bw()
+```
+
+**These are the histogram, violin, and box plots for data with one quantitative variable!**
+```{r}
+#| label: Histogram
+#| fig-cap: "Histogram Plot"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+# Histogram
+ggplot(data, aes(x = score)) +
+  geom_histogram(fill = "pink", color = "black") +
+  labs(x = "Score", y = "Count") +
+  theme_bw()
+```
+```{r}
+#| label: ViolinAndBox
+#| fig-cap: "Violin Plot and Box Plot Overlay"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+# Violin Plot and box plot overlay
+ggplot(data, aes(x = "", y = score)) +
+  geom_violin(fill = "darkorchid") +
+  geom_boxplot(width = .3) + 
+  labs(x = "", y = "Score") +
+  theme_bw()
+```
+
+**Here is the grouped bar plot for data with 2 categorical variables!**
+```{r}
+#| label: GroupBar
+#| fig-cap: "Grouped Bar Plot"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+# Grouped Bar Plot
+ggplot(data, aes(x = grade_level, fill = pass_fail)) +
+  geom_bar() +
+  labs(x = "Grade Level", y = "Count", fill = "Result") +
+  theme_bw()
+```
+
+**Here is a scatterplot for data with one quantitative variable!**
+```{r}
+#| label: scatter
+#| fig-cap: "Scatter Plot of Data"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+ggplot(data, aes(x = study_hours, y = exam_grade)) +
+    geom_point() +
+    labs(x = "Study Hours", y = "Exam Grade") +
+    theme_bw()
+```
+
+**Here are grouped histogram, violin, and box plots for data with one quantitative variable and one categorical variable!**
+```{r}
+#| label: GroupedHistogram
+#| fig-cap: "Grouped Histogram"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+# Grouped Histogram
+ggplot(data, aes(x = score, fill = subject)) +
+  geom_histogram(binwidth = 5, alpha = 0.6) +
+  labs(x = "Score", y = "Count") +
+  theme_bw()
+```
+
+```{r}
+#| label: GroupedViolinWithBox
+#| fig-cap: "Grouped Violin Plot with Grouped Box Plot"
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+
+
+# Grouped Violin Plot
+ggplot(data, aes(x = subject, y = score, fill = subject)) +
+  geom_violin(alpha = 0.7) +
+  geom_boxplot(width = .3) +
+  labs(x = "Subject", y = "Score") +
+  theme_bw()
+```

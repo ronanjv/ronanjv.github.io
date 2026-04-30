@@ -209,6 +209,16 @@ Recreate Figure 3b as depicted in the paper (see [https://www.nature.com/article
 dat.kitsberg.cleaned <- dat.kitsberg.cleaned |>
   mutate(CellType = factor(CellType, 
                            levels=c("Monocytes", "Macrophages")))
+```
+```{r}
+#| label: Cell Type Comparison1
+#| fig-cap: "Healthy Donor vs. THP-1"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+ 
 ggplot(data = dat.kitsberg.cleaned) +
   geom_violin(aes(x = CellType, y = viruses.within.nucleus)) +
   theme_bw() +
@@ -444,6 +454,14 @@ Choose a categorical variable. Create a plot and corresponding numerical summary
 **Solution**
 
 ```{r}
+#| label: Manufacturer Comparison
+#| fig-cap: "Manufacturer Comparison"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggplot(data = dat.bal.cleaned |> drop_na(Manufacturer)) +
   geom_violin(aes(x = Manufacturer, y = price)) +
   geom_boxplot(aes(x = Manufacturer, y = price), width = 0.1) +
@@ -472,6 +490,14 @@ Choose a quantitative variable. Create a plot and corresponding numerical summar
 **Solution**
 
 ```{r}
+#| label: Engine Comparison
+#| fig-cap: "Engines RPM comparison"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggplot(data = dat.bal.cleaned) +
   geom_point(aes(x = `Engines RPM`, y = price)) +
   geom_smooth(aes(x = `Engines RPM`, y = price), method = "lm", color = "black") +
