@@ -18,6 +18,7 @@ website:
     - lab8/Lab8WriteUp.qmd
     - lab10/Lab10WriteUp.qmd
     - lab11/Lab11WriteUp.qmd
+    - review/GGplot_review.qmd
 
 format:
   html:
