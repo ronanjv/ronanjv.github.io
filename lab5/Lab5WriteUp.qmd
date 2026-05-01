@@ -507,15 +507,16 @@ ggplot(data = dat.bal.cleaned) +
 
 EngineRPM.summary = dat.bal.cleaned |>
   drop_na(price) |>
-  group_by(`Engines RPM`) |>
   summarize(
     mean = mean(price),
     sd = sd(price),
     median = median(price),
     IQR = IQR(price),
     skew = e1071::skewness(price),
-    ekurt = e1071::kurtosis(price)
+    corr = cor(price, `Engines RPM`)
   ) |>
   knitr::kable(digits = 3)
 EngineRPM.summary
 ```
+
+It seems that as Engine RPM increase, price seems to vary more. The trendline points overall downward, but there is little correlation, it seems.
