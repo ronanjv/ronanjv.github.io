@@ -111,6 +111,8 @@ ggplot(data, aes(x = var1, y = var2)) +
 
 One of the best uses for ggplot is data summarization, a key step in data analysis once you have cleaned the data set using tidyverse. One of the most important decisions is choosing which geom is right for your data. One way is to check what variables your data consists of.
 
+![](flowchart.jpg)
+
 **1 Categorical Variable**  
 Go to plots would be either a bar plot or a doughnut plot.
 
@@ -135,6 +137,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.
 Go to plot is the scatterplot.
 
 * geom_point()
+* geom_smooth()
 
 **1 Categorical and 1 Quantitative Variable**
 Go to plots are grouped histogram, grouped violin, and grouped box plots. Helpful to overlay a box plot on a violin plot.
@@ -183,10 +186,12 @@ Now let's make the graphs in order.
 
 # Bar Plot
 ggplot(data, aes(x = genre)) +
-geom_bar(fill = "darkorchid") +
+geom_bar(fill = "lightblue") +
 labs(x = "Genre", y = "Count") +
 theme_bw()
 ```
+
+A bar plot is used to visualize the frequency of a single categorical variable. Each bar represents a category and the height tells you how many observations fall into that group. Here the four genres: Rock, Pop, Jazz, and Classical are roughly equally represented since we sampled them randomly.
 
 **These are the histogram, violin, and box plots for data with one quantitative variable!**
 ```{r}
@@ -203,6 +208,9 @@ ggplot(data, aes(x = score)) +
   labs(x = "Score", y = "Count") +
   theme_bw()
 ```
+
+A histogram shows the distribution of a single quantitative variable by grouping values into bins. Here the scores follow a bell curve centered around 75, which makes sense since we simulated them from a normal distribution with mean 75.
+
 ```{r}
 #| label: ViolinAndBox
 #| fig-cap: "Violin Plot and Box Plot Overlay"
@@ -218,6 +226,8 @@ ggplot(data, aes(x = "", y = score)) +
   labs(x = "", y = "Score") +
   theme_bw()
 ```
+
+A violin plot shows the full distribution of the data through its width, while the overlaid box plot highlights the median and interquartile range. Together they give a more complete picture than either alone. The violin confirms the scores are roughly symmetric around 75, and the box plot shows the middle 50% of scores fall within a fairly tight range.
 
 **Here is the grouped bar plot for data with 2 categorical variables!**
 ```{r}
@@ -235,7 +245,9 @@ ggplot(data, aes(x = grade_level, fill = pass_fail)) +
   theme_bw()
 ```
 
-**Here is a scatterplot for data with one quantitative variable!**
+A grouped bar plot extends the standard bar plot to two categorical variables by using color to distinguish between groups. Here we can compare pass/fail counts across each grade level. Again since we simulated around 75%, about 3 quarters passed.
+
+**Here is a scatterplot for data with two quantitative variables!**
 ```{r}
 #| label: scatter
 #| fig-cap: "Scatter Plot of Data"
@@ -245,9 +257,12 @@ ggplot(data, aes(x = grade_level, fill = pass_fail)) +
 
 ggplot(data, aes(x = study_hours, y = exam_grade)) +
     geom_point() +
+    geom_smooth() +
     labs(x = "Study Hours", y = "Exam Grade") +
     theme_bw()
 ```
+
+A scatterplot is used when you have two quantitative variables and want to see if a relationship exists between them. Each point represents one student. Geom_smooth() helps add a trendline, and although there is a slight upward movement, study hours and exam grade don't seem to be very correlated in our randomly sampled data.
 
 **Here are grouped histogram, violin, and box plots for data with one quantitative variable and one categorical variable!**
 ```{r}
@@ -265,6 +280,8 @@ ggplot(data, aes(x = score, fill = subject)) +
   theme_bw()
 ```
 
+A grouped histogram overlays multiple histograms on the same plot using color to separate categories. This lets you compare the distribution of a quantitative variable across different groups at once. Since scores were simulated independently of subject, the distributions overlap heavily. All four subjects are centered around 75 with similar spread.
+
 ```{r}
 #| label: GroupedViolinWithBox
 #| fig-cap: "Grouped Violin Plot with Grouped Box Plot"
@@ -280,3 +297,5 @@ ggplot(data, aes(x = subject, y = score, fill = subject)) +
   labs(x = "Subject", y = "Score") +
   theme_bw()
 ```
+
+By grouping violin and box plots by a categorical variable, we can compare distributions across groups side by side. The box plot allows us to easily tell which subject has a higher median, here it is math. We can also see where subjects tend to cluster, with English seeming to have more extremes in the higher scores. This is a good plot for grouped comparisons.

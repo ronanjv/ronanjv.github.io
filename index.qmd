@@ -2,6 +2,25 @@
 title: "Home"
 ---
 
-This is a Quarto website.
+This is a Quarto website of my work in Computational Statistics with R at Colgate University.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+## Lab 2  
+In Lab 2 we performed basic tasks in R. From installing and loading packages to creating vectors using sec() and rep(), otherwise manually.
+
+## Lab 3  
+Lab 3 was the introduction to matrices and data frames. Working with shearing matrices, we created an image of a ladder using data frames and ggplot to then have it lean.
+
+## Lab 4  
+In Lab 4, we worked with a fake website to practice data scraping. We collected recipe instructions and pictures to output random recipes for breakfast, lunch, and dinner.
+
+## Lab 5-6  
+In Lab 5-6 we used tidyverse to clean and summarize data. We did two case studies, the first was a biomedical study about macrophages and monocytes. The second study was about ship costs by manufacturer, country, and piece.
+
+## Lab 8  
+Lab 8 was all about probability. Working with the binomial, negative binomial, beta-binomial, altham's multiplicative binomial, and altham's multiplicative beta-binomial distributions we graphed the win probabilities of darts matches given one player has a 70% win probability.
+
+## Lab 10
+In Lab 10 we covered point estimation. Plotting the altham's multiplicative beta-binomial distribution again, we then wrote functions for the method of moments estimator and maximum log-likliehood estimator. Using these, we created a data summary of the 2024 Darts Premier League season.
+
+## Lab 11  
+In lab 11 we investigate why we divide by n-1 rather than n when estimating population variance, comparing the two estimators across four distributions all with a true variance of 2. Using 1000 simulations at sample sizes of 20, 50, 100, and 500, the results show that the n-1 estimator is less biased and that both estimators converge as sample size grows.

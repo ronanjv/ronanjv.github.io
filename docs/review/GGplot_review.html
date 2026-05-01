@@ -340,6 +340,7 @@ Tidyverse notation is easier to read and write compared to base R. Using pipes, 
 </div>
 </div>
 <p>One of the best uses for ggplot is data summarization, a key step in data analysis once you have cleaned the data set using tidyverse. One of the most important decisions is choosing which geom is right for your data. One way is to check what variables your data consists of.</p>
+<p><img src="flowchart.jpg" class="img-fluid"></p>
 <p><strong>1 Categorical Variable</strong><br>
 Go to plots would be either a bar plot or a doughnut plot.</p>
 <ul>
@@ -363,6 +364,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <p><strong>2 Quantitative Variables</strong> Go to plot is the scatterplot.</p>
 <ul>
 <li>geom_point()</li>
+<li>geom_smooth()</li>
 </ul>
 <p><strong>1 Categorical and 1 Quantitative Variable</strong> Go to plots are grouped histogram, grouped violin, and grouped box plots. Helpful to overlay a box plot on a violin plot.</p>
 <ul>
@@ -408,7 +410,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Bar Plot</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> genre)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Genre"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -421,6 +423,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
+<p>A bar plot is used to visualize the frequency of a single categorical variable. Each bar represents a category and the height tells you how many observations fall into that group. Here the four genres: Rock, Pop, Jazz, and Classical are roughly equally represented since we sampled them randomly.</p>
 <p><strong>These are the histogram, violin, and box plots for data with one quantitative variable!</strong></p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
@@ -440,6 +443,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
+<p>A histogram shows the distribution of a single quantitative variable by grouping values into bins. Here the scores follow a bell curve centered around 75, which makes sense since we simulated them from a normal distribution with mean 75.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
@@ -459,6 +463,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
+<p>A violin plot shows the full distribution of the data through its width, while the overlaid box plot highlights the median and interquartile range. Together they give a more complete picture than either alone. The violin confirms the scores are roughly symmetric around 75, and the box plot shows the middle 50% of scores fall within a fairly tight range.</p>
 <p><strong>Here is the grouped bar plot for data with 2 categorical variables!</strong></p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
@@ -478,14 +483,16 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
-<p><strong>Here is a scatterplot for data with one quantitative variable!</strong></p>
+<p>A grouped bar plot extends the standard bar plot to two categorical variables by using color to distinguish between groups. Here we can compare pass/fail counts across each grade level. Again since we simulated around 75%, about 3 quarters passed.</p>
+<p><strong>Here is a scatterplot for data with two quantitative variables!</strong></p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> study_hours, <span class="at">y =</span> exam_grade)) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Study Hours"</span>, <span class="at">y =</span> <span class="st">"Exam Grade"</span>) <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Study Hours"</span>, <span class="at">y =</span> <span class="st">"Exam Grade"</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -496,6 +503,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
+<p>A scatterplot is used when you have two quantitative variables and want to see if a relationship exists between them. Each point represents one student. Geom_smooth() helps add a trendline, and although there is a slight upward movement, study hours and exam grade don’t seem to be very correlated in our randomly sampled data.</p>
 <p><strong>Here are grouped histogram, violin, and box plots for data with one quantitative variable and one categorical variable!</strong></p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
@@ -515,6 +523,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
+<p>A grouped histogram overlays multiple histograms on the same plot using color to separate categories. This lets you compare the distribution of a quantitative variable across different groups at once. Since scores were simulated independently of subject, the distributions overlap heavily. All four subjects are centered around 75 with similar spread.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
@@ -534,6 +543,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 </div>
+<p>By grouping violin and box plots by a categorical variable, we can compare distributions across groups side by side. The box plot allows us to easily tell which subject has a higher median, here it is math. We can also see where subjects tend to cluster, with English seeming to have more extremes in the higher scores. This is a good plot for grouped comparisons.</p>
 
 
 </section>
