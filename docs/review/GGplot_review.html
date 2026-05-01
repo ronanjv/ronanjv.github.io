@@ -206,6 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-is-tidyverse" id="toc-what-is-tidyverse" class="nav-link active" data-scroll-target="#what-is-tidyverse"><span class="header-section-number">1</span> What is Tidyverse?</a></li>
   <li><a href="#what-is-ggplot" id="toc-what-is-ggplot" class="nav-link" data-scroll-target="#what-is-ggplot"><span class="header-section-number">2</span> What is Ggplot?</a></li>
   <li><a href="#plotting-data" id="toc-plotting-data" class="nav-link" data-scroll-target="#plotting-data"><span class="header-section-number">3</span> Plotting Data</a></li>
+  <li><a href="#beyond-the-basics" id="toc-beyond-the-basics" class="nav-link" data-scroll-target="#beyond-the-basics"><span class="header-section-number">4</span> Beyond the Basics</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="GGplot_review.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
@@ -449,7 +450,7 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Violin Plot and box plot overlay</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> score)) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">geom_violin</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">geom_violin</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span> </span>
 <span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
 <span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -544,6 +545,104 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 </div>
 </div>
 <p>By grouping violin and box plots by a categorical variable, we can compare distributions across groups side by side. The box plot allows us to easily tell which subject has a higher median, here it is math. We can also see where subjects tend to cluster, with English seeming to have more extremes in the higher scores. This is a good plot for grouped comparisons.</p>
+</section>
+<section id="beyond-the-basics" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="beyond-the-basics"><span class="header-section-number">4</span> Beyond the Basics</h2>
+<p>Once you are comfortable with the core geoms, ggplot2 has some powerful tools that take your plots to the next level.</p>
+<p><strong>Facet Wrap and Patchwork</strong><br>
+Facet Wrap can be used to put graphs next to and on top of eachother. Another option is patchwork. p1 / p2 will put graph 1 on top of graph 2. p1 | p2 or p1 + p2 will put them side by side.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Facet Wrapped Graphs</figcaption>
+<p><img src="GGplot_review_files/figure-html/FacetWrap-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Geom_ribbon()</strong><br>
+Geom_ribbon() allows us to highlight under a portion of the graph. For example, below we have normal distribution looking data with the upper 20% highlighted.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>y <span class="ot">=</span> <span class="fu">dnorm</span>(x)</span>
+<span id="cb13-3"><a href="#cb13-3"></a>cutoff <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="fl">0.80</span>)</span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a>ribbon_data <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb13-10"><a href="#cb13-10"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Upper 20%</figcaption>
+<p><img src="GGplot_review_files/figure-html/geomribbonGraph-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Transparency</strong><br>
+Using alpha values, we can make the color of our graph look more transparent.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>cutoff <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">0</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a>p1 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-7"><a href="#cb14-7"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-10"><a href="#cb14-10"></a></span>
+<span id="cb14-11"><a href="#cb14-11"></a>p2 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-14"><a href="#cb14-14"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-17"><a href="#cb14-17"></a></span>
+<span id="cb14-18"><a href="#cb14-18"></a>p3 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-19"><a href="#cb14-19"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-21"><a href="#cb14-21"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb14-22"><a href="#cb14-22"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-24"><a href="#cb14-24"></a></span>
+<span id="cb14-25"><a href="#cb14-25"></a>p4 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-26"><a href="#cb14-26"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-27"><a href="#cb14-27"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-28"><a href="#cb14-28"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb14-29"><a href="#cb14-29"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-30"><a href="#cb14-30"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-31"><a href="#cb14-31"></a></span>
+<span id="cb14-32"><a href="#cb14-32"></a>(p1 <span class="sc">|</span> p2) <span class="sc">/</span> (p3 <span class="sc">+</span> p4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figcaption>Transparency</figcaption>
+<p><img src="GGplot_review_files/figure-html/alphaValuesGraphs-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>

@@ -34,7 +34,17 @@
     "href": "review/GGplot_review.html#plotting-data",
     "title": "Unit 2: Tidyverse & Ggplot Review",
     "section": "3 Plotting Data",
-    "text": "3 Plotting Data\nLet’s see these plots in action. But first, we will need some data.\n\n\nCode\nset.seed(61)\nn = 200\n\ndata = data.frame(\n    # One quantitative variable\n    score = rnorm(n, mean = 75, sd = 10),\n  \n    # Two quantitative variables\n    study_hours = runif(n, 0, 10),\n    exam_grade  = 50 + 4 * runif(n, 0, 10) + rnorm(n, sd = 5),\n  \n    # One categorical variable\n    genre = sample(c(\"Rock\", \"Pop\", \"Jazz\", \"Classical\"), n, replace = TRUE),\n  \n    # Two categorical variables\n    grade_level = sample(c(\"Freshman\", \"Sophomore\", \"Junior\", \"Senior\"), n,\n                           replace = TRUE), pass_fail   = sample(c(\"Pass\", \"Fail\"),\n                           n, replace = TRUE, prob = c(0.75, 0.25)),\n\n    # One categorical variable and one quantitative variable\n    subject = sample(c(\"Math\", \"English\", \"Science\", \"History\"), n, replace = TRUE)\n)\n\n\nNow let’s make the graphs in order.\nThis is a Bar plot for data with one categorical variable!\n\n\nCode\n# Bar Plot\nggplot(data, aes(x = genre)) +\ngeom_bar(fill = \"lightblue\") +\nlabs(x = \"Genre\", y = \"Count\") +\ntheme_bw()\n\n\n\n\nBar Plot\n\n\n\n\n\nA bar plot is used to visualize the frequency of a single categorical variable. Each bar represents a category and the height tells you how many observations fall into that group. Here the four genres: Rock, Pop, Jazz, and Classical are roughly equally represented since we sampled them randomly.\nThese are the histogram, violin, and box plots for data with one quantitative variable!\n\n\nCode\n# Histogram\nggplot(data, aes(x = score)) +\n  geom_histogram(fill = \"pink\", color = \"black\") +\n  labs(x = \"Score\", y = \"Count\") +\n  theme_bw()\n\n\n\n\nHistogram Plot\n\n\n\n\n\nA histogram shows the distribution of a single quantitative variable by grouping values into bins. Here the scores follow a bell curve centered around 75, which makes sense since we simulated them from a normal distribution with mean 75.\n\n\nCode\n# Violin Plot and box plot overlay\nggplot(data, aes(x = \"\", y = score)) +\n  geom_violin(fill = \"darkorchid\") +\n  geom_boxplot(width = .3) + \n  labs(x = \"\", y = \"Score\") +\n  theme_bw()\n\n\n\n\nViolin Plot and Box Plot Overlay\n\n\n\n\n\nA violin plot shows the full distribution of the data through its width, while the overlaid box plot highlights the median and interquartile range. Together they give a more complete picture than either alone. The violin confirms the scores are roughly symmetric around 75, and the box plot shows the middle 50% of scores fall within a fairly tight range.\nHere is the grouped bar plot for data with 2 categorical variables!\n\n\nCode\n# Grouped Bar Plot\nggplot(data, aes(x = grade_level, fill = pass_fail)) +\n  geom_bar() +\n  labs(x = \"Grade Level\", y = \"Count\", fill = \"Result\") +\n  theme_bw()\n\n\n\n\nGrouped Bar Plot\n\n\n\n\n\nA grouped bar plot extends the standard bar plot to two categorical variables by using color to distinguish between groups. Here we can compare pass/fail counts across each grade level. Again since we simulated around 75%, about 3 quarters passed.\nHere is a scatterplot for data with two quantitative variables!\n\n\nCode\nggplot(data, aes(x = study_hours, y = exam_grade)) +\n    geom_point() +\n    geom_smooth() +\n    labs(x = \"Study Hours\", y = \"Exam Grade\") +\n    theme_bw()\n\n\n\n\nScatter Plot of Data\n\n\n\n\n\nA scatterplot is used when you have two quantitative variables and want to see if a relationship exists between them. Each point represents one student. Geom_smooth() helps add a trendline, and although there is a slight upward movement, study hours and exam grade don’t seem to be very correlated in our randomly sampled data.\nHere are grouped histogram, violin, and box plots for data with one quantitative variable and one categorical variable!\n\n\nCode\n# Grouped Histogram\nggplot(data, aes(x = score, fill = subject)) +\n  geom_histogram(binwidth = 5, alpha = 0.6) +\n  labs(x = \"Score\", y = \"Count\") +\n  theme_bw()\n\n\n\n\nGrouped Histogram\n\n\n\n\n\nA grouped histogram overlays multiple histograms on the same plot using color to separate categories. This lets you compare the distribution of a quantitative variable across different groups at once. Since scores were simulated independently of subject, the distributions overlap heavily. All four subjects are centered around 75 with similar spread.\n\n\nCode\n# Grouped Violin Plot\nggplot(data, aes(x = subject, y = score, fill = subject)) +\n  geom_violin(alpha = 0.7) +\n  geom_boxplot(width = .3) +\n  labs(x = \"Subject\", y = \"Score\") +\n  theme_bw()\n\n\n\n\nGrouped Violin Plot with Grouped Box Plot\n\n\n\n\n\nBy grouping violin and box plots by a categorical variable, we can compare distributions across groups side by side. The box plot allows us to easily tell which subject has a higher median, here it is math. We can also see where subjects tend to cluster, with English seeming to have more extremes in the higher scores. This is a good plot for grouped comparisons.",
+    "text": "3 Plotting Data\nLet’s see these plots in action. But first, we will need some data.\n\n\nCode\nset.seed(61)\nn = 200\n\ndata = data.frame(\n    # One quantitative variable\n    score = rnorm(n, mean = 75, sd = 10),\n  \n    # Two quantitative variables\n    study_hours = runif(n, 0, 10),\n    exam_grade  = 50 + 4 * runif(n, 0, 10) + rnorm(n, sd = 5),\n  \n    # One categorical variable\n    genre = sample(c(\"Rock\", \"Pop\", \"Jazz\", \"Classical\"), n, replace = TRUE),\n  \n    # Two categorical variables\n    grade_level = sample(c(\"Freshman\", \"Sophomore\", \"Junior\", \"Senior\"), n,\n                           replace = TRUE), pass_fail   = sample(c(\"Pass\", \"Fail\"),\n                           n, replace = TRUE, prob = c(0.75, 0.25)),\n\n    # One categorical variable and one quantitative variable\n    subject = sample(c(\"Math\", \"English\", \"Science\", \"History\"), n, replace = TRUE)\n)\n\n\nNow let’s make the graphs in order.\nThis is a Bar plot for data with one categorical variable!\n\n\nCode\n# Bar Plot\nggplot(data, aes(x = genre)) +\ngeom_bar(fill = \"lightblue\") +\nlabs(x = \"Genre\", y = \"Count\") +\ntheme_bw()\n\n\n\n\nBar Plot\n\n\n\n\n\nA bar plot is used to visualize the frequency of a single categorical variable. Each bar represents a category and the height tells you how many observations fall into that group. Here the four genres: Rock, Pop, Jazz, and Classical are roughly equally represented since we sampled them randomly.\nThese are the histogram, violin, and box plots for data with one quantitative variable!\n\n\nCode\n# Histogram\nggplot(data, aes(x = score)) +\n  geom_histogram(fill = \"pink\", color = \"black\") +\n  labs(x = \"Score\", y = \"Count\") +\n  theme_bw()\n\n\n\n\nHistogram Plot\n\n\n\n\n\nA histogram shows the distribution of a single quantitative variable by grouping values into bins. Here the scores follow a bell curve centered around 75, which makes sense since we simulated them from a normal distribution with mean 75.\n\n\nCode\n# Violin Plot and box plot overlay\nggplot(data, aes(x = \"\", y = score)) +\n  geom_violin(fill = \"darkorchid\", alpha = .5) +\n  geom_boxplot(width = .3) + \n  labs(x = \"\", y = \"Score\") +\n  theme_bw()\n\n\n\n\nViolin Plot and Box Plot Overlay\n\n\n\n\n\nA violin plot shows the full distribution of the data through its width, while the overlaid box plot highlights the median and interquartile range. Together they give a more complete picture than either alone. The violin confirms the scores are roughly symmetric around 75, and the box plot shows the middle 50% of scores fall within a fairly tight range.\nHere is the grouped bar plot for data with 2 categorical variables!\n\n\nCode\n# Grouped Bar Plot\nggplot(data, aes(x = grade_level, fill = pass_fail)) +\n  geom_bar() +\n  labs(x = \"Grade Level\", y = \"Count\", fill = \"Result\") +\n  theme_bw()\n\n\n\n\nGrouped Bar Plot\n\n\n\n\n\nA grouped bar plot extends the standard bar plot to two categorical variables by using color to distinguish between groups. Here we can compare pass/fail counts across each grade level. Again since we simulated around 75%, about 3 quarters passed.\nHere is a scatterplot for data with two quantitative variables!\n\n\nCode\nggplot(data, aes(x = study_hours, y = exam_grade)) +\n    geom_point() +\n    geom_smooth() +\n    labs(x = \"Study Hours\", y = \"Exam Grade\") +\n    theme_bw()\n\n\n\n\nScatter Plot of Data\n\n\n\n\n\nA scatterplot is used when you have two quantitative variables and want to see if a relationship exists between them. Each point represents one student. Geom_smooth() helps add a trendline, and although there is a slight upward movement, study hours and exam grade don’t seem to be very correlated in our randomly sampled data.\nHere are grouped histogram, violin, and box plots for data with one quantitative variable and one categorical variable!\n\n\nCode\n# Grouped Histogram\nggplot(data, aes(x = score, fill = subject)) +\n  geom_histogram(binwidth = 5, alpha = 0.6) +\n  labs(x = \"Score\", y = \"Count\") +\n  theme_bw()\n\n\n\n\nGrouped Histogram\n\n\n\n\n\nA grouped histogram overlays multiple histograms on the same plot using color to separate categories. This lets you compare the distribution of a quantitative variable across different groups at once. Since scores were simulated independently of subject, the distributions overlap heavily. All four subjects are centered around 75 with similar spread.\n\n\nCode\n# Grouped Violin Plot\nggplot(data, aes(x = subject, y = score, fill = subject)) +\n  geom_violin(alpha = 0.7) +\n  geom_boxplot(width = .3) +\n  labs(x = \"Subject\", y = \"Score\") +\n  theme_bw()\n\n\n\n\nGrouped Violin Plot with Grouped Box Plot\n\n\n\n\n\nBy grouping violin and box plots by a categorical variable, we can compare distributions across groups side by side. The box plot allows us to easily tell which subject has a higher median, here it is math. We can also see where subjects tend to cluster, with English seeming to have more extremes in the higher scores. This is a good plot for grouped comparisons.",
+    "crumbs": [
+      "Unit 2: Tidyverse & Ggplot Review"
+    ]
+  },
+  {
+    "objectID": "review/GGplot_review.html#beyond-the-basics",
+    "href": "review/GGplot_review.html#beyond-the-basics",
+    "title": "Unit 2: Tidyverse & Ggplot Review",
+    "section": "4 Beyond the Basics",
+    "text": "4 Beyond the Basics\nOnce you are comfortable with the core geoms, ggplot2 has some powerful tools that take your plots to the next level.\nFacet Wrap and Patchwork\nFacet Wrap can be used to put graphs next to and on top of eachother. Another option is patchwork. p1 / p2 will put graph 1 on top of graph 2. p1 | p2 or p1 + p2 will put them side by side.\n\n\nCode\nggplot(data, aes(x = score, fill = subject)) +\n  geom_histogram(binwidth = 5, color = \"black\") +\n  facet_wrap(~subject) +\n  labs(x = \"Score\", y = \"Count\") +\n  theme_bw()\n\n\n\n\nFacet Wrapped Graphs\n\n\n\n\n\nGeom_ribbon()\nGeom_ribbon() allows us to highlight under a portion of the graph. For example, below we have normal distribution looking data with the upper 20% highlighted.\n\n\nCode\nx = seq(-4, 4, length.out = 1000)\ny = dnorm(x)\ncutoff = qnorm(0.80)\n\nribbon_data = data.frame(x = x, y = y)\n\nggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.5) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\n\n\n\nUpper 20%\n\n\n\n\n\nTransparency\nUsing alpha values, we can make the color of our graph look more transparent.\n\n\nCode\nlibrary(patchwork)\ncutoff = qnorm(0)\n\np1 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.9) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\np2 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.6) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\np3 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.3) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\np4 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.1) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\n(p1 | p2) / (p3 + p4)\n\n\n\n\nTransparency",
     "crumbs": [
       "Unit 2: Tidyverse & Ggplot Review"
     ]
@@ -690,6 +700,76 @@
     ]
   },
   {
+    "objectID": "index.html#lab-2",
+    "href": "index.html#lab-2",
+    "title": "Home",
+    "section": "Lab 2",
+    "text": "Lab 2\nIn Lab 2 we performed basic tasks in R. From installing and loading packages to creating vectors using sec() and rep(), otherwise manually.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#lab-3",
+    "href": "index.html#lab-3",
+    "title": "Home",
+    "section": "Lab 3",
+    "text": "Lab 3\nLab 3 was the introduction to matrices and data frames. Working with shearing matrices, we created an image of a ladder using data frames and ggplot to then have it lean.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#lab-4",
+    "href": "index.html#lab-4",
+    "title": "Home",
+    "section": "Lab 4",
+    "text": "Lab 4\nIn Lab 4, we worked with a fake website to practice data scraping. We collected recipe instructions and pictures to output random recipes for breakfast, lunch, and dinner.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#lab-5-6",
+    "href": "index.html#lab-5-6",
+    "title": "Home",
+    "section": "Lab 5-6",
+    "text": "Lab 5-6\nIn Lab 5-6 we used tidyverse to clean and summarize data. We did two case studies, the first was a biomedical study about macrophages and monocytes. The second study was about ship costs by manufacturer, country, and piece.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#lab-8",
+    "href": "index.html#lab-8",
+    "title": "Home",
+    "section": "Lab 8",
+    "text": "Lab 8\nLab 8 was all about probability. Working with the binomial, negative binomial, beta-binomial, altham’s multiplicative binomial, and altham’s multiplicative beta-binomial distributions we graphed the win probabilities of darts matches given one player has a 70% win probability.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#lab-10",
+    "href": "index.html#lab-10",
+    "title": "Home",
+    "section": "Lab 10",
+    "text": "Lab 10\nIn Lab 10 we covered point estimation. Plotting the altham’s multiplicative beta-binomial distribution again, we then wrote functions for the method of moments estimator and maximum log-likliehood estimator. Using these, we created a data summary of the 2024 Darts Premier League season.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#lab-11",
+    "href": "index.html#lab-11",
+    "title": "Home",
+    "section": "Lab 11",
+    "text": "Lab 11\nIn lab 11 we investigate why we divide by n-1 rather than n when estimating population variance, comparing the two estimators across four distributions all with a true variance of 2. Using 1000 simulations at sample sizes of 20, 50, 100, and 500, the results show that the n-1 estimator is less biased and that both estimators converge as sample size grows.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
     "objectID": "lab2/Lab2WriteUp.html#part-a",
     "href": "lab2/Lab2WriteUp.html#part-a",
     "title": "Lab Two – Basic Tasks in R",
@@ -987,76 +1067,6 @@
     "text": "4.4 Part e\nRemove eval: false in the code below. The result should look like a ladder and a very rectangular house if part a is correct. The new leaning ladder should look like it is leaning on the house.\n\n\n\nCode\nggplot() +\n  geom_path(data = ladder, \n              aes(x = x, y = y, group = group, color = \"Starting Ladder\")) +\n  geom_path(data = leaning.ladder, \n              aes(x = x, y = y, group = group, color = \"Leaning Ladder\")) +\n  geom_segment(aes(x = 10, xend = 10,\n                   y=0, yend = 20))+\n  geom_segment(aes(x = 10, xend = 20,\n                   y=20, yend = 20))+\n  geom_segment(aes(x = 20, xend = 20,\n                   y=0, yend = 20))+\n  geom_segment(aes(x = 10, xend = 20,\n                   y=0, yend = 0)) +\n  theme_bw() +\n  xlim(-2,22) +\n  ylim(-2,22) +\n  scale_color_manual(\"\", values=c(\"darkred\", \"grey\"))\n\n\n\n\n\nFigure 8: A ladder and a leaning ladder.",
     "crumbs": [
       "Lab Three -- Matrices and Data Frames in R"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-2",
-    "href": "index.html#lab-2",
-    "title": "Home",
-    "section": "Lab 2",
-    "text": "Lab 2\nIn Lab 2 we performed basic tasks in R. From installing and loading packages to creating vectors using sec() and rep(), otherwise manually.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-3",
-    "href": "index.html#lab-3",
-    "title": "Home",
-    "section": "Lab 3",
-    "text": "Lab 3\nLab 3 was the introduction to matrices and data frames. Working with shearing matrices, we created an image of a ladder using data frames and ggplot to then have it lean.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-4",
-    "href": "index.html#lab-4",
-    "title": "Home",
-    "section": "Lab 4",
-    "text": "Lab 4\nIn Lab 4, we worked with a fake website to practice data scraping. We collected recipe instructions and pictures to output random recipes for breakfast, lunch, and dinner.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-5-6",
-    "href": "index.html#lab-5-6",
-    "title": "Home",
-    "section": "Lab 5-6",
-    "text": "Lab 5-6\nIn Lab 5-6 we used tidyverse to clean and summarize data. We did two case studies, the first was a biomedical study about macrophages and monocytes. The second study was about ship costs by manufacturer, country, and piece.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-8",
-    "href": "index.html#lab-8",
-    "title": "Home",
-    "section": "Lab 8",
-    "text": "Lab 8\nLab 8 was all about probability. Working with the binomial, negative binomial, beta-binomial, altham’s multiplicative binomial, and altham’s multiplicative beta-binomial distributions we graphed the win probabilities of darts matches given one player has a 70% win probability.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-10",
-    "href": "index.html#lab-10",
-    "title": "Home",
-    "section": "Lab 10",
-    "text": "Lab 10\nIn Lab 10 we covered point estimation. Plotting the altham’s multiplicative beta-binomial distribution again, we then wrote functions for the method of moments estimator and maximum log-likliehood estimator. Using these, we created a data summary of the 2024 Darts Premier League season.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#lab-11",
-    "href": "index.html#lab-11",
-    "title": "Home",
-    "section": "Lab 11",
-    "text": "Lab 11\nIn lab 11 we investigate why we divide by n-1 rather than n when estimating population variance, comparing the two estimators across four distributions all with a true variance of 2. Using 1000 simulations at sample sizes of 20, 50, 100, and 500, the results show that the n-1 estimator is less biased and that both estimators converge as sample size grows.",
-    "crumbs": [
-      "Home"
     ]
   }
 ]
