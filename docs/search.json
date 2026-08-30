@@ -337,9 +337,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Home",
+    "title": "Academic Portfolio",
     "section": "",
-    "text": "This is a Quarto website of my work in Computational Statistics with R at Colgate University.",
+    "text": "Wlcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:\n\nComputational Statistics (MATH 240): R Programming, data wrangling, and simulation models.\n\nData Analysis I (MATH 354): Applied statistical inference, hypothesis testing, and modeling.\n\nUse the sidebar menu to navigate through my coursework.",
     "crumbs": [
       "Home"
     ]
@@ -1102,6 +1102,16 @@
     "text": "4 Beyond the Basics\nOnce you are comfortable with the core geoms, ggplot2 has some powerful tools that take your plots to the next level.\nFacet Wrap and Patchwork\nFacet Wrap can be used to put graphs next to and on top of eachother. Another option is patchwork. p1 / p2 will put graph 1 on top of graph 2. p1 | p2 or p1 + p2 will put them side by side.\n\n\nCode\nggplot(data, aes(x = score, fill = subject)) +\n  geom_histogram(binwidth = 5, color = \"black\") +\n  facet_wrap(~subject) +\n  labs(x = \"Score\", y = \"Count\") +\n  theme_bw()\n\n\n\n\nFacet Wrapped Graphs\n\n\n\n\n\nGeom_ribbon()\nGeom_ribbon() allows us to highlight under a portion of the graph. For example, below we have normal distribution looking data with the upper 20% highlighted.\n\n\nCode\nx = seq(-4, 4, length.out = 1000)\ny = dnorm(x)\ncutoff = qnorm(0.80)\n\nribbon_data = data.frame(x = x, y = y)\n\nggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.5) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\n\n\n\nUpper 20%\n\n\n\n\n\nTransparency\nUsing alpha values, we can make the color of our graph look more transparent.\n\n\nCode\nlibrary(patchwork)\ncutoff = qnorm(0)\n\np1 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.9) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\np2 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.6) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\np3 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.3) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\np4 = ggplot(ribbon_data, aes(x = x, y = y)) +\n  geom_line() +\n  geom_ribbon(data = subset(ribbon_data, x &gt;= cutoff),\n              aes(ymin = 0, ymax = y), fill = \"darkorchid\", alpha = 0.1) +\n  labs(x = \"X\", y = \"Density\") +\n  theme_bw()\n\n(p1 | p2) / (p3 + p4)\n\n\n\n\nTransparency",
     "crumbs": [
       "Unit 2: Tidyverse & Ggplot Review"
+    ]
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "Academic Portfolio",
+    "section": "",
+    "text": "Wlcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:\n\nComputational Statistics (MATH 240): R Programming, data wrangling, and simulation models.\n\nData Analysis I (MATH 354): Applied statistical inference, hypothesis testing, and modeling.\n\nUse the sidebar menu to navigate through my coursework.",
+    "crumbs": [
+      "Home"
     ]
   }
 ]
