@@ -21,19 +21,19 @@ website:
     - section: "Computational Statistics"
       contents:
     - text: "Lab 2: Objects in R"
-      href: Lab2WriteUp.qmd
+      href: lab2/Lab2WriteUp.qmd
     - text: "Lab 3: Objects in R 2"
-      href: Lab3WriteUp.qmd
+      href: lab3/Lab3WriteUp.qmd
     - text: "Lab 4: Programming"
-      href: Lab4WriteUp.qmd
+      href: lab4/Lab4WriteUp.qmd
     - text: "Lab 5: Data Wrangling"
-      href: Lab5WriteUp.qmd
+      href: lab5/Lab5WriteUp.qmd
     - text: "Lab 8: Probability"
-      href: Lab8WriteUp.qmd
+      href: lab8/Lab8WriteUp.qmd
     - text: "Lab 10: Point Estimation"
-      href: Lab10WriteUp.qmd
+      href: lab10/Lab10WriteUp.qmd
     - text: "Lab 11: Estimation"
-      href: Lab11WriteUp.qmd
+      href: lab11/Lab11WriteUp.qmd
       # MATH 354
 
 page-footer:
