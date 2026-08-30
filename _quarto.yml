@@ -35,6 +35,7 @@ website:
        - text: "Lab 11: Estimation"
          href: lab11/Lab11WriteUp.qmd
       # MATH 354
+    - section: "Data Analysis I"
 
 page-footer:
   left: "© 2026 Colgate University Student Portfolio"
