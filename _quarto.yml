@@ -4,22 +4,41 @@ project:
 
 website:
   title: "Portfolio"
+  favicon: images/ColgateC.png
   sidebar:
+    logo: images/ColgateSeal.png
     style: "docked"
+    collapse-level: 1
     search: false
     contents:
     - href: index.qmd
       text: Home
-    - about.qmd
-    - lab2/Lab2WriteUp.qmd
-    - lab3/Lab3WriteUp.qmd
-    - lab4/Lab4WriteUp.qmd
-    - lab5/Lab5WriteUp.qmd
-    - lab8/Lab8WriteUp.qmd
-    - lab10/Lab10WriteUp.qmd
-    - lab11/Lab11WriteUp.qmd
-    - lab13/Lab13WriteUp.qmd
-    - review/GGplot_review.qmd
+      icon: house
+    - href: about.qmd
+      text: About
+      icon: person
+     # MATH 240
+    - section: "Computational Statistics"
+      contents:
+    - text: "Lab 2: Objects in R"
+      href: Lab2WriteUp.qmd
+    - text: "Lab 3: Objects in R 2"
+      href: Lab3WriteUp.qmd
+    - text: "Lab 4: Programming"
+      href: Lab4WriteUp.qmd
+    - text: "Lab 5: Data Wrangling"
+      href: Lab5WriteUp.qmd
+    - text: "Lab 8: Probability"
+      href: Lab8WriteUp.qmd
+    - text: "Lab 10: Point Estimation"
+      href: Lab10WriteUp.qmd
+    - text: "Lab 11: Estimation"
+      href: Lab11WriteUp.qmd
+      # MATH 354
+
+page-footer:
+  left: "© 2026 Colgate University Student Portfolio"
+  right: "[GitHub Source](https://github.com/WilliamCipolli)"
 
 format:
   html:

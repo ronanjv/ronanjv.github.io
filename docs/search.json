@@ -339,7 +339,7 @@
     "href": "index.html",
     "title": "Academic Portfolio",
     "section": "",
-    "text": "Wlcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:\n\nComputational Statistics (MATH 240): R Programming, data wrangling, and simulation models.\n\nData Analysis I (MATH 354): Applied statistical inference, hypothesis testing, and modeling.\n\nUse the sidebar menu to navigate through my coursework.",
+    "text": "Welcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:\n\nComputational Statistics (MATH 240): R Programming, data wrangling, and simulation models.\n\nData Analysis I (MATH 354): Applied statistical inference, hypothesis testing, and modeling.\n\nUse the sidebar menu to navigate through my coursework.",
     "crumbs": [
       "Home"
     ]
@@ -787,9 +787,9 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "About this site",
+    "text": "I am a student at Colgate studying English literature, Applied Mathematics, and Economics. My anticipated graduation date is 2028.",
     "crumbs": [
       "About"
     ]
@@ -1109,9 +1109,29 @@
     "href": "index.html#welcome",
     "title": "Academic Portfolio",
     "section": "",
-    "text": "Wlcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:\n\nComputational Statistics (MATH 240): R Programming, data wrangling, and simulation models.\n\nData Analysis I (MATH 354): Applied statistical inference, hypothesis testing, and modeling.\n\nUse the sidebar menu to navigate through my coursework.",
+    "text": "Welcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:\n\nComputational Statistics (MATH 240): R Programming, data wrangling, and simulation models.\n\nData Analysis I (MATH 354): Applied statistical inference, hypothesis testing, and modeling.\n\nUse the sidebar menu to navigate through my coursework.",
     "crumbs": [
       "Home"
+    ]
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About Me",
+    "section": "",
+    "text": "I am a student at Colgate studying English literature, Applied Mathematics, and Economics. My anticipated graduation date is 2028.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "about.html#technical-skills",
+    "href": "about.html#technical-skills",
+    "title": "About Me",
+    "section": "Technical Skills",
+    "text": "Technical Skills\n\nLanguages: R, Java\nTools: Positron, Quarto, Git/GitHub, LaTeX",
+    "crumbs": [
+      "About"
     ]
   }
 ]

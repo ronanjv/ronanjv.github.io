@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "About Me"
 about:
     template: solana
     image: images/me.jpg
@@ -14,5 +14,13 @@ about:
         text: Email
         href: "mailto:rvalle@colgate.edu"
 ---
+
+## Education
+
+I am a student at Colgate studying English literature, Applied Mathematics, and Economics. My anticipated graduation date is 2028.
+
+## Technical Skills
+* **Languages:** R, Java
+* **Tools:** Positron, Quarto, Git/GitHub, LaTeX
 
 
