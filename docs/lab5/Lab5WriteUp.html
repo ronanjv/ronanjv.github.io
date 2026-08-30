@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Lab Five-Six – Data Wrangling in R – Portfolio</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -59,7 +65,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -85,16 +90,17 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../images/ColgateC.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7b1b06e26e1e2798ccde3208f86b5bbd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1bdbca75b362e6c5a8c09207907ff998.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -124,7 +130,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -137,7 +143,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -165,7 +171,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lab5/Lab5WriteUp.html">Lab Five-Six – Data Wrangling in R</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lab5/Lab5WriteUp.html">Lab 5: Data Wrangling</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -176,70 +182,71 @@ window.Quarto = {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">Portfolio</a> 
-    </div>
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><i class="bi bi-house" role="img">
+</i> 
  <span class="menu-text">Home</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../about.html" class="sidebar-item-text sidebar-link">
+  <a href="../about.html" class="sidebar-item-text sidebar-link"><i class="bi bi-person" role="img">
+</i> 
  <span class="menu-text">About</span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Computational Statistics</span></span>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab2/Lab2WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Two – Basic Tasks in R</span></a>
+ <span class="menu-text">Lab 2: Objects in R</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab3/Lab3WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Three – Matrices and Data Frames in R</span></a>
+ <span class="menu-text">Lab 3: Objects in R 2</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab4/Lab4WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Four – Programming in R</span></a>
+ <span class="menu-text">Lab 4: Programming</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab5/Lab5WriteUp.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Lab Five-Six – Data Wrangling in R</span></a>
+ <span class="menu-text">Lab 5: Data Wrangling</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab8/Lab8WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Eight – Probability</span></a>
+ <span class="menu-text">Lab 8: Probability</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab10/Lab10WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Ten – Point Estimation</span></a>
+ <span class="menu-text">Lab 10: Point Estimation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab11/Lab11WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Eleven – Point Estimation and Resampling</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../review/GGplot_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Unit 2: Tidyverse &amp; Ggplot Review</span></a>
+ <span class="menu-text">Lab 11: Estimation</span></a>
   </div>
 </li>
     </ul>
@@ -349,7 +356,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>fig3bData <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"Nature.comFigure3b.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a>fig3bData <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"Nature.comFigure3b.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -363,11 +370,11 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">separate</span>(</span>
-<span id="cb2-2"><a href="#cb2-2"></a>    fig3bData,</span>
-<span id="cb2-3"><a href="#cb2-3"></a>    <span class="at">col =</span> <span class="st">"sample"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>),</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">separate</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a>    fig3bData,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>    <span class="at">col =</span> <span class="st">"sample"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>    <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -381,10 +388,10 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">filter</span>(</span>
-<span id="cb3-2"><a href="#cb3-2"></a>    dat.kitsberg.cleaned,</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    Treatment <span class="sc">==</span> <span class="st">"12hpi"</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">filter</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>    dat.kitsberg.cleaned,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>    Treatment <span class="sc">==</span> <span class="st">"12hpi"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -398,10 +405,10 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"MDM"</span>, <span class="st">"mac"</span>, CellType))</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">table</span>(dat.kitsberg.cleaned<span class="sc">$</span>CellType)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"MDM"</span>, <span class="st">"mac"</span>, CellType))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a><span class="fu">table</span>(dat.kitsberg.cleaned<span class="sc">$</span>CellType)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -421,10 +428,10 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">filter</span>(CellType <span class="sc">==</span> <span class="st">"mac"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mono"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">table</span>(dat.kitsberg.cleaned<span class="sc">$</span>CellType)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>  <span class="fu">filter</span>(CellType <span class="sc">==</span> <span class="st">"mac"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mono"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a><span class="fu">table</span>(dat.kitsberg.cleaned<span class="sc">$</span>CellType)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -443,12 +450,12 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"primary"</span>, <span class="st">"Healthy Donor"</span>, SampleType))<span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"THP1"</span>, <span class="st">"THP-1"</span>, SampleType)) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mono"</span>, <span class="st">"Monocytes"</span>, CellType)) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mac"</span>, <span class="st">"Macrophages"</span>, CellType)) <span class="sc">|&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">mutate</span>(<span class="at">Treatment =</span> <span class="fu">if_else</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>, <span class="st">"12 Hours Post-Infection"</span>, Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"primary"</span>, <span class="st">"Healthy Donor"</span>, SampleType))<span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"THP1"</span>, <span class="st">"THP-1"</span>, SampleType)) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mono"</span>, <span class="st">"Monocytes"</span>, CellType)) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mac"</span>, <span class="st">"Macrophages"</span>, CellType)) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a>  <span class="fu">mutate</span>(<span class="at">Treatment =</span> <span class="fu">if_else</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>, <span class="st">"12 Hours Post-Infection"</span>, Treatment))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -462,23 +469,23 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>fig3bData <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"Nature.comFigure3b.csv"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">separate</span>(</span>
-<span id="cb9-4"><a href="#cb9-4"></a>    fig3bData,</span>
-<span id="cb9-5"><a href="#cb9-5"></a>    <span class="at">col =</span> <span class="st">"sample"</span>,</span>
-<span id="cb9-6"><a href="#cb9-6"></a>    <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>),</span>
-<span id="cb9-7"><a href="#cb9-7"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">filter</span>(</span>
-<span id="cb9-9"><a href="#cb9-9"></a>    Treatment <span class="sc">==</span> <span class="st">"12hpi"</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"MDM"</span>, <span class="st">"mac"</span>, CellType)) <span class="sc">|&gt;</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a>  <span class="fu">filter</span>(CellType <span class="sc">==</span> <span class="st">"mac"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mono"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"primary"</span>, <span class="st">"Healthy Donor"</span>, SampleType))<span class="sc">|&gt;</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"THP1"</span>, <span class="st">"THP-1"</span>, SampleType)) <span class="sc">|&gt;</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mono"</span>, <span class="st">"Monocytes"</span>, CellType)) <span class="sc">|&gt;</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mac"</span>, <span class="st">"Macrophages"</span>, CellType)) <span class="sc">|&gt;</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a>  <span class="fu">mutate</span>(<span class="at">Treatment =</span> <span class="fu">if_else</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>, <span class="st">"12 Hours Post-Infection"</span>, Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>fig3bData <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"Nature.comFigure3b.csv"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">separate</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>    fig3bData,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>    <span class="at">col =</span> <span class="st">"sample"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a>    <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-label="8"></a>  <span class="fu">filter</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-label="9"></a>    Treatment <span class="sc">==</span> <span class="st">"12hpi"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-label="10"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-label="11"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"MDM"</span>, <span class="st">"mac"</span>, CellType)) <span class="sc">|&gt;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-label="12"></a>  <span class="fu">filter</span>(CellType <span class="sc">==</span> <span class="st">"mac"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mono"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-label="13"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"primary"</span>, <span class="st">"Healthy Donor"</span>, SampleType))<span class="sc">|&gt;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-label="14"></a>  <span class="fu">mutate</span>(<span class="at">SampleType =</span> <span class="fu">if_else</span>(SampleType <span class="sc">==</span> <span class="st">"THP1"</span>, <span class="st">"THP-1"</span>, SampleType)) <span class="sc">|&gt;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-label="15"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mono"</span>, <span class="st">"Monocytes"</span>, CellType)) <span class="sc">|&gt;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-label="16"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">if_else</span>(CellType<span class="sc">==</span> <span class="st">"mac"</span>, <span class="st">"Macrophages"</span>, CellType)) <span class="sc">|&gt;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-label="17"></a>  <span class="fu">mutate</span>(<span class="at">Treatment =</span> <span class="fu">if_else</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>, <span class="st">"12 Hours Post-Infection"</span>, Treatment))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -494,9 +501,9 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>dat.kitsberg.cleaned <span class="ot">&lt;-</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">factor</span>(CellType, </span>
-<span id="cb10-3"><a href="#cb10-3"></a>                           <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Monocytes"</span>, <span class="st">"Macrophages"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>dat.kitsberg.cleaned <span class="ot">&lt;-</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">factor</span>(CellType, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>                           <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Monocytes"</span>, <span class="st">"Macrophages"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -504,12 +511,12 @@ window.Quarto = {
 <div class="cell" data-layout-align="center" data-scale="80%">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat.kitsberg.cleaned) <span class="sc">+</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> CellType, <span class="at">y =</span> viruses.within.nucleus)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cell Type"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5"></a>       <span class="at">y =</span> <span class="st">"Viruses Within Nucleus"</span>) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>SampleType)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat.kitsberg.cleaned) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> CellType, <span class="at">y =</span> viruses.within.nucleus)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cell Type"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a>       <span class="at">y =</span> <span class="st">"Viruses Within Nucleus"</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>SampleType)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -531,18 +538,18 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>celltype.summary <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">group_by</span>(CellType) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb12-4"><a href="#cb12-4"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(viruses.within.nucleus),</span>
-<span id="cb12-5"><a href="#cb12-5"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(viruses.within.nucleus),</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    <span class="at">median =</span> <span class="fu">median</span>(viruses.within.nucleus),</span>
-<span id="cb12-7"><a href="#cb12-7"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(viruses.within.nucleus),</span>
-<span id="cb12-8"><a href="#cb12-8"></a>    <span class="at">skew =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(viruses.within.nucleus),</span>
-<span id="cb12-9"><a href="#cb12-9"></a>    <span class="at">ekurt =</span> e1071<span class="sc">::</span><span class="fu">kurtosis</span>(viruses.within.nucleus)</span>
-<span id="cb12-10"><a href="#cb12-10"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb12-12"><a href="#cb12-12"></a>celltype.summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a>celltype.summary <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-label="2"></a>  <span class="fu">group_by</span>(CellType) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-label="4"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(viruses.within.nucleus),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-label="5"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(viruses.within.nucleus),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-label="6"></a>    <span class="at">median =</span> <span class="fu">median</span>(viruses.within.nucleus),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-label="7"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(viruses.within.nucleus),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-label="8"></a>    <span class="at">skew =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(viruses.within.nucleus),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-label="9"></a>    <span class="at">ekurt =</span> e1071<span class="sc">::</span><span class="fu">kurtosis</span>(viruses.within.nucleus)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-label="10"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-label="11"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-label="12"></a>celltype.summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -592,7 +599,7 @@ window.Quarto = {
 <p><img src="meme.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
-<p><span class="citation" data-cites="ElifBal25">Bal, Akan, and Gencer (<a href="#ref-ElifBal25" role="doc-biblioref">2025</a>)</span> aim to build a model for predicting the value of Supramax and Ultramax ships using both current and past market data. Their goal was to build a model that only uses information anyone can easily look up.</p>
+<p><span class="citation" data-cites="ElifBal25">Bal et al. (<a href="#ref-ElifBal25" role="doc-biblioref">2025</a>)</span> aim to build a model for predicting the value of Supramax and Ultramax ships using both current and past market data. Their goal was to build a model that only uses information anyone can easily look up.</p>
 <p>The researchers collected 17 years of real ship sale prices (2005–2022), covering <span class="math inline">\(n=1819\)</span> Supramax and Ultramax ship sales.</p>
 <p><strong>Research Question</strong>: Can we predict Supramax and Ultramax ship prices?</p>
 <section id="data-wrangling-1" class="level2" data-number="2.1">
@@ -605,7 +612,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>shipData <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>shipData <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -619,8 +626,8 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>dat.bal.cleaned <span class="ot">=</span> shipData <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">mutate</span>(<span class="at">price =</span> (<span class="dv">10</span><span class="sc">^</span>SPLog)<span class="sc">/</span><span class="dv">1000000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>dat.bal.cleaned <span class="ot">=</span> shipData <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">price =</span> (<span class="dv">10</span><span class="sc">^</span>SPLog)<span class="sc">/</span><span class="dv">1000000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -634,12 +641,12 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(<span class="at">OriginCountry =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan"</span>,</span>
-<span id="cb15-3"><a href="#cb15-3"></a>  <span class="st">`</span><span class="at">China, People's Republic Of</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"China, People's Republic Of"</span>,</span>
-<span id="cb15-4"><a href="#cb15-4"></a>  <span class="st">`</span><span class="at">Philippines</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Philippines"</span>,</span>
-<span id="cb15-5"><a href="#cb15-5"></a>  <span class="st">`</span><span class="at">Korea, South</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Korea, South"</span>,</span>
-<span id="cb15-6"><a href="#cb15-6"></a>  <span class="st">`</span><span class="at">Others Country Build</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Country Build"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">OriginCountry =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-label="3"></a>  <span class="st">`</span><span class="at">China, People's Republic Of</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"China, People's Republic Of"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-label="4"></a>  <span class="st">`</span><span class="at">Philippines</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Philippines"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-label="5"></a>  <span class="st">`</span><span class="at">Korea, South</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Korea, South"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-label="6"></a>  <span class="st">`</span><span class="at">Others Country Build</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Country Build"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -653,11 +660,11 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">mutate</span>(<span class="at">Manufacturer =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Caterpillar</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Caterpillar"</span>,</span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="st">`</span><span class="at">MAN-B&amp;W</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"MAN-B&amp;W"</span>,</span>
-<span id="cb16-4"><a href="#cb16-4"></a>  <span class="st">`</span><span class="at">Wartsila</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Wartsila"</span>,</span>
-<span id="cb16-5"><a href="#cb16-5"></a>  <span class="st">`</span><span class="at">Mitsubishi</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Mitsubishi"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">Manufacturer =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Caterpillar</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Caterpillar"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>  <span class="st">`</span><span class="at">MAN-B&amp;W</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"MAN-B&amp;W"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>  <span class="st">`</span><span class="at">Wartsila</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Wartsila"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a>  <span class="st">`</span><span class="at">Mitsubishi</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Mitsubishi"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -672,18 +679,18 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">mutate</span>(<span class="at">PI.club =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan P&amp;I Club"</span>,</span>
-<span id="cb17-3"><a href="#cb17-3"></a>  <span class="st">`</span><span class="at">Gard</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Gard"</span>,</span>
-<span id="cb17-4"><a href="#cb17-4"></a>  <span class="st">`</span><span class="at">West of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"West of England"</span>,</span>
-<span id="cb17-5"><a href="#cb17-5"></a>  <span class="st">`</span><span class="at">North of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"North of England"</span>,</span>
-<span id="cb17-6"><a href="#cb17-6"></a>  <span class="st">`</span><span class="at">UK P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"UK P&amp;I"</span>,</span>
-<span id="cb17-7"><a href="#cb17-7"></a>  <span class="st">`</span><span class="at">Britannia P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Britannia P&amp;I"</span>,</span>
-<span id="cb17-8"><a href="#cb17-8"></a>  <span class="st">`</span><span class="at">London P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"London P&amp;I Club"</span>,</span>
-<span id="cb17-9"><a href="#cb17-9"></a>  <span class="st">`</span><span class="at">Skuld</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Skuld"</span>,</span>
-<span id="cb17-10"><a href="#cb17-10"></a>  <span class="st">`</span><span class="at">Steamship Mutual</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Steamship Mutual"</span>,</span>
-<span id="cb17-11"><a href="#cb17-11"></a>  <span class="st">`</span><span class="at">Others</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others"</span>,</span>
-<span id="cb17-12"><a href="#cb17-12"></a>  <span class="st">`</span><span class="at">Unknown</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Unknown"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">PI.club =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan P&amp;I Club"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-label="3"></a>  <span class="st">`</span><span class="at">Gard</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Gard"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-label="4"></a>  <span class="st">`</span><span class="at">West of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"West of England"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-label="5"></a>  <span class="st">`</span><span class="at">North of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"North of England"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-label="6"></a>  <span class="st">`</span><span class="at">UK P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"UK P&amp;I"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-label="7"></a>  <span class="st">`</span><span class="at">Britannia P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Britannia P&amp;I"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-label="8"></a>  <span class="st">`</span><span class="at">London P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"London P&amp;I Club"</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-label="9"></a>  <span class="st">`</span><span class="at">Skuld</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Skuld"</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-label="10"></a>  <span class="st">`</span><span class="at">Steamship Mutual</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Steamship Mutual"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-label="11"></a>  <span class="st">`</span><span class="at">Others</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others"</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-label="12"></a>  <span class="st">`</span><span class="at">Unknown</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Unknown"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -698,16 +705,16 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">mutate</span>(<span class="at">Class =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Nippon Kaiji Kyokai (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Nippon Kaiji Kyokai (IACS)"</span>,</span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="st">`</span><span class="at">Lloyd's Register</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Lloyd's Register"</span>,</span>
-<span id="cb18-4"><a href="#cb18-4"></a>  <span class="st">`</span><span class="at">Bureau Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Bureau Veritas (IACS)"</span>,</span>
-<span id="cb18-5"><a href="#cb18-5"></a>  <span class="st">`</span><span class="at">Det Norske Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Det Norske Veritas (IACS)"</span>,</span>
-<span id="cb18-6"><a href="#cb18-6"></a>  <span class="st">`</span><span class="at">American Bureau of Shipping (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> </span>
-<span id="cb18-7"><a href="#cb18-7"></a>                            <span class="sc">~</span> <span class="st">"American Bureau of Shipping (IACS)"</span>,</span>
-<span id="cb18-8"><a href="#cb18-8"></a>  <span class="st">`</span><span class="at">Others Class</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Class"</span>,</span>
-<span id="cb18-9"><a href="#cb18-9"></a>  <span class="st">`</span><span class="at">With Two Classes</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With Two Classes"</span>,</span>
-<span id="cb18-10"><a href="#cb18-10"></a>  <span class="st">`</span><span class="at">Disclassed</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Disclassed"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">Class =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Nippon Kaiji Kyokai (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Nippon Kaiji Kyokai (IACS)"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-label="3"></a>  <span class="st">`</span><span class="at">Lloyd's Register</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Lloyd's Register"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-label="4"></a>  <span class="st">`</span><span class="at">Bureau Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Bureau Veritas (IACS)"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-label="5"></a>  <span class="st">`</span><span class="at">Det Norske Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Det Norske Veritas (IACS)"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-label="6"></a>  <span class="st">`</span><span class="at">American Bureau of Shipping (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> </span>
+<span id="cb18-7"><a href="#cb18-7" aria-label="7"></a>                            <span class="sc">~</span> <span class="st">"American Bureau of Shipping (IACS)"</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-label="8"></a>  <span class="st">`</span><span class="at">Others Class</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Class"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-label="9"></a>  <span class="st">`</span><span class="at">With Two Classes</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With Two Classes"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-label="10"></a>  <span class="st">`</span><span class="at">Disclassed</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Disclassed"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -722,15 +729,15 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">mutate</span>(<span class="at">FlagState =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Panama</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Panama"</span>,</span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="st">`</span><span class="at">Marshall Islands</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Marshall Islands"</span>,</span>
-<span id="cb19-4"><a href="#cb19-4"></a>  <span class="st">`</span><span class="at">Liberia</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Liberia"</span>,</span>
-<span id="cb19-5"><a href="#cb19-5"></a>  <span class="st">`</span><span class="at">Malta</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Malta"</span>,</span>
-<span id="cb19-6"><a href="#cb19-6"></a>  <span class="st">`</span><span class="at">Hong Kong, China</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Hong Kong, China"</span>,</span>
-<span id="cb19-7"><a href="#cb19-7"></a>  <span class="st">`</span><span class="at">Singapore</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Singapore"</span>,</span>
-<span id="cb19-8"><a href="#cb19-8"></a>  <span class="st">`</span><span class="at">Others Flag</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Flag"</span>,</span>
-<span id="cb19-9"><a href="#cb19-9"></a>  <span class="st">`</span><span class="at">With two flags</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With two flags"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a>dat.bal.cleaned <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">FlagState =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Panama</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Panama"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-label="3"></a>  <span class="st">`</span><span class="at">Marshall Islands</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Marshall Islands"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-label="4"></a>  <span class="st">`</span><span class="at">Liberia</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Liberia"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-label="5"></a>  <span class="st">`</span><span class="at">Malta</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Malta"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-label="6"></a>  <span class="st">`</span><span class="at">Hong Kong, China</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Hong Kong, China"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-label="7"></a>  <span class="st">`</span><span class="at">Singapore</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Singapore"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-label="8"></a>  <span class="st">`</span><span class="at">Others Flag</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Flag"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-label="9"></a>  <span class="st">`</span><span class="at">With two flags</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With two flags"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -745,48 +752,48 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>shipData <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)</span>
-<span id="cb20-2"><a href="#cb20-2"></a></span>
-<span id="cb20-3"><a href="#cb20-3"></a>dat.bal.cleaned <span class="ot">=</span> shipData <span class="sc">|&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">mutate</span>(<span class="at">price =</span> (<span class="dv">10</span><span class="sc">^</span>SPLog)<span class="sc">/</span><span class="dv">1000000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">mutate</span>(<span class="at">OriginCountry =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan"</span>,</span>
-<span id="cb20-6"><a href="#cb20-6"></a>    <span class="st">`</span><span class="at">China, People's Republic Of</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"China, People's Republic Of"</span>,</span>
-<span id="cb20-7"><a href="#cb20-7"></a>    <span class="st">`</span><span class="at">Philippines</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Philippines"</span>,</span>
-<span id="cb20-8"><a href="#cb20-8"></a>    <span class="st">`</span><span class="at">Korea, South</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Korea, South"</span>,</span>
-<span id="cb20-9"><a href="#cb20-9"></a>    <span class="st">`</span><span class="at">Others Country Build</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Country Build"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb20-10"><a href="#cb20-10"></a>  <span class="fu">mutate</span>(<span class="at">Manufacturer =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Caterpillar</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Caterpillar"</span>,</span>
-<span id="cb20-11"><a href="#cb20-11"></a>    <span class="st">`</span><span class="at">MAN-B&amp;W</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"MAN-B&amp;W"</span>,</span>
-<span id="cb20-12"><a href="#cb20-12"></a>    <span class="st">`</span><span class="at">Wartsila</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Wartsila"</span>,</span>
-<span id="cb20-13"><a href="#cb20-13"></a>    <span class="st">`</span><span class="at">Mitsubishi</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Mitsubishi"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb20-14"><a href="#cb20-14"></a>  <span class="fu">mutate</span>(<span class="at">PI.club =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan P&amp;I Club"</span>,</span>
-<span id="cb20-15"><a href="#cb20-15"></a>   <span class="st">`</span><span class="at">Gard</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Gard"</span>,</span>
-<span id="cb20-16"><a href="#cb20-16"></a>   <span class="st">`</span><span class="at">West of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"West of England"</span>,</span>
-<span id="cb20-17"><a href="#cb20-17"></a>   <span class="st">`</span><span class="at">North of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"North of England"</span>,</span>
-<span id="cb20-18"><a href="#cb20-18"></a>   <span class="st">`</span><span class="at">UK P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"UK P&amp;I"</span>,</span>
-<span id="cb20-19"><a href="#cb20-19"></a>   <span class="st">`</span><span class="at">Britannia P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Britannia P&amp;I"</span>,</span>
-<span id="cb20-20"><a href="#cb20-20"></a>   <span class="st">`</span><span class="at">London P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"London P&amp;I Club"</span>,</span>
-<span id="cb20-21"><a href="#cb20-21"></a>   <span class="st">`</span><span class="at">Skuld</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Skuld"</span>,</span>
-<span id="cb20-22"><a href="#cb20-22"></a>   <span class="st">`</span><span class="at">Steamship Mutual</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Steamship Mutual"</span>,</span>
-<span id="cb20-23"><a href="#cb20-23"></a>   <span class="st">`</span><span class="at">Others</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others"</span>,</span>
-<span id="cb20-24"><a href="#cb20-24"></a>   <span class="st">`</span><span class="at">Unknown</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Unknown"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb20-25"><a href="#cb20-25"></a>  <span class="fu">mutate</span>(<span class="at">Class =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Nippon Kaiji Kyokai (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> </span>
-<span id="cb20-26"><a href="#cb20-26"></a>                                       <span class="st">"Nippon Kaiji Kyokai (IACS)"</span>,</span>
-<span id="cb20-27"><a href="#cb20-27"></a>   <span class="st">`</span><span class="at">Lloyd's Register</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Lloyd's Register"</span>,</span>
-<span id="cb20-28"><a href="#cb20-28"></a>   <span class="st">`</span><span class="at">Bureau Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Bureau Veritas (IACS)"</span>,</span>
-<span id="cb20-29"><a href="#cb20-29"></a>   <span class="st">`</span><span class="at">Det Norske Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Det Norske Veritas (IACS)"</span>,</span>
-<span id="cb20-30"><a href="#cb20-30"></a>   <span class="st">`</span><span class="at">American Bureau of Shipping (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> </span>
-<span id="cb20-31"><a href="#cb20-31"></a>                             <span class="sc">~</span> <span class="st">"American Bureau of Shipping (IACS)"</span>,</span>
-<span id="cb20-32"><a href="#cb20-32"></a>   <span class="st">`</span><span class="at">Others Class</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Class"</span>,</span>
-<span id="cb20-33"><a href="#cb20-33"></a>   <span class="st">`</span><span class="at">With Two Classes</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With Two Classes"</span>,</span>
-<span id="cb20-34"><a href="#cb20-34"></a>   <span class="st">`</span><span class="at">Disclassed</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Disclassed"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb20-35"><a href="#cb20-35"></a>  <span class="fu">mutate</span>(<span class="at">FlagState =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Panama</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Panama"</span>,</span>
-<span id="cb20-36"><a href="#cb20-36"></a>    <span class="st">`</span><span class="at">Marshall Islands</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Marshall Islands"</span>,</span>
-<span id="cb20-37"><a href="#cb20-37"></a>   <span class="st">`</span><span class="at">Liberia</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Liberia"</span>,</span>
-<span id="cb20-38"><a href="#cb20-38"></a>   <span class="st">`</span><span class="at">Malta</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Malta"</span>,</span>
-<span id="cb20-39"><a href="#cb20-39"></a>   <span class="st">`</span><span class="at">Hong Kong, China</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Hong Kong, China"</span>,</span>
-<span id="cb20-40"><a href="#cb20-40"></a>   <span class="st">`</span><span class="at">Singapore</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Singapore"</span>,</span>
-<span id="cb20-41"><a href="#cb20-41"></a>   <span class="st">`</span><span class="at">Others Flag</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Flag"</span>,</span>
-<span id="cb20-42"><a href="#cb20-42"></a>   <span class="st">`</span><span class="at">With two flags</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With two flags"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>shipData <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-label="3"></a>dat.bal.cleaned <span class="ot">=</span> shipData <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-label="4"></a>  <span class="fu">mutate</span>(<span class="at">price =</span> (<span class="dv">10</span><span class="sc">^</span>SPLog)<span class="sc">/</span><span class="dv">1000000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-label="5"></a>  <span class="fu">mutate</span>(<span class="at">OriginCountry =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-label="6"></a>    <span class="st">`</span><span class="at">China, People's Republic Of</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"China, People's Republic Of"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-label="7"></a>    <span class="st">`</span><span class="at">Philippines</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Philippines"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-label="8"></a>    <span class="st">`</span><span class="at">Korea, South</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Korea, South"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-label="9"></a>    <span class="st">`</span><span class="at">Others Country Build</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Country Build"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-label="10"></a>  <span class="fu">mutate</span>(<span class="at">Manufacturer =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Caterpillar</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Caterpillar"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-label="11"></a>    <span class="st">`</span><span class="at">MAN-B&amp;W</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"MAN-B&amp;W"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-label="12"></a>    <span class="st">`</span><span class="at">Wartsila</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Wartsila"</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-label="13"></a>    <span class="st">`</span><span class="at">Mitsubishi</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Mitsubishi"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-label="14"></a>  <span class="fu">mutate</span>(<span class="at">PI.club =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Japan P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Japan P&amp;I Club"</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-label="15"></a>   <span class="st">`</span><span class="at">Gard</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Gard"</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-label="16"></a>   <span class="st">`</span><span class="at">West of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"West of England"</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-label="17"></a>   <span class="st">`</span><span class="at">North of England</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"North of England"</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-label="18"></a>   <span class="st">`</span><span class="at">UK P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"UK P&amp;I"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-label="19"></a>   <span class="st">`</span><span class="at">Britannia P&amp;I</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Britannia P&amp;I"</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-label="20"></a>   <span class="st">`</span><span class="at">London P&amp;I Club</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"London P&amp;I Club"</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-label="21"></a>   <span class="st">`</span><span class="at">Skuld</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Skuld"</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-label="22"></a>   <span class="st">`</span><span class="at">Steamship Mutual</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Steamship Mutual"</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-label="23"></a>   <span class="st">`</span><span class="at">Others</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others"</span>,</span>
+<span id="cb20-24"><a href="#cb20-24" aria-label="24"></a>   <span class="st">`</span><span class="at">Unknown</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Unknown"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-label="25"></a>  <span class="fu">mutate</span>(<span class="at">Class =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Nippon Kaiji Kyokai (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> </span>
+<span id="cb20-26"><a href="#cb20-26" aria-label="26"></a>                                       <span class="st">"Nippon Kaiji Kyokai (IACS)"</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-label="27"></a>   <span class="st">`</span><span class="at">Lloyd's Register</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Lloyd's Register"</span>,</span>
+<span id="cb20-28"><a href="#cb20-28" aria-label="28"></a>   <span class="st">`</span><span class="at">Bureau Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Bureau Veritas (IACS)"</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-label="29"></a>   <span class="st">`</span><span class="at">Det Norske Veritas (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Det Norske Veritas (IACS)"</span>,</span>
+<span id="cb20-30"><a href="#cb20-30" aria-label="30"></a>   <span class="st">`</span><span class="at">American Bureau of Shipping (IACS)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> </span>
+<span id="cb20-31"><a href="#cb20-31" aria-label="31"></a>                             <span class="sc">~</span> <span class="st">"American Bureau of Shipping (IACS)"</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" aria-label="32"></a>   <span class="st">`</span><span class="at">Others Class</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Class"</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" aria-label="33"></a>   <span class="st">`</span><span class="at">With Two Classes</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With Two Classes"</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" aria-label="34"></a>   <span class="st">`</span><span class="at">Disclassed</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Disclassed"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-label="35"></a>  <span class="fu">mutate</span>(<span class="at">FlagState =</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Panama</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Panama"</span>,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-label="36"></a>    <span class="st">`</span><span class="at">Marshall Islands</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Marshall Islands"</span>,</span>
+<span id="cb20-37"><a href="#cb20-37" aria-label="37"></a>   <span class="st">`</span><span class="at">Liberia</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Liberia"</span>,</span>
+<span id="cb20-38"><a href="#cb20-38" aria-label="38"></a>   <span class="st">`</span><span class="at">Malta</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Malta"</span>,</span>
+<span id="cb20-39"><a href="#cb20-39" aria-label="39"></a>   <span class="st">`</span><span class="at">Hong Kong, China</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Hong Kong, China"</span>,</span>
+<span id="cb20-40"><a href="#cb20-40" aria-label="40"></a>   <span class="st">`</span><span class="at">Singapore</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Singapore"</span>,</span>
+<span id="cb20-41"><a href="#cb20-41" aria-label="41"></a>   <span class="st">`</span><span class="at">Others Flag</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"Others Flag"</span>,</span>
+<span id="cb20-42"><a href="#cb20-42" aria-label="42"></a>   <span class="st">`</span><span class="at">With two flags</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"1"</span> <span class="sc">~</span> <span class="st">"With two flags"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -817,12 +824,12 @@ window.Quarto = {
 <div class="cell" data-layout-align="center" data-scale="80%">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat.bal.cleaned <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(Manufacturer)) <span class="sc">+</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> Manufacturer, <span class="at">y =</span> price)) <span class="sc">+</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Manufacturer, <span class="at">y =</span> price), <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Manufacturer"</span>,</span>
-<span id="cb21-6"><a href="#cb21-6"></a>       <span class="at">y =</span> <span class="st">"price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat.bal.cleaned <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(Manufacturer)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-label="2"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> Manufacturer, <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-label="3"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Manufacturer, <span class="at">y =</span> price), <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Manufacturer"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-label="6"></a>       <span class="at">y =</span> <span class="st">"price"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -834,19 +841,19 @@ window.Quarto = {
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>manufacturer.summary <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">drop_na</span>(price) <span class="sc">|&gt;</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">group_by</span>(Manufacturer) <span class="sc">|&gt;</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb22-5"><a href="#cb22-5"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(price),</span>
-<span id="cb22-6"><a href="#cb22-6"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(price),</span>
-<span id="cb22-7"><a href="#cb22-7"></a>    <span class="at">median =</span> <span class="fu">median</span>(price),</span>
-<span id="cb22-8"><a href="#cb22-8"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(price),</span>
-<span id="cb22-9"><a href="#cb22-9"></a>    <span class="at">skew =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(price),</span>
-<span id="cb22-10"><a href="#cb22-10"></a>    <span class="at">ekurt =</span> e1071<span class="sc">::</span><span class="fu">kurtosis</span>(price)</span>
-<span id="cb22-11"><a href="#cb22-11"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb22-12"><a href="#cb22-12"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb22-13"><a href="#cb22-13"></a>manufacturer.summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a>manufacturer.summary <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-label="2"></a>  <span class="fu">drop_na</span>(price) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-label="3"></a>  <span class="fu">group_by</span>(Manufacturer) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-label="4"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-label="5"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(price),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-label="6"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(price),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-label="7"></a>    <span class="at">median =</span> <span class="fu">median</span>(price),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-label="8"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(price),</span>
+<span id="cb22-9"><a href="#cb22-9" aria-label="9"></a>    <span class="at">skew =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(price),</span>
+<span id="cb22-10"><a href="#cb22-10" aria-label="10"></a>    <span class="at">ekurt =</span> e1071<span class="sc">::</span><span class="fu">kurtosis</span>(price)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-label="11"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-label="12"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-label="13"></a>manufacturer.summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -913,12 +920,12 @@ window.Quarto = {
 <div class="cell" data-layout-align="center" data-scale="80%">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat.bal.cleaned) <span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Engines RPM</span><span class="st">`</span>, <span class="at">y =</span> price)) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Engines RPM</span><span class="st">`</span>, <span class="at">y =</span> price), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Egines RPM"</span>,</span>
-<span id="cb23-6"><a href="#cb23-6"></a>       <span class="at">y =</span> <span class="st">"price"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dat.bal.cleaned) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-label="2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Engines RPM</span><span class="st">`</span>, <span class="at">y =</span> price)) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-label="3"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Engines RPM</span><span class="st">`</span>, <span class="at">y =</span> price), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Egines RPM"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-label="6"></a>       <span class="at">y =</span> <span class="st">"price"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -930,18 +937,18 @@ window.Quarto = {
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>EngineRPM.summary <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">drop_na</span>(price) <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb24-4"><a href="#cb24-4"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(price),</span>
-<span id="cb24-5"><a href="#cb24-5"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(price),</span>
-<span id="cb24-6"><a href="#cb24-6"></a>    <span class="at">median =</span> <span class="fu">median</span>(price),</span>
-<span id="cb24-7"><a href="#cb24-7"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(price),</span>
-<span id="cb24-8"><a href="#cb24-8"></a>    <span class="at">skew =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(price),</span>
-<span id="cb24-9"><a href="#cb24-9"></a>    <span class="at">corr =</span> <span class="fu">cor</span>(price, <span class="st">`</span><span class="at">Engines RPM</span><span class="st">`</span>)</span>
-<span id="cb24-10"><a href="#cb24-10"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb24-11"><a href="#cb24-11"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb24-12"><a href="#cb24-12"></a>EngineRPM.summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-label="1"></a>EngineRPM.summary <span class="ot">=</span> dat.bal.cleaned <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-label="2"></a>  <span class="fu">drop_na</span>(price) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-label="3"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-label="4"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(price),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-label="5"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(price),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-label="6"></a>    <span class="at">median =</span> <span class="fu">median</span>(price),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-label="7"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(price),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-label="8"></a>    <span class="at">skew =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(price),</span>
+<span id="cb24-9"><a href="#cb24-9" aria-label="9"></a>    <span class="at">corr =</span> <span class="fu">cor</span>(price, <span class="st">`</span><span class="at">Engines RPM</span><span class="st">`</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-label="10"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-label="11"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-label="12"></a>EngineRPM.summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -978,7 +985,7 @@ window.Quarto = {
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-ElifBal25" class="csl-entry" role="listitem">
 Bal, Elif Tuçe, Ercan Akan, and Huseyin Gencer. 2025. <span>“A Novel Approach to Ship Valuation Prediction: An Application to the Supramax and Ultramax Secondhand Markets.”</span> <em>PLoS One</em> 20 (5): e0319073.
 </div>
@@ -986,7 +993,7 @@ Bal, Elif Tuçe, Ercan Akan, and Huseyin Gencer. 2025. <span>“A Novel Approach
 Gupta, Mohit, and Mahmoud Shorman. 2025. <span>“Cytomegalovirus Infections.”</span> In <em>StatPearls [Internet]</em>. StatPearls Publishing.
 </div>
 <div id="ref-Kitsberg25" class="csl-entry" role="listitem">
-Kitsberg, Yaarit, Aharon Nachshon, Tamar Arazi, Karin Broennimann, Tal Fisher, Alexander Wainstein, Yaara Finkel, Noam Stern-Ginossar, and Michal Schwartz. 2025. <span>“Viral Entry Shapes HCMV Latency Establishment.”</span> <em>Nature Communications</em>.
+Kitsberg, Yaarit, Aharon Nachshon, Tamar Arazi, et al. 2025. <span>“Viral Entry Shapes HCMV Latency Establishment.”</span> <em>Nature Communications</em>.
 </div>
 <div id="ref-readxl" class="csl-entry" role="listitem">
 Wickham, Hadley, and Jennifer Bryan. 2025. <em>Readxl: Read Excel Files</em>. <a href="https://doi.org/10.32614/CRAN.package.readxl">https://doi.org/10.32614/CRAN.package.readxl</a>.
@@ -1043,13 +1050,14 @@ Wickham, Hadley, and Jennifer Bryan. 2025. <em>Readxl: Read Excel Files</em>. <a
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
