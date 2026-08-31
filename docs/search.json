@@ -41,6 +41,7 @@
     "section": "",
     "text": "Consider the unit square depicted in Figure 1.\nCode\nggplot() +\n  geom_segment(aes(x = 0, xend = 0,\n                   y=0, yend = 1))+\n  geom_segment(aes(x = 0, xend = 1,\n                   y=1, yend = 1))+\n  geom_segment(aes(x = 1, xend = 1,\n                   y=0, yend = 1))+\n  geom_segment(aes(x = 0, xend = 1,\n                   y=0, yend = 0)) +\n  theme_bw() + \n  xlim(-0.5, 1.5)+\n  ylim(-0.5, 1.5)+\n  labs(x = \"x\", \n       y = \"y\")\n\n\n\n\n\nFigure 1: The unit square.\nThe unit square can be defined by two basis vectors \\[\\mathbf{v}_1=\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix} ~~~ \\textrm{and} ~~~ \\mathbf{v}_2=\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}.\\] From these vectors, we can compute the corner vertices. \\[\\begin{align*}\n  p_0 & = (0,0) = (x_0, y_0) \\tag{The origin}\\\\\n  p_1 & = v_1 = (x_1, y_1) = (1,0)  \\tag{The first basis vector}\\\\\n  p_2 & = v_1 + v_2 = (x_2, y_2)= (1,1) \\tag{The sum of basis vectors}\\\\\n  p_3 & = v_2 = (x_3, y_3) =(0,1) \\tag{The second basis vector}\\\\\n\\end{align*}\\] Note that the segments that form the boundary go from \\(p_0\\) to \\(p_1\\) to \\(p_2\\) to \\(p_3\\) and back to \\(p_0\\).\nConsider the matrix \\(M\\) to be the matrix we get from binding the two basis vectors at the column, \\[\\mathbf{M} = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}.\\]",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -51,6 +52,7 @@
     "section": "1.1 Part a",
     "text": "1.1 Part a\nCreate the matrix A in R. \\[\\mathbf{A} = \\begin{bmatrix} 1 & -7 \\\\ 5 & 9 \\end{bmatrix}\\]\nSolution: This is Matrix \\(A\\).\n\n\n\nCode\n(A = matrix(data=c(1, -7, 5, 9), nrow = 2, ncol = 2, byrow = TRUE))\n\n\n     [,1] [,2]\n[1,]    1   -7\n[2,]    5    9",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -61,6 +63,7 @@
     "section": "1.2 Part b",
     "text": "1.2 Part b\nCompute the product below in R and store it in an object T. \\[\\mathbf{T} = \\mathbf{A}\\mathbf{M}.\\]\nSolution: This is Matrix \\(T = AM\\).\n\n\n\nCode\nM = matrix(data=c(1, 0, 0, 1), nrow = 2, ncol = 2, byrow = TRUE)\n(T = A %*% M)\n\n\n     [,1] [,2]\n[1,]    1   -7\n[2,]    5    9",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -71,6 +74,7 @@
     "section": "1.3 Part c",
     "text": "1.3 Part c\nCreate basis.vector.1 (first column of T) and basis.vector.2 (second column of T) in R.\nSolution: This is basis vector 1 and 2 in order.\n\n\n\nCode\n(basis.vector.1 = T[,1])\n\n\n[1] 1 5\n\n\nCode\n(basis.vector.2 = T[,2])\n\n\n[1] -7  9",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -81,6 +85,7 @@
     "section": "1.4 Part d",
     "text": "1.4 Part d\nCompute the points \\(p_0\\), \\(p_1\\), \\(p_2\\), and \\(p_3\\).\nSolution: This is \\(p_0\\), \\(p_1\\), \\(p_2\\), and \\(p_3\\) in order.\n\n\n\nCode\n(p0 = c(0,0))\n\n\n[1] 0 0\n\n\nCode\n(p1 = basis.vector.1)\n\n\n[1] 1 5\n\n\nCode\n(p2 = basis.vector.1 + basis.vector.2)\n\n\n[1] -6 14\n\n\nCode\n(p3 = basis.vector.2)\n\n\n[1] -7  9",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -91,6 +96,7 @@
     "section": "1.5 Part e",
     "text": "1.5 Part e\nCopy and paste the code for the unit square. Edit the code to draw the segments that form the boundary based on the points in Part d.\nSolution\n\n\n\nCode\nggplot() +\n  geom_segment(aes(x = 0, xend = 1,\n                   y=0, yend = 5))+\n  geom_segment(aes(x = -6, xend = 1,\n                   y=14, yend = 5))+\n  geom_segment(aes(x = -7, xend = -6,\n                   y=9, yend = 14))+\n  geom_segment(aes(x = -7, xend = 0,\n                   y=9, yend = 0)) +\n  theme_bw() + \n  xlim(-10, 10) +\n  ylim(0, 20) +\n  labs(x = \"x\", \n       y = \"y\")\n\n\n\n\n\nFigure 2: The T Shape.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -101,6 +107,7 @@
     "section": "1.6 Part f",
     "text": "1.6 Part f\nInterestingly, the determinant of \\(\\mathbf{A}\\) gives us the area of the shape plotted in Part e. Find the determinant of \\(\\mathbf{A}\\).\nSolution: The area is equal to the determinant calculated by running det(A)\n\n\n\nCode\n(det(A))\n\n\n[1] 44",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -111,6 +118,7 @@
     "section": "2.1 Part a",
     "text": "2.1 Part a\nCreate the matrix A in R. \\[\\mathbf{A} = \\begin{bmatrix} 1 & 2 \\\\ 2 & 4 \\end{bmatrix}\\]\nSolution: This is the new Matrix A.\n\n\n\nCode\n(A = matrix(data=c(1, 2, 2, 4), nrow = 2, ncol = 2, byrow = TRUE))\n\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    2    4",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -121,6 +129,7 @@
     "section": "2.2 Part b",
     "text": "2.2 Part b\nCompute the product below in R and store it in an object T. \\[\\mathbf{T} = \\mathbf{A}\\mathbf{M}.\\]\nSolution:  This is Matrix \\(T = AM\\).\n\n\n\nCode\nM = matrix(data=c(1, 0, 0, 1), nrow = 2, ncol = 2, byrow = TRUE)\n(T = A %*% M)\n\n\n     [,1] [,2]\n[1,]    1    2\n[2,]    2    4",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -131,6 +140,7 @@
     "section": "2.3 Part c",
     "text": "2.3 Part c\nCreate basis.vector.1 (first column of T) and basis.vector.2 (second column of T) in R.\nSolution: This is basis vector 1 and 2 in order.\n\n\n\nCode\n(basis.vector.1 = T[,1])\n\n\n[1] 1 2\n\n\nCode\n(basis.vector.2 = T[,2])\n\n\n[1] 2 4",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -141,6 +151,7 @@
     "section": "2.4 Part d",
     "text": "2.4 Part d\nCompute the points \\(p_0\\), \\(p_1\\), \\(p_2\\), and \\(p_3\\).\nSolution: This is \\(p_0\\), \\(p_1\\), \\(p_2\\), and \\(p_3\\) in order.\n\n\n\nCode\n(p0 = c(0,0))\n\n\n[1] 0 0\n\n\nCode\n(p1 = basis.vector.1)\n\n\n[1] 1 2\n\n\nCode\n(p2 = basis.vector.1 + basis.vector.2)\n\n\n[1] 3 6\n\n\nCode\n(p3 = basis.vector.2)\n\n\n[1] 2 4",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -151,6 +162,7 @@
     "section": "2.5 Part e",
     "text": "2.5 Part e\nCopy and paste the code for plotting the unit square. Edit the code to draw the segments that form the boundary based on the points in Part d.\nSolution\n\n\n\nCode\np0 &lt;- c(0, 0)\np1 &lt;- c(1, 2)\np2 &lt;- c(3, 6)\np3 &lt;- c(2, 4)\nggplot() +\n  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +\n  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +\n  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +\n  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +\n  theme_bw() +\n  xlim(-10, 10) +\n  ylim(0, 20) +\n  labs(x = \"x\", y = \"y\")\n\n\n\n\n\nFigure 3: The T2 Shape.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -161,6 +173,7 @@
     "section": "2.6 Part f",
     "text": "2.6 Part f\nInterestingly, the determinant of \\(\\mathbf{A}\\) gives us the area of the shape plotted in Part e. Find the determinant of \\(\\mathbf{A}\\).\nSolution: The area is equal to the determinant calculated by running det(A)\n\n\n\nCode\ndet(A)\n\n\n[1] 0",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -171,6 +184,7 @@
     "section": "3.1 Part a",
     "text": "3.1 Part a\nUse the following to generate a new shape. Compare the shape and its area to your answer in Question 1. \\[\\mathbf{M}_v = \\begin{bmatrix} 1 & k=0.5 \\\\ 0 & 1 \\end{bmatrix} ~~~~~ \\textrm{and} ~~~~~\n  \\mathbf{A}   = \\begin{bmatrix} 1 & -7 \\\\ 5 & 9 \\end{bmatrix}\\]\nSolution\nThis is Matrix T.\n\n\n\nCode\nA = matrix(data=c(1, -7, 5, 9), nrow = 2, ncol = 2, byrow = TRUE)\nM = matrix(data=c(1, 0.5, 0, 1), nrow = 2, ncol = 2, byrow = TRUE)\n(T = A %*% M)\n\n\n     [,1] [,2]\n[1,]    1 -6.5\n[2,]    5 11.5\n\n\n\nThese are the basis vectors.\n\n\n\nCode\n(basis.vector.1 = T[,1])\n\n\n[1] 1 5\n\n\nCode\n(basis.vector.2 = T[,2])\n\n\n[1] -6.5 11.5\n\n\n\n\n\n\nCode\np0 = c(0,0)\np1 = basis.vector.1\np2 = basis.vector.1 + basis.vector.2\np3 = basis.vector.2\nggplot() +\n  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +\n  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +\n  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +\n  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +\n  theme_bw() +\n  xlim(-10, 10) +\n  ylim(0, 20) +\n  labs(x = \"x\", y = \"y\")\n\n\n\n\n\nFigure 4: The Q3a Shape.\n\n\n\n\n\n\n\n\n\nArea\n\n\n\nCode\ndet(T)\n\n\n[1] 44\n\n\n\nThe shape is thin as it stretches vertically higher on the y-axis. The area stays the same however.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -181,6 +195,7 @@
     "section": "3.2 Part b",
     "text": "3.2 Part b\nUse the following to generate a new shape. Compare the shape and its area to your answer in Questions 1 and the vertical shear transform in part (a). \\[ \\mathbf{M}_h = \\begin{bmatrix} 1 & 0 \\\\ k=0.5 & 1 \\end{bmatrix}~~~~~ \\textrm{and} ~~~~~\n  \\mathbf{A}   = \\begin{bmatrix} 1 & -7 \\\\ 5 & 9 \\end{bmatrix}\\]\nSolution\nThis is Matrix T.\n\n\n\nCode\nA = matrix(data=c(1, -7, 5, 9), nrow = 2, ncol = 2, byrow = TRUE)\nM = matrix(data=c(1, 0, 0.5, 1), nrow = 2, ncol = 2, byrow = TRUE)\n(T = A %*% M)\n\n\n     [,1] [,2]\n[1,] -2.5   -7\n[2,]  9.5    9\n\n\n\nThese are the basis vectors.\n\n\n\nCode\n(basis.vector.1 = T[,1])\n\n\n[1] -2.5  9.5\n\n\nCode\n(basis.vector.2 = T[,2])\n\n\n[1] -7  9\n\n\n\n\n\n\nCode\np0 = c(0,0)\np1 = basis.vector.1\np2 = basis.vector.1 + basis.vector.2\np3 = basis.vector.2\nggplot() +\n  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +\n  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +\n  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +\n  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +\n  theme_bw() +\n  xlim(-10, 10) +\n  ylim(0, 20) +\n  labs(x = \"x\", y = \"y\")\n\n\n\n\n\nFigure 5: The Q3b Shape.\n\n\n\n\n\n\n\n\n\nArea\n\n\n\nCode\ndet(T)\n\n\n[1] 44\n\n\n\nThe shape has the same area, however, it stretches horizontally. It is clearly a different shape leaning more to the left like a rhombus.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -191,6 +206,7 @@
     "section": "3.3 Part c",
     "text": "3.3 Part c\nCan we shear vertically and horizontally at the same time? Use the following to generate a new shape. Compare the shape and its area to your answers in parts (a) and (b). \\[\\mathbf{M}_{vh} = \\begin{bmatrix} 1 & k=0.5 \\\\ k=0.5 & 1 \\end{bmatrix} ~~~~~ \\textrm{and} ~~~~~\n  \\mathbf{A}   = \\begin{bmatrix} 1 & -7 \\\\ 5 & 9 \\end{bmatrix}\\]\nSolution\nThis is Matrix T.\n\n\n\nCode\nA = matrix(data=c(1, -7, 5, 9), nrow = 2, ncol = 2, byrow = TRUE)\nM = matrix(data=c(1, 0.5, 0.5, 1), nrow = 2, ncol = 2, byrow = TRUE)\n(T = A %*% M)\n\n\n     [,1] [,2]\n[1,] -2.5 -6.5\n[2,]  9.5 11.5\n\n\n\nThese are the basis vectors.\n\n\n\nCode\n(basis.vector.1 = T[,1])\n\n\n[1] -2.5  9.5\n\n\nCode\n(basis.vector.2 = T[,2])\n\n\n[1] -6.5 11.5\n\n\n\n\n\n\nCode\np0 = c(0,0)\np1 = basis.vector.1\np2 = basis.vector.1 + basis.vector.2\np3 = basis.vector.2\nggplot() +\n  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +\n  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +\n  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +\n  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +\n  theme_bw() +\n  xlim(-10, 10) +\n  ylim(0, 25) +\n  labs(x = \"x\", y = \"y\")\n\n\n\n\n\nFigure 6: The Q3c Shape.\n\n\n\n\n\n\n\n\n\nArea\n\n\n\nCode\ndet(T)\n\n\n[1] 33\n\n\n\nThe shape has a smaller area. Tt reaches higher on the y-axis, while also leaning horizontally further left. It has a similar rhombus shape from part c, but thinner making its area smaller.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -201,6 +217,7 @@
     "section": "4.1 Part a",
     "text": "4.1 Part a\nCreate a data frame ladder with the following data. Note your data frame should have three columns; I split it to save vertical space here.\n\n\n\nx\ny\ngroup\nx\ny\ngroup\n\n\n\n\n0\n0\n1\n1\n8\n6\n\n\n0\n20\n1\n0\n10\n7\n\n\n1\n0\n2\n1\n10\n7\n\n\n1\n20\n2\n0\n12\n8\n\n\n0\n2\n3\n1\n12\n8\n\n\n1\n2\n3\n0\n14\n9\n\n\n0\n4\n4\n1\n14\n9\n\n\n1\n4\n4\n0\n16\n10\n\n\n0\n6\n5\n1\n16\n10\n\n\n1\n6\n5\n0\n18\n11\n\n\n0\n8\n6\n1\n18\n11\n\n\n\nSolution\n\n\n\nCode\nladder = data.frame( x = c(0,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1), \n                     y = c(0,20,0,20,2,2,4,4,6,6,8,8,10,10,12,12,14,14,16,16,18,18), \n                     group = c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11))\n\n\n ## Part b Remove #|eval: false in the code below. The result should look like a ladder and a very rectangular house if part a is correct.\n\n\n\nCode\nggplot() +\n  geom_path(data = ladder, \n              aes(x = x, y = y, group = group)) +\n                  geom_segment(aes(x = 10, xend = 10,\n                   y=0, yend = 20))+\n  geom_segment(aes(x = 10, xend = 20,\n                   y=20, yend = 20))+\n  geom_segment(aes(x = 20, xend = 20,\n                   y=0, yend = 20))+\n  geom_segment(aes(x = 10, xend = 20,\n                   y=0, yend = 0)) +\n  theme_bw() +\n  xlim(-2,22) +\n  ylim(-2,22)\n\n\n\n\n\nFigure 7: A ladder.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -211,6 +228,7 @@
     "section": "4.2 Part c",
     "text": "4.2 Part c\nUse as.matrix() to create a \\(22 \\times 2\\) matrix \\(\\mathbf{A}\\) containing the x and y observations from the ladder data frame. Use matrix multiplication to compute \\[\\mathbf{T} = \\mathbf{A} \\mathbf{M}_h.\\] Recall, \\[\\mathbf{M}_h = \\begin{bmatrix} 1 & 0 \\\\ k & 1 \\end{bmatrix}\\] and use \\(k=0.5.\\)\nSolution: This is Matrix T after multiplying AM.\n\n\n\nCode\nA = as.matrix(ladder[ , c(1,2)])\nM = matrix(data=c(1, 0, 0.5, 1), nrow = 2, ncol = 2, byrow = TRUE)\n(T = A %*% M)\n\n\n      [,1] [,2]\n [1,]    0    0\n [2,]   10   20\n [3,]    1    0\n [4,]   11   20\n [5,]    1    2\n [6,]    2    2\n [7,]    2    4\n [8,]    3    4\n [9,]    3    6\n[10,]    4    6\n[11,]    4    8\n[12,]    5    8\n[13,]    5   10\n[14,]    6   10\n[15,]    6   12\n[16,]    7   12\n[17,]    7   14\n[18,]    8   14\n[19,]    8   16\n[20,]    9   16\n[21,]    9   18\n[22,]   10   18",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -221,6 +239,7 @@
     "section": "4.3 Part d",
     "text": "4.3 Part d\nCreate a data frame leaning.ladder with the x and y equal to the first and second column of \\(\\mathbf{T}\\), respectively, and the same values of group from ladder.\nSolution\n\n\n\nCode\n(leaning.ladder = data.frame(x = T[,1], y = T[,2], group = ladder[,3]))\n\n\n    x  y group\n1   0  0     1\n2  10 20     1\n3   1  0     2\n4  11 20     2\n5   1  2     3\n6   2  2     3\n7   2  4     4\n8   3  4     4\n9   3  6     5\n10  4  6     5\n11  4  8     6\n12  5  8     6\n13  5 10     7\n14  6 10     7\n15  6 12     8\n16  7 12     8\n17  7 14     9\n18  8 14     9\n19  8 16    10\n20  9 16    10\n21  9 18    11\n22 10 18    11",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -231,6 +250,7 @@
     "section": "4.4 Part e",
     "text": "4.4 Part e\nRemove eval: false in the code below. The result should look like a ladder and a very rectangular house if part a is correct. The new leaning ladder should look like it is leaning on the house.\n\n\n\nCode\nggplot() +\n  geom_path(data = ladder, \n              aes(x = x, y = y, group = group, color = \"Starting Ladder\")) +\n  geom_path(data = leaning.ladder, \n              aes(x = x, y = y, group = group, color = \"Leaning Ladder\")) +\n  geom_segment(aes(x = 10, xend = 10,\n                   y=0, yend = 20))+\n  geom_segment(aes(x = 10, xend = 20,\n                   y=20, yend = 20))+\n  geom_segment(aes(x = 20, xend = 20,\n                   y=0, yend = 20))+\n  geom_segment(aes(x = 10, xend = 20,\n                   y=0, yend = 0)) +\n  theme_bw() +\n  xlim(-2,22) +\n  ylim(-2,22) +\n  scale_color_manual(\"\", values=c(\"darkred\", \"grey\"))\n\n\n\n\n\nFigure 8: A ladder and a leaning ladder.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 3: Objects in R 2"
     ]
   },
@@ -241,6 +261,7 @@
     "section": "1.1 Part a",
     "text": "1.1 Part a\nInstall the esquisse package for R. Report the code below, ensuring to set the eval option to false, using “#| eval: false”, so that we don’t install the package every time you compile your Quarto document.\nSolution Here I am installing the esquisse packing to get started.\n\n\ninstall.packages(\"esquisse\")",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -251,6 +272,7 @@
     "section": "1.2 Part b",
     "text": "1.2 Part b\nLoad the esquisse package for R. Report the code below. It does not matter whether you set “#| eval: false” because loading the package does not add a lot of time. Note you will not evaluate any code that uses the esquisse package, so there is no need to load it as you compile your Quarto document.\nSolution Here I am loading the esquisse package to be used later on.\n\n\nlibrary(\"esquisse\")",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -261,6 +283,7 @@
     "section": "1.3 Part c",
     "text": "1.3 Part c\nHow can you ask for help about the esquisse package for R? Report the code below, ensuring to set the eval option to false, using “#| eval: false”, so that the help document isn’t loaded every time you compile your Quarto document.\nSolution Testing the help function, here I am using help() to get more information on using the esquisse package.\n\n\nhelp(\"esquisse\")",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -271,6 +294,7 @@
     "section": "1.4 Part d",
     "text": "1.4 Part d\nIs a demo or vignette available for the esquisse package for R? Report the code below, ensuring to set the eval option to false, using “#| eval: false”, so that the you don’t get errors when you compile your Quarto document.\nSolution There is no demo found for the equisse package, but a vignette is available.\n\n\ndemo(package = \"esquisse\")\nvignette(package = \"esquisse\")",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -281,6 +305,7 @@
     "section": "1.5 Part e",
     "text": "1.5 Part e\nAdd the BibTeX citation for esquisse package for R to your .bib file and cite it in a sentence describing what the package does below. Note you can reference a citation named esquisse using “[@esquisse]”. \nSolution\nUsing esquisse you can explore and visualize your data interactively (Meyer and Perrier 2025).",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -291,6 +316,7 @@
     "section": "1.6 Part f",
     "text": "1.6 Part f\nRun esquisser() in your console – not in a chunk of R code in your Quarto document.\n\nSelect palmerpenguins from the “Select an environment in which to search:” dropdown. This should automatically select penguins in the “Select a data.frame:” dropdown. Click “Import Data”.\nDrag body_mass_g to the X box and species to the fill box.\nDescribe what you see in words. What can you conclude about Adelie, Chinstrap, and Gentoo penguins based on the resulting plot?\n\nSolution\nAdelle penguins are much higher in count, and specifically in the lower body mass area. Gentoo penguins tend towards the higher end of body mass, staying around the 10 count. Chinstrap penguins are lowest in count and between 3500 to 4500 typically in body mass.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -301,6 +327,7 @@
     "section": "2.1 Part a",
     "text": "2.1 Part a\nThe Fibonacci Sequence is a recursive formula: \\[F_n = F_{n-1} + F_{n-2}\\] where \\(F_0=0\\) and \\(F_1=1\\).\nCreate a vector of the first 10 Fibonacci numbers.\nSolution I did it manually because it does not increase by a fixed amount or follow a repeating pattern.\n\n\n(fib = c(0, 1, 1, 2, 3, 5, 8, 13, 21, 34))\n\n [1]  0  1  1  2  3  5  8 13 21 34",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -311,6 +338,7 @@
     "section": "2.2 Part b",
     "text": "2.2 Part b\nTriangular Numbers are the cumulative sums of natural numbers: \\[F_n = \\frac{n(n+1)}{2}.\\]\nCreate a vector of the first 10 Triangular Numbers.\nSolution\n\n\nn = 1:10\n(Triang = n*(n-1)/2)\n\n [1]  0  1  3  6 10 15 21 28 36 45",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -321,6 +349,7 @@
     "section": "2.3 Part c",
     "text": "2.3 Part c\nSuppose I were designing a repeated meausres experiment with three treatment conditions. Each of \\(n=10\\) participants (with ID 1 to 10) will receive all experimental conditions, call them “Control”, “Treatment A”, and “Treatment B”.\nConsider setting up data entry for this experiment.\n\nCreate a vector containing each ID repeated three times, once for each treatment.\nCreate a vector containing each Treatment repeated for each participant ID.\n\nSolution\n\n\n(ID = rep(1:10, each = 3))\n\n [1]  1  1  1  2  2  2  3  3  3  4  4  4  5  5  5  6  6  6  7  7  7  8  8  8  9\n[26]  9  9 10 10 10\n\n(Treatment = rep(c(\"Control\", \"Treatment A\", \"Treatment B\"), times = 10))\n\n [1] \"Control\"     \"Treatment A\" \"Treatment B\" \"Control\"     \"Treatment A\"\n [6] \"Treatment B\" \"Control\"     \"Treatment A\" \"Treatment B\" \"Control\"    \n[11] \"Treatment A\" \"Treatment B\" \"Control\"     \"Treatment A\" \"Treatment B\"\n[16] \"Control\"     \"Treatment A\" \"Treatment B\" \"Control\"     \"Treatment A\"\n[21] \"Treatment B\" \"Control\"     \"Treatment A\" \"Treatment B\" \"Control\"    \n[26] \"Treatment A\" \"Treatment B\" \"Control\"     \"Treatment A\" \"Treatment B\"",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -331,6 +360,7 @@
     "section": "2.4 Part d",
     "text": "2.4 Part d\nCreate a vector containing the character “MATH” and the numeric 240. What is the resulting class? Explain why in a sentence.\nSolution\n\n\n(vector = c(\"MATH\", 240))\n\n[1] \"MATH\" \"240\" \n\nclass(vector)\n\n[1] \"character\"\n\n\n Because numeric and character are different classes, R will automatically convert the entire vector to the furthest right class which is character from MATH.",
     "crumbs": [
+      "Computational Statistics",
       "Lab 2: Objects in R"
     ]
   },
@@ -1132,6 +1162,26 @@
     "text": "Technical Skills\n\nLanguages: R, Java\nTools: Positron, Quarto, Git/GitHub, LaTeX",
     "crumbs": [
       "About"
+    ]
+  },
+  {
+    "objectID": "about.html#statement-on-use-of-artificial-intelligence",
+    "href": "about.html#statement-on-use-of-artificial-intelligence",
+    "title": "About Me",
+    "section": "Statement on Use of Artificial Intelligence",
+    "text": "Statement on Use of Artificial Intelligence\nThe author reports that generative AI was not used in the preparation of this website, but aided in the troubleshooting process during research.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "index.html#statement-on-use-of-artificial-intelligence",
+    "href": "index.html#statement-on-use-of-artificial-intelligence",
+    "title": "Academic Portfolio",
+    "section": "Statement on Use of Artificial Intelligence",
+    "text": "Statement on Use of Artificial Intelligence\nThe author reports that generative AI was not used in the preparation of this website, but aided in the troubleshooting process during research. My approach to AI is guided by the principles of professional responsibility and transparency described by the American Statistical Association.",
+    "crumbs": [
+      "Home"
     ]
   }
 ]

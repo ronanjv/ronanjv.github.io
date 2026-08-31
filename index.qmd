@@ -14,4 +14,9 @@ Welcome to my portfolio website! Here you will find write-ups and analysis proje
 
 Use the sidebar menu to navigate through my coursework.
 
+## Statement on Use of Artificial Intelligence
+The author reports that generative AI was not used in the preparation of this website, but aided in the troubleshooting process during research. My approach to AI is guided by the principles of professional
+responsibility and transparency described by the American Statistical
+Association.
+
 
