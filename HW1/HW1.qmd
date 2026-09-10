@@ -1,0 +1,29 @@
+---
+title: "Homework 1 – One Sample Inference"
+---
+# Question 1
+
+## Part a
+
+In the paper, Dror et al. (2026) performed a Wilcoxon signed-rank test to
+assess whether the dogs were better than chance, which they took as 50%,
+for returning the new objects when requested.
+
+There were $n = 10$ dogs.
+
+### Data
+
+```{r}
+# Enter the proportion of new objects returned correctly by each dog
+# once the data from the table are provided.
+
+results <- c(
+  # dog 1,
+  # dog 2,
+  # dog 3,
+  # ...
+  # dog 10
+)
+
+results
+

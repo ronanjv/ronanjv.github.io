@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Academic Portfolio – Portfolio</title>
+<title>Homework 1 – One Sample Inference – Portfolio</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,24 +29,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/ColgateC.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1bdbca75b362e6c5a8c09207907ff998.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/ColgateC.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-1bdbca75b362e6c5a8c09207907ff998.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -75,8 +75,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light">
@@ -88,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Home</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../HW1/HW1.html">Data Analysis I</a></li><li class="breadcrumb-item"><a href="../HW1/HW1.html">HW1</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -99,23 +128,23 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="./images/ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active"><i class="bi bi-house" role="img">
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><i class="bi bi-house" role="img">
 </i> 
  <span class="menu-text">Home</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./about.html" class="sidebar-item-text sidebar-link"><i class="bi bi-person" role="img">
+  <a href="../about.html" class="sidebar-item-text sidebar-link"><i class="bi bi-person" role="img">
 </i> 
  <span class="menu-text">About</span></a>
   </div>
@@ -131,43 +160,43 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab2/Lab2WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab2/Lab2WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 2: Objects in R</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab3/Lab3WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab3/Lab3WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 3: Objects in R 2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab4/Lab4WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab4/Lab4WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 4: Programming</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab5/Lab5WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab5/Lab5WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 5: Data Wrangling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab8/Lab8WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab8/Lab8WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 8: Probability</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab10/Lab10WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab10/Lab10WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 10: Point Estimation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab11/Lab11WriteUp.html" class="sidebar-item-text sidebar-link">
+  <a href="../lab11/Lab11WriteUp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lab 11: Estimation</span></a>
   </div>
 </li>
@@ -175,16 +204,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Data Analysis I</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./HW1/HW1.html" class="sidebar-item-text sidebar-link">
+  <a href="../HW1/HW1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">HW1</span></a>
   </div>
 </li>
@@ -200,17 +229,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a></li>
-  <li><a href="#statement-on-use-of-artificial-intelligence" id="toc-statement-on-use-of-artificial-intelligence" class="nav-link" data-scroll-target="#statement-on-use-of-artificial-intelligence">Statement on Use of Artificial Intelligence</a></li>
+  <li><a href="#question-1" id="toc-question-1" class="nav-link active" data-scroll-target="#question-1">Question 1</a>
+  <ul class="collapse">
+  <li><a href="#part-a" id="toc-part-a" class="nav-link" data-scroll-target="#part-a">Part a</a>
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#enter-the-proportion-of-new-objects-returned-correctly-by-each-dog" id="toc-enter-the-proportion-of-new-objects-returned-correctly-by-each-dog" class="nav-link" data-scroll-target="#enter-the-proportion-of-new-objects-returned-correctly-by-each-dog">Enter the proportion of new objects returned correctly by each dog</a></li>
+  <li><a href="#once-the-data-from-the-table-are-provided." id="toc-once-the-data-from-the-table-are-provided." class="nav-link" data-scroll-target="#once-the-data-from-the-table-are-provided.">once the data from the table are provided.</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../HW1/HW1.html">Data Analysis I</a></li><li class="breadcrumb-item"><a href="../HW1/HW1.html">HW1</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Academic Portfolio</h1>
+<h1 class="title">Homework 1 – One Sample Inference</h1>
 </div>
 
 
@@ -227,19 +263,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="welcome" class="level2">
-<h2 class="anchored" data-anchor-id="welcome">Welcome!</h2>
-<p>Welcome to my portfolio website! Here you will find write-ups and analysis projects completed throughout my courses:</p>
-<div class="colgate-callout">
-<p><strong>Computational Statistics (MATH 240):</strong> R Programming, data wrangling, and simulation models.<br>
-</p>
-<p><strong>Data Analysis I (MATH 354):</strong> Applied statistical inference, hypothesis testing, and modeling.</p>
-</div>
-<p>Use the sidebar menu to navigate through my coursework.</p>
+<section id="question-1" class="level1">
+<h1>Question 1</h1>
+<section id="part-a" class="level2">
+<h2 class="anchored" data-anchor-id="part-a">Part a</h2>
+<p>In the paper, Dror et al.&nbsp;(2026) performed a Wilcoxon signed-rank test to assess whether the dogs were better than chance, which they took as 50%, for returning the new objects when requested.</p>
+<p>There were <span class="math inline">\(n = 10\)</span> dogs.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data</h3>
 </section>
-<section id="statement-on-use-of-artificial-intelligence" class="level2">
-<h2 class="anchored" data-anchor-id="statement-on-use-of-artificial-intelligence">Statement on Use of Artificial Intelligence</h2>
-<p>The author reports that generative AI was not used in the preparation of this website, but aided in the troubleshooting process during research. My approach to AI is guided by the principles of professional responsibility and transparency described by the American Statistical Association.</p>
+</section>
+</section>
+<section id="enter-the-proportion-of-new-objects-returned-correctly-by-each-dog" class="level1">
+<h1>Enter the proportion of new objects returned correctly by each dog</h1>
+</section>
+<section id="once-the-data-from-the-table-are-provided." class="level1">
+<h1>once the data from the table are provided.</h1>
+<p>results &lt;- c( # dog 1, # dog 2, # dog 3, # … # dog 10 )</p>
+<p>results</p>
 
 
 </section>
