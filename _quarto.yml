@@ -37,7 +37,7 @@ website:
        # MATH 354
     - section: "Data Analysis I"
       contents:
-       - text: "HW1"
+       - text: "Homework 1 – One Sample Inference"
          href: HW1/HW1.qmd
 
 page-footer:

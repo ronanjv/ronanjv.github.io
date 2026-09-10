@@ -1,29 +1,46 @@
 ---
 title: "Homework 1 – One Sample Inference"
 ---
+Human toddlers, starting at around 18 months old, can learn novel object labels passively by overhearing third-party interactions without being directly addressed. For example, if one adult says “hand me an apple” and another does so, the child might learn to identify an apple and associate it with the word “apple”.
+
+
+This process is driven by developing sociocognitive capacities such as gaze following, conversation monitoring, intention understanding, and perspective-taking. Of course, this process is more efficient when adults use simplified sentences, emphasis, enthusiasm, and other non-verbal emphasis.
+
+
+Dogs share some human-like social and cognitive abilities they learn being immersed in our households. For example, many family dogs learn actions like “sit.” Dror et al. (2026) explored whether dogs could be capable of passive label learning, similar to toddlers. Specifically, they were interested in Gifted Word Learner (GWL) dogs that can learn the names of hundreds of objects and perform at a word-learning level comparable to 18 months olds.
+
+
+To learn whether GWL dogs learn object labels by passively overhearing interactions between humans the researchers performed an experiment where 𝑛 = 10 dogs were exposed to a condition where two family members sitting across from each other passing the toy back and forth. The caretaker addressed the second person using simple sentence frames and non-verbal cues, neither directly to the dog.
+
+
+This exposure occurred daily for eleven days with two new toys. 
+    - Toy A: Days 1-3; 9
+    - Toy B: Days 5-7; 10
+    - Rest: Day 4, 8, 11
+
+On the twelfth day, out of the caretaker’s sight, the two new toys were placed alongside nine familiar toys. The caretaker requested the toys verbally twenty-four times – twelve times for the two new toys, and twelve times for the nine familiar toys.
+
 # Question 1
 
 ## Part a
+In the paper, Dror et al. (2026) performed a Wilcoxon signed-rank test to assess whether the dogs were better than chance, which they took as 50%, for returning the new objects when requested. The 𝑛 = 10 dogs had the following results:
 
-In the paper, Dror et al. (2026) performed a Wilcoxon signed-rank test to
-assess whether the dogs were better than chance, which they took as 50%,
-for returning the new objects when requested.
 
-There were $n = 10$ dogs.
+{1.0000, 1.0000, 0.7500, 1.0000, 0.4167, 0.8333, 0.7500, 0.8333, 0.8333, 1.0000}.
 
-### Data
 
-```{r}
-# Enter the proportion of new objects returned correctly by each dog
-# once the data from the table are provided.
+They also considered the paired difference (direct − overhearing):
 
-results <- c(
-  # dog 1,
-  # dog 2,
-  # dog 3,
-  # ...
-  # dog 10
-)
 
-results
+{−0.0833, 0.0000, −0.0833, −0.0833, 0.5833, 0.0833, −0.2500, 0.1667, 0.0000, −0.4167}.
+
+AI provided the following “insight” for analyzing these data: 
+
+Report the One-Sample t-Test if your data meets basic normality assumptions, or the Wilcoxon Signed-Rank Test if you prefer not to assume normality.
+
+
+Evaluate the author’s choice to use the Wilcoxon signed-rank test (not specifying exact or approximate). Also consider a one-sample 𝑡-test and a one-sample 𝑧-test (or exact binomial test). Which choices are reasonable given the data, and which choice would you have made?
+
+**Solution:** AI recommended that if the data met normality assumptions, to then report a one-sample t-Test, however, because there are only n=10 dogs, we cannot enact the central limit theorem (CLT) to make the data behave as normal. So, in a case where the data is bound between 0 and 1 with a limited sample size, the t-Test might not be the most accurate. Moving on with the z-Test, it relies on bernoulli data. Again, while we could coerce the trails into success(1) and failure(0) for each trial a dog participates in, we have the same subject gathering data for 12 trials. This could skew the data as if one dog were inherently very good, it would be difficult to compare to another who wasn't as they are not independent trials. I agree with the author's use of the Wilcoxon signed-rank test because it evaluates the median of the subject-level summary proportions without assuming a specific parametric distribution or inflating the sample size.
+
 
