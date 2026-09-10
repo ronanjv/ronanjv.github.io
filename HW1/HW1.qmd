@@ -1,6 +1,8 @@
 ---
 title: "Homework 1 – One Sample Inference"
 ---
+
+
 Human toddlers, starting at around 18 months old, can learn novel object labels passively by overhearing third-party interactions without being directly addressed. For example, if one adult says “hand me an apple” and another does so, the child might learn to identify an apple and associate it with the word “apple”.
 
 
@@ -41,6 +43,63 @@ Report the One-Sample t-Test if your data meets basic normality assumptions, or 
 
 Evaluate the author’s choice to use the Wilcoxon signed-rank test (not specifying exact or approximate). Also consider a one-sample 𝑡-test and a one-sample 𝑧-test (or exact binomial test). Which choices are reasonable given the data, and which choice would you have made?
 
-**Solution:** AI recommended that if the data met normality assumptions, to then report a one-sample t-Test, however, because there are only n=10 dogs, we cannot enact the central limit theorem (CLT) to make the data behave as normal. So, in a case where the data is bound between 0 and 1 with a limited sample size, the t-Test might not be the most accurate. Moving on with the z-Test, it relies on bernoulli data. Again, while we could coerce the trails into success(1) and failure(0) for each trial a dog participates in, we have the same subject gathering data for 12 trials. This could skew the data as if one dog were inherently very good, it would be difficult to compare to another who wasn't as they are not independent trials. I agree with the author's use of the Wilcoxon signed-rank test because it evaluates the median of the subject-level summary proportions without assuming a specific parametric distribution or inflating the sample size.
+**Solution:** AI recommended that if the data met normality assumptions, to then report a one-sample t-Test, however, because there are only n=10 dogs, we cannot enact the central limit theorem (CLT) to make the data behave as normal. So, in a case where the data is bound between 0 and 1 with a limited sample size, the t-Test might not be the most accurate. Moving on with the z-Test, it seems the natural choice because it deals with proportions and relies on bernoulli data. Again, while we could coerce the trails into success(1) and failure(0) for each trial a dog participates in, we have the same subject gathering data for 12 trials. This could skew the data as if one dog were inherently very good, it would be difficult to compare to another who wasn't as they are not independent trials. That leaves only the Wilcoxon signed-rank test. But the authors' failure to specify exact vs. approximate matters more than it looks. The exact version of the test requires no ties among the ranked values, and here 7 of the 10 values are tied (three dogs at 1.0000, two at 0.8333, two at 0.7500). However, I still agree with the author's use of the Wilcoxon signed-rank test as the best option.
+
+## Part b
+Perform the analyses you decided on above. Provide a full report as if you were submitting your homework to the researchers themselves. This part should be a stand alone analysis that can be read and understood independently.
+
+Note: If you didn’t select a test in the previous part, you can use a randomization test here.
 
 
+```{r}
+library(ggplot2)
+
+new.toy.prop <- c(1.0000, 1.0000, 0.7500, 1.0000, 0.4167,
+                   0.8333, 0.7500, 0.8333, 0.8333, 1.0000)
+
+dog.dat <- data.frame(dog = factor(1:10), prop.correct = new.toy.prop)
+
+ggplot(dog.dat, aes(x = "", y = prop.correct)) +
+  geom_boxplot(width = 0.3) +
+  geom_jitter(width = 0.05, height = 0) +
+  geom_hline(yintercept = 0.5, linetype = "dotted") +
+  coord_flip() +
+  labs(x = NULL, y = "Proportion of new toys retrieved") +
+  theme_bw()
+```
+```{r}
+new.toy.prop <- c(1.0000, 1.0000, 0.7500, 1.0000, 0.4167,
+                   0.8333, 0.7500, 0.8333, 0.8333, 1.0000)
+test.result <- wilcox.test(x = new.toy.prop, # data
+mu = 0.5, # M0 = .5
+alternative = "two.sided", # Ha: M != M0
+conf.level = 0.95) # alpha = 0.05
+test.result
+```
+
+**Question:** Did the dogs retrieve newly-labeled toys at a rate better than chance (50%) after only overhearing them named, across n = 10 dogs?
+```{r}
+library(dplyr)
+library(e1071)
+library(knitr)
+
+new.toy.prop <- c(1.0000, 1.0000, 0.7500, 1.0000, 0.4167,
+                   0.8333, 0.7500, 0.8333, 0.8333, 1.0000)
+
+summary.tab <- tibble(prop = new.toy.prop) |>
+  summarise(
+    n                = n(),
+    Mean             = mean(prop),
+    Median           = median(prop),
+    SD               = sd(prop),
+    IQR              = IQR(prop),
+    Skewness         = skewness(prop),
+    `Excess Kurtosis` = kurtosis(prop)
+  )
+
+kable(summary.tab, digits = 2, caption = "Proportion of New Toys Retrieved (n = 10 dogs)")
+```
+
+We used a Wilcoxon signed-rank test (H₀: median proportion = 0.5) as the primary test. Because 7 of the 10 values are tied (three dogs at 1.000, two at 0.833, two at 0.750), an exact p-value isn't computable.
+
+**Conclusion:** The dogs retrieved newly-labeled toys significantly more often than the 50% chance level after passively overhearing them named (Wilcoxon V = 54, p = .0074; sign test p = .0215, 9/10 dogs above chance), consistent with the researchers' claim of passive label learning in this sample. Given n = 10, we'd caution against over-interpreting the exact p-values — the ceiling effect (4/10 dogs at a perfect score) suggests the task may not have had enough range to fully capture variation in performance, and a slightly harder retrieval task in a larger sample would strengthen the estimate.
