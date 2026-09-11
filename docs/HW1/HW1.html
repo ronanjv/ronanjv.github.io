@@ -326,15 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>test.result <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(<span class="at">x =</span> new.toy.prop, <span class="co"># data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="at">mu =</span> <span class="fl">0.5</span>, <span class="co"># M0 = .5</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-label="3"></a><span class="at">alternative =</span> <span class="st">"two.sided"</span>, <span class="co"># Ha: M != M0</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a><span class="at">conf.level =</span> <span class="fl">0.95</span>) <span class="co"># alpha = 0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in wilcox.test.default(x = new.toy.prop, mu = 0.5, alternative =
-"two.sided", : cannot compute exact p-value with ties</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>test.result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a><span class="at">conf.level =</span> <span class="fl">0.95</span>) <span class="co"># alpha = 0.05</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>test.result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -349,54 +342,25 @@ alternative hypothesis: true location is not equal to 0.5</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a><span class="fu">library</span>(e1071)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'e1071'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:ggplot2':
-
-    element</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a>summary.tab <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">prop =</span> new.toy.prop) <span class="sc">|&gt;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-label="7"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb13-8"><a href="#cb13-8" aria-label="8"></a>    <span class="at">n                =</span> <span class="fu">n</span>(),</span>
-<span id="cb13-9"><a href="#cb13-9" aria-label="9"></a>    <span class="at">Mean             =</span> <span class="fu">mean</span>(prop),</span>
-<span id="cb13-10"><a href="#cb13-10" aria-label="10"></a>    <span class="at">Median           =</span> <span class="fu">median</span>(prop),</span>
-<span id="cb13-11"><a href="#cb13-11" aria-label="11"></a>    <span class="at">SD               =</span> <span class="fu">sd</span>(prop),</span>
-<span id="cb13-12"><a href="#cb13-12" aria-label="12"></a>    <span class="at">IQR              =</span> <span class="fu">IQR</span>(prop),</span>
-<span id="cb13-13"><a href="#cb13-13" aria-label="13"></a>    <span class="at">Skewness         =</span> <span class="fu">skewness</span>(prop),</span>
-<span id="cb13-14"><a href="#cb13-14" aria-label="14"></a>    <span class="st">`</span><span class="at">Excess Kurtosis</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">kurtosis</span>(prop)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-label="15"></a>  )</span>
-<span id="cb13-16"><a href="#cb13-16" aria-label="16"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-label="17"></a><span class="fu">kable</span>(summary.tab, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Proportion of New Toys Retrieved (n = 10 dogs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>summary.tab <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">prop =</span> new.toy.prop) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a>    <span class="at">n                =</span> <span class="fu">n</span>(),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-label="11"></a>    <span class="at">Mean             =</span> <span class="fu">mean</span>(prop),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-label="12"></a>    <span class="at">Median           =</span> <span class="fu">median</span>(prop),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-label="13"></a>    <span class="at">SD               =</span> <span class="fu">sd</span>(prop),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>    <span class="at">IQR              =</span> <span class="fu">IQR</span>(prop),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-label="15"></a>    <span class="at">Skewness         =</span> <span class="fu">skewness</span>(prop),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-label="16"></a>    <span class="st">`</span><span class="at">Excess Kurtosis</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">kurtosis</span>(prop)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-label="17"></a>  )</span>
+<span id="cb4-18"><a href="#cb4-18" aria-label="18"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-label="19"></a><span class="fu">kable</span>(summary.tab, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Proportion of New Toys Retrieved (n = 10 dogs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -444,8 +408,8 @@ Attaching package: 'e1071'</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>aprob <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="dv">10</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.25</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-label="2"></a>aprob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>aprob <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="dv">10</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.25</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a>aprob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9.536743e-07</code></pre>
@@ -460,13 +424,13 @@ Attaching package: 'e1071'</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>p <span class="ot">=</span> <span class="fl">0.25</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>mu <span class="ot">=</span> n<span class="sc">*</span>p</span>
-<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(n<span class="sc">*</span>p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>prob <span class="ot">=</span> ((<span class="fu">pnorm</span>(<span class="fl">10.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fl">9.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)))</span>
-<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a>prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>p <span class="ot">=</span> <span class="fl">0.25</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>mu <span class="ot">=</span> n<span class="sc">*</span>p</span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(n<span class="sc">*</span>p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a>prob <span class="ot">=</span> ((<span class="fu">pnorm</span>(<span class="fl">10.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fl">9.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-label="7"></a>prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.567447e-07</code></pre>

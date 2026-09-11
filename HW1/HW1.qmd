@@ -1,5 +1,10 @@
 ---
 title: "Homework 1 – One Sample Inference"
+execute:
+  warning: false
+  message: false
+
+  
 format:
   html: 
     number-sections: TRUE
