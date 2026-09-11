@@ -1,8 +1,32 @@
 ---
 title: "Homework 1 – One Sample Inference"
-output:
-  html_document:
-    code_folding: hide
+format:
+  html: 
+    number-sections: TRUE
+    code-fold: TRUE
+    code-line-numbers: TRUE
+    cap-location: top 
+  pdf:
+    documentclass: article
+    number-sections: TRUE
+    reference-section-title: "References" 
+    code-line-numbers: TRUE
+    cap-location: top 
+    include-in-header:
+      - text: |
+          \usepackage{amsmath}
+          \usepackage[dvipsnames]{xcolor}
+          \usepackage[shortlabels]{enumitem}
+          \usepackage{parskip}
+          \usepackage{hyperref}
+          \usepackage{geometry}
+          \usepackage{float}
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+format-links: [pdf]
 ---
 
 
@@ -60,19 +84,16 @@ library(ggplot2)
 new.toy.prop <- c(1.0000, 1.0000, 0.7500, 1.0000, 0.4167,
                    0.8333, 0.7500, 0.8333, 0.8333, 1.0000)
 
-dog.dat <- data.frame(dog = factor(1:10), prop.correct = new.toy.prop)
+dog.dat <- data.frame(prop.correct = new.toy.prop)
 
-ggplot(dog.dat, aes(x = "", y = prop.correct)) +
-  geom_boxplot(width = 0.3) +
-  geom_jitter(width = 0.05, height = 0) +
-  geom_hline(yintercept = 0.5, linetype = "dotted") +
-  coord_flip() +
-  labs(x = NULL, y = "Proportion of new toys retrieved") +
+ggplot(dog.dat, aes(x = prop.correct)) +
+  geom_histogram(aes(y = after_stat(density)),
+                  binwidth = 0.1, boundary = 0, color = "white") +
+  labs(x = "Proportion of new toys retrieved", y = "Density",
+       caption = "n = 10 dogs") +
   theme_bw()
 ```
 ```{r}
-new.toy.prop <- c(1.0000, 1.0000, 0.7500, 1.0000, 0.4167,
-                   0.8333, 0.7500, 0.8333, 0.8333, 1.0000)
 test.result <- wilcox.test(x = new.toy.prop, # data
 mu = 0.5, # M0 = .5
 alternative = "two.sided", # Ha: M != M0
@@ -103,6 +124,27 @@ summary.tab <- tibble(prop = new.toy.prop) |>
 kable(summary.tab, digits = 2, caption = "Proportion of New Toys Retrieved (n = 10 dogs)")
 ```
 
-We used a Wilcoxon signed-rank test (H₀: median proportion = 0.5) as the primary test. Because 7 of the 10 values are tied (three dogs at 1.000, two at 0.833, two at 0.750), an exact p-value isn't computable.
+We used a Wilcoxon signed-rank test (Null = 0.5) as the primary test. Because 7 of the 10 values are tied (three dogs at 1.000, two at 0.833, two at 0.750), an exact p-value isn't computable.
 
 **Conclusion:** The dogs retrieved newly-labeled toys significantly more often than the 50% chance level after passively overhearing them named (Wilcoxon V = 54, p = .0074; sign test p = .0215, 9/10 dogs above chance), consistent with the researchers' claim of passive label learning in this sample. Given n = 10, we'd caution against over-interpreting the exact p-values — the ceiling effect (4/10 dogs at a perfect score) suggests the task may not have had enough range to fully capture variation in performance, and a slightly harder retrieval task in a larger sample would strengthen the estimate.
+
+# Question 2
+
+The researchers evaluated two new-toy trials per dog across 𝑛 = 10 dogs In the overheard condition, the dogs retrieved all the new toys correctly on the first try. That is, the proportion of times the dogs retrieved the new toys they had only learned through overhearing was 1.0.
+
+## Part a
+The researchers suppose that the chance a dog would select the new toy by chance is 50%, noting the novelty of the new toy.
+The authors use the binomial distribution here. Consider the conditions of the binomial and note any potential issues.
+
+**Solution**
+One condition of the binomial distribution is an outcome that is either a success of failure. This is fine as the dog either retrieves the toy or not. Another condition of the binomial is a constant p (assumed 0.5). This does not actually hold but given their assumption this is okay. One final condition of the Binomial distribution is independence. Because a single dog will do the trial multiple times and the data is collected, there is not independence between these trials and if one dog is inherently good it may skew the data.
+
+## Part b
+Using the same assumption – that a dog would select the new toy by chance is 50% – use the binomial model to evaluate the probability that all 𝑛 = 10 dogs would get both trials correct.
+
+```{r}
+aprob = dbinom(10, size = 10, prob = 0.25)
+aprob
+```
+
+**Solution:** So under that assumed model, the probability of getting all 10 dogs correct on both trials is about 1 in ten million.

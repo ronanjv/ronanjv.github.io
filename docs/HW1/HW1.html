@@ -235,13 +235,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#question-1" id="toc-question-1" class="nav-link active" data-scroll-target="#question-1">Question 1</a>
+  <li><a href="#question-1" id="toc-question-1" class="nav-link active" data-scroll-target="#question-1"><span class="header-section-number">1</span> Question 1</a>
   <ul class="collapse">
-  <li><a href="#part-a" id="toc-part-a" class="nav-link" data-scroll-target="#part-a">Part a</a></li>
-  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part b</a></li>
+  <li><a href="#part-a" id="toc-part-a" class="nav-link" data-scroll-target="#part-a"><span class="header-section-number">1.1</span> Part a</a></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b"><span class="header-section-number">1.2</span> Part b</a></li>
+  </ul></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2"><span class="header-section-number">2</span> Question 2</a>
+  <ul class="collapse">
+  <li><a href="#part-a-1" id="toc-part-a-1" class="nav-link" data-scroll-target="#part-a-1"><span class="header-section-number">2.1</span> Part a</a></li>
+  <li><a href="#part-b-1" id="toc-part-b-1" class="nav-link" data-scroll-target="#part-b-1"><span class="header-section-number">2.2</span> Part b</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="HW1.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -271,10 +276,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To learn whether GWL dogs learn object labels by passively overhearing interactions between humans the researchers performed an experiment where 𝑛 = 10 dogs were exposed to a condition where two family members sitting across from each other passing the toy back and forth. The caretaker addressed the second person using simple sentence frames and non-verbal cues, neither directly to the dog.</p>
 <p>This exposure occurred daily for eleven days with two new toys. - Toy A: Days 1-3; 9 - Toy B: Days 5-7; 10 - Rest: Day 4, 8, 11</p>
 <p>On the twelfth day, out of the caretaker’s sight, the two new toys were placed alongside nine familiar toys. The caretaker requested the toys verbally twenty-four times – twelve times for the two new toys, and twelve times for the nine familiar toys.</p>
-<section id="question-1" class="level1">
-<h1>Question 1</h1>
-<section id="part-a" class="level2">
-<h2 class="anchored" data-anchor-id="part-a">Part a</h2>
+<section id="question-1" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Question 1</h1>
+<section id="part-a" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="part-a"><span class="header-section-number">1.1</span> Part a</h2>
 <p>In the paper, Dror et al.&nbsp;(2026) performed a Wilcoxon signed-rank test to assess whether the dogs were better than chance, which they took as 50%, for returning the new objects when requested. The 𝑛 = 10 dogs had the following results:</p>
 <p>{1.0000, 1.0000, 0.7500, 1.0000, 0.4167, 0.8333, 0.7500, 0.8333, 0.8333, 1.0000}.</p>
 <p>They also considered the paired difference (direct − overhearing):</p>
@@ -284,25 +289,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Evaluate the author’s choice to use the Wilcoxon signed-rank test (not specifying exact or approximate). Also consider a one-sample 𝑡-test and a one-sample 𝑧-test (or exact binomial test). Which choices are reasonable given the data, and which choice would you have made?</p>
 <p><strong>Solution:</strong> AI recommended that if the data met normality assumptions, to then report a one-sample t-Test, however, because there are only n=10 dogs, we cannot enact the central limit theorem (CLT) to make the data behave as normal. So, in a case where the data is bound between 0 and 1 with a limited sample size, the t-Test might not be the most accurate. Moving on with the z-Test, it seems the natural choice because it deals with proportions and relies on bernoulli data. Again, while we could coerce the trails into success(1) and failure(0) for each trial a dog participates in, we have the same subject gathering data for 12 trials. This could skew the data as if one dog were inherently very good, it would be difficult to compare to another who wasn’t as they are not independent trials. That leaves only the Wilcoxon signed-rank test. But the authors’ failure to specify exact vs.&nbsp;approximate matters more than it looks. The exact version of the test requires no ties among the ranked values, and here 7 of the 10 values are tied (three dogs at 1.0000, two at 0.8333, two at 0.7500). However, I still agree with the author’s use of the Wilcoxon signed-rank test as the best option.</p>
 </section>
-<section id="part-b" class="level2">
-<h2 class="anchored" data-anchor-id="part-b">Part b</h2>
+<section id="part-b" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">1.2</span> Part b</h2>
 <p>Perform the analyses you decided on above. Provide a full report as if you were submitting your homework to the researchers themselves. This part should be a stand alone analysis that can be read and understood independently.</p>
 <p>Note: If you didn’t select a test in the previous part, you can use a randomization test here.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dog.dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dog =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>), <span class="at">prop.correct =</span> new.toy.prop)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dog.dat, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> prop.correct)) <span class="sc">+</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">height =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Proportion of new toys retrieved"</span>) <span class="sc">+</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>dog.dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">prop.correct =</span> new.toy.prop)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a><span class="fu">ggplot</span>(dog.dat, <span class="fu">aes</span>(<span class="at">x =</span> prop.correct)) <span class="sc">+</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>                  <span class="at">binwidth =</span> <span class="fl">0.1</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Proportion of new toys retrieved"</span>, <span class="at">y =</span> <span class="st">"Density"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>       <span class="at">caption =</span> <span class="st">"n = 10 dogs"</span>) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -312,17 +319,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>test.result <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(<span class="at">x =</span> new.toy.prop, <span class="co"># data</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">mu =</span> <span class="fl">0.5</span>, <span class="co"># M0 = .5</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">alternative =</span> <span class="st">"two.sided"</span>, <span class="co"># Ha: M != M0</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">conf.level =</span> <span class="fl">0.95</span>) <span class="co"># alpha = 0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>test.result <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(<span class="at">x =</span> new.toy.prop, <span class="co"># data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="at">mu =</span> <span class="fl">0.5</span>, <span class="co"># M0 = .5</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a><span class="at">alternative =</span> <span class="st">"two.sided"</span>, <span class="co"># Ha: M != M0</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a><span class="at">conf.level =</span> <span class="fl">0.95</span>) <span class="co"># alpha = 0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in wilcox.test.default(x = new.toy.prop, mu = 0.5, alternative =
 "two.sided", : cannot compute exact p-value with ties</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>test.result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>test.result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Wilcoxon signed rank test with continuity correction
@@ -334,7 +345,10 @@ alternative hypothesis: true location is not equal to 0.5</code></pre>
 </div>
 <p><strong>Question:</strong> Did the dogs retrieve newly-labeled toys at a rate better than chance (50%) after only overhearing them named, across n = 10 dogs?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -349,7 +363,10 @@ Attaching package: 'dplyr'</code></pre>
 
     intersect, setdiff, setequal, union</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a><span class="fu">library</span>(e1071)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'e1071'</code></pre>
@@ -359,23 +376,26 @@ Attaching package: 'e1071'</code></pre>
 
     element</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>summary.tab <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">prop =</span> new.toy.prop) <span class="sc">|&gt;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n                =</span> <span class="fu">n</span>(),</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean             =</span> <span class="fu">mean</span>(prop),</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Median           =</span> <span class="fu">median</span>(prop),</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">SD               =</span> <span class="fu">sd</span>(prop),</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">IQR              =</span> <span class="fu">IQR</span>(prop),</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Skewness         =</span> <span class="fu">skewness</span>(prop),</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Excess Kurtosis</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">kurtosis</span>(prop)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(summary.tab, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Proportion of New Toys Retrieved (n = 10 dogs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a>new.toy.prop <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.0000</span>, <span class="fl">1.0000</span>, <span class="fl">0.7500</span>, <span class="fl">1.0000</span>, <span class="fl">0.4167</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a>                   <span class="fl">0.8333</span>, <span class="fl">0.7500</span>, <span class="fl">0.8333</span>, <span class="fl">0.8333</span>, <span class="fl">1.0000</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a>summary.tab <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">prop =</span> new.toy.prop) <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-label="7"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-8"><a href="#cb13-8" aria-label="8"></a>    <span class="at">n                =</span> <span class="fu">n</span>(),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-label="9"></a>    <span class="at">Mean             =</span> <span class="fu">mean</span>(prop),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-label="10"></a>    <span class="at">Median           =</span> <span class="fu">median</span>(prop),</span>
+<span id="cb13-11"><a href="#cb13-11" aria-label="11"></a>    <span class="at">SD               =</span> <span class="fu">sd</span>(prop),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-label="12"></a>    <span class="at">IQR              =</span> <span class="fu">IQR</span>(prop),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-label="13"></a>    <span class="at">Skewness         =</span> <span class="fu">skewness</span>(prop),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-label="14"></a>    <span class="st">`</span><span class="at">Excess Kurtosis</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">kurtosis</span>(prop)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-label="15"></a>  )</span>
+<span id="cb13-16"><a href="#cb13-16" aria-label="16"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-label="17"></a><span class="fu">kable</span>(summary.tab, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Proportion of New Toys Retrieved (n = 10 dogs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Proportion of New Toys Retrieved (n = 10 dogs)</caption>
@@ -404,8 +424,32 @@ Attaching package: 'e1071'</code></pre>
 </table>
 </div>
 </div>
-<p>We used a Wilcoxon signed-rank test (H₀: median proportion = 0.5) as the primary test. Because 7 of the 10 values are tied (three dogs at 1.000, two at 0.833, two at 0.750), an exact p-value isn’t computable.</p>
+<p>We used a Wilcoxon signed-rank test (Null = 0.5) as the primary test. Because 7 of the 10 values are tied (three dogs at 1.000, two at 0.833, two at 0.750), an exact p-value isn’t computable.</p>
 <p><strong>Conclusion:</strong> The dogs retrieved newly-labeled toys significantly more often than the 50% chance level after passively overhearing them named (Wilcoxon V = 54, p = .0074; sign test p = .0215, 9/10 dogs above chance), consistent with the researchers’ claim of passive label learning in this sample. Given n = 10, we’d caution against over-interpreting the exact p-values — the ceiling effect (4/10 dogs at a perfect score) suggests the task may not have had enough range to fully capture variation in performance, and a slightly harder retrieval task in a larger sample would strengthen the estimate.</p>
+</section>
+</section>
+<section id="question-2" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Question 2</h1>
+<p>The researchers evaluated two new-toy trials per dog across 𝑛 = 10 dogs In the overheard condition, the dogs retrieved all the new toys correctly on the first try. That is, the proportion of times the dogs retrieved the new toys they had only learned through overhearing was 1.0.</p>
+<section id="part-a-1" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">2.1</span> Part a</h2>
+<p>The researchers suppose that the chance a dog would select the new toy by chance is 50%, noting the novelty of the new toy. The authors use the binomial distribution here. Consider the conditions of the binomial and note any potential issues.</p>
+<p><strong>Solution</strong> One condition of the binomial distribution is an outcome that is either a success of failure. This is fine as the dog either retrieves the toy or not. Another condition of the binomial is a constant p (assumed 0.5). This does not actually hold but given their assumption this is okay. One final condition of the Binomial distribution is independence. Because a single dog will do the trial multiple times and the data is collected, there is not independence between these trials and if one dog is inherently good it may skew the data.</p>
+</section>
+<section id="part-b-1" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">2.2</span> Part b</h2>
+<p>Using the same assumption – that a dog would select the new toy by chance is 50% – use the binomial model to evaluate the probability that all 𝑛 = 10 dogs would get both trials correct.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>aprob <span class="ot">=</span> <span class="fu">dbinom</span>(<span class="dv">10</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.25</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-label="2"></a>aprob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.536743e-07</code></pre>
+</div>
+</div>
+<p><strong>Solution:</strong> So under that assumed model, the probability of getting all 10 dogs correct on both trials is about 1 in ten million.</p>
 
 
 </section>
