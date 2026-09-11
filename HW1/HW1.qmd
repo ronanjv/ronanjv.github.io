@@ -148,3 +148,25 @@ aprob
 ```
 
 **Solution:** So under that assumed model, the probability of getting all 10 dogs correct on both trials is about 1 in ten million.
+
+## Part c
+
+In general, we can approximate Binomial probabilities using the Gaussian distribution as long as the number of trials (n) is large.
+Compute the approximation for the probability you computed in Part b. Is it “close?”
+
+**Solution**
+```{r}
+n = 10
+p = 0.25
+mu = n*p
+sigma = sqrt(n*p * (1 - p))
+
+prob = ((pnorm(10.5, mean = mu, sd = sigma) - pnorm(9.5, mean = mu, sd = sigma)))
+prob
+```
+This is not "close." While they are to the same power, it is off by a factor of nearly 6.
+
+## Part d
+In this case, where all trials were a success, does it make sense to make inference? If not, explain why. If yes, perform the inference and explain the results?
+
+**Solution:** When there is no failure it does not make sense to make an inference. While it may be an inaccurate representation of the whole population, in an attempt to bootstrap, we have no difference in the trails we tested to get any variance in a hypothesis test.

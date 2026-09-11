@@ -244,6 +244,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#part-a-1" id="toc-part-a-1" class="nav-link" data-scroll-target="#part-a-1"><span class="header-section-number">2.1</span> Part a</a></li>
   <li><a href="#part-b-1" id="toc-part-b-1" class="nav-link" data-scroll-target="#part-b-1"><span class="header-section-number">2.2</span> Part b</a></li>
+  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c"><span class="header-section-number">2.3</span> Part c</a></li>
+  <li><a href="#part-d" id="toc-part-d" class="nav-link" data-scroll-target="#part-d"><span class="header-section-number">2.4</span> Part d</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="HW1.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -450,6 +452,32 @@ Attaching package: 'e1071'</code></pre>
 </div>
 </div>
 <p><strong>Solution:</strong> So under that assumed model, the probability of getting all 10 dogs correct on both trials is about 1 in ten million.</p>
+</section>
+<section id="part-c" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">2.3</span> Part c</h2>
+<p>In general, we can approximate Binomial probabilities using the Gaussian distribution as long as the number of trials (n) is large. Compute the approximation for the probability you computed in Part b. Is it “close?”</p>
+<p><strong>Solution</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>p <span class="ot">=</span> <span class="fl">0.25</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>mu <span class="ot">=</span> n<span class="sc">*</span>p</span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(n<span class="sc">*</span>p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>prob <span class="ot">=</span> ((<span class="fu">pnorm</span>(<span class="fl">10.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fl">9.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a>prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.567447e-07</code></pre>
+</div>
+</div>
+<p>This is not “close.” While they are to the same power, it is off by a factor of nearly 6.</p>
+</section>
+<section id="part-d" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">2.4</span> Part d</h2>
+<p>In this case, where all trials were a success, does it make sense to make inference? If not, explain why. If yes, perform the inference and explain the results?</p>
+<p><strong>Solution:</strong> When there is no failure it does not make sense to make an inference. While it may be an inaccurate representation of the whole population, in an attempt to bootstrap, we have no difference in the trails we tested to get any variance in a hypothesis test.</p>
 
 
 </section>
