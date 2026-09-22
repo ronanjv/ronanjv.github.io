@@ -283,6 +283,37 @@ Suppose the researcher wanted to perform a follow-up test where they want to ens
   \sigma_{\text{within}}= 0.77
 \end{align*}
 
+**Solution**
+The sample size calculated in part a would only result in a power or 70%. Using a while loop, we are able to calculate that the adequate number of observations for a power of 80% would be 315 per group.
+```{r}
+library(PMCMRplus)
+PMCMRplus::power.tukey.test(
+  n = 40,
+  groups = 5,
+  delta = .25,
+  within.var = .77,
+  sig.level = 0.05
+)
+
+n_current = 40
+current_power = 0
+
+while (current_power < 0.80) {
+  n_current = n_current + 1
+  result = PMCMRplus::power.tukey.test(
+    n = n_current,
+    groups = 5,
+    delta = .25,
+    within.var = .77,
+    sig.level = 0.05
+  )
+  current_power = result$power
+}
+
+n_current
+current_power
+```
+
 ## Part d
 How does the answer to Part c change if they wanted to have adequate power for *all* pairwise comparisons? Use `Superpower::ANOVA_design()` to set up the ANOVA set up.
 
