@@ -327,6 +327,49 @@ Compute the power of the researcher's design (part a) using `Superpower::ANOVA_p
 
 **Note**: This code can take a minute. You may want to set `cache: true` in your `R` chunk yaml header. You will also see more power because the actual effect size was 0.55.
 
+**Solution**
+```{r}
+#| cache: true
+library(Superpower)
+
+group_means <- c(2.92, 3.11, 3.36, 4.04, 4.35)
+pooled_sd <- sqrt(0.80)   # given variance is 0.80, ANOVA_design wants SD
+
+design_result <- ANOVA_design(
+  design = "5b",
+  n = 40,               # part a's sample size per group
+  mu = group_means,
+  sd = pooled_sd,
+  labelnames = c("Stage", "S0", "S1", "S2", "S3", "S4")
+)
+
+power_result <- ANOVA_power(
+  design_result,
+  alpha_level = 0.05,
+  nsims = 1000,
+  seed = 7272
+)
+
+power_result
+
+design_double <- ANOVA_design(
+  design = "5b",
+  n = 80,               # doubled from 40
+  mu = group_means,
+  sd = pooled_sd,
+  labelnames = c("Stage", "S0", "S1", "S2", "S3", "S4")
+)
+
+power_double <- ANOVA_power(
+  design_double,
+  alpha_level = 0.05,
+  nsims = 1000,
+  seed = 7272
+)
+
+power_double
+```
+
 # Question 3: An Application
 @Yang23 investigate whether low-dose nicotine can counteract age-related metabolic decline. The proposed mechanism is through $\text{NAD}^+$, which is a chemical compound essential for metabolic energy production. The idea is that low-dose nicotine could help improve and/or maintain the recycling of $\text{NAD}^+$ by activating the salvage enzyme NAMPT via SIRT1. This could, in turn, restore $\text{NAD}^+$ homeostasis, which is the biological balance maintained within a cell between the production, recycling, and degradation of nicotinamide adenine dinucleotide ($\text{NAD}^+$).
 
