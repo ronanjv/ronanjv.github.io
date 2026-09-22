@@ -1,5 +1,5 @@
 ---
-title: Homework 2 -- k Sample Inference # Title of the document
+title: Homework 2 - k Sample Inference # Title of the document
 
 # Bibliography Details
 bibliography: HW2References.bib  # Name of bib file in the same folder 
@@ -80,10 +80,77 @@ Complete the following steps in $R=1000$ simulations.
 2. Use `pairwise.t.test(..., p.adjust.method="none")` to compute unadjusted pairwise $t$-tests and record if any comparison yields statistically discernible support for a non-zero mean.
 3. Use `rstatix::tukey_hsd(...)` to compute the Tukey's HSD adjusted pairwise tests and record if any comparison yields statistically discernible support for a non-zero mean.
 
+**Solution**
+```{r}
+library(tidyverse)
+library(rstatix)
+set.seed(7272)
+
+reject1 = rep(NA, 1000)
+reject2 = rep(NA, 1000)
+
+for (i in 1:1000) {
+  sim <- data.frame(
+    k1 = rnorm(30), 
+    k2 = rnorm(30), 
+    k3 = rnorm(30),
+    k4 = rnorm(30), 
+    k5 = rnorm(30)) |>
+    pivot_longer(cols = everything(), names_to = "Group", values_to = "Value")
+
+  unadjusted = pairwise.t.test(sim$Value, sim$Group, p.adjust.method = "none")
+  reject1[i] = any(unadjusted$p.value < 0.05, na.rm = TRUE)
+
+  hsd = rstatix::tukey_hsd(sim, formula = Value ~ Group)
+  reject2[i] = any(hsd$p.adj < 0.05, na.rm = TRUE)
+}
+
+mean(reject1)
+mean(reject2)
+```
+
 In the end, describe the Type I error rates.
+
+In 1000 simulations where all five groups were drawn from the same standard normal distribution, so the null hypothesis is true, the unadjusted pairwise t-tests produced at least one false positive in 28.6% of simulations. Each simulation involves 10 pairwise comparisons, each with its own 5% chance of a false positive, so the chances of at least one error accumulate. With Tukey's HSD, at least one comparison came out significant in 5% of the simulations, which is what we'd want. This shows why we correct for multiple comparisons: without it, we'd claim a difference in about 1 out of every 3 or 4 datasets when nothing is really going on.
 
 ## Part b
 Redo the simulation, changing to adjust according to the false discovery rate `p.adjust.method="BH"` and comment on the differences.
+
+**Solution**
+```{r}
+library(tidyverse)
+library(rstatix)
+set.seed(7272)
+
+reject_none  = rep(NA, 1000)
+reject_tukey = rep(NA, 1000)
+reject_bh    = rep(NA, 1000)
+
+for (i in 1:1000) {
+  sim <- data.frame(
+    k1 = rnorm(30, mean = 0, sd = 1),
+    k2 = rnorm(30, mean = 0, sd = 1),
+    k3 = rnorm(30, mean = 0, sd = 1),
+    k4 = rnorm(30, mean = 0, sd = 1),
+    k5 = rnorm(30, mean = 0, sd = 1)
+  ) |>
+    pivot_longer(cols = everything(), names_to = "Group", values_to = "Value")
+
+  none = pairwise.t.test(sim$Value, sim$Group, p.adjust.method = "none")
+  bh   = pairwise.t.test(sim$Value, sim$Group, p.adjust.method = "BH")
+  hsd  = rstatix::tukey_hsd(sim, formula = Value ~ Group)
+
+  reject_none[i]  = any(none$p.value < 0.05, na.rm = TRUE)
+  reject_bh[i]    = any(bh$p.value   < 0.05, na.rm = TRUE)
+  reject_tukey[i] = any(hsd$p.adj    < 0.05, na.rm = TRUE)
+}
+
+mean(reject_none)
+mean(reject_tukey)
+mean(reject_bh)
+```
+
+Redoing the simulation with bh still gives us a type I error of around 5%, except it is slightly smaller than the Tukey number. 4.8% compared to 5.4%.
 
 # Question 2: Power Analyses
 Revisit the MFAP4 study from class. 
