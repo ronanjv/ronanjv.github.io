@@ -466,11 +466,157 @@ window.Quarto = {
 <p>Assume the researchers were targeting a moderate effect size of Cohen’s <span class="math inline">\(f = 0.25\)</span>, setting significance level <span class="math inline">\(\alpha = 0.05\)</span> and desired power <span class="math inline">\(1 - \beta = 0.80\)</span>. Were they adequately powered?</p>
 <p><strong>Note</strong>: The actual effect size is <span class="math inline">\(f=0.55\)</span>, but researchers usually do not know that ahead of time and defaulted to moderate, instead of specifying a large effect.</p>
 <p>What is the required sample size per group (<span class="math inline">\(n\)</span>) and the overall total sample size (<span class="math inline">\(N\)</span>)? Write the <code>R</code> code using the <code>pwr</code> package to calculate this sample size. This package assumes all samples are of the same size so <span class="math inline">\(N=nk\)</span>, where <span class="math inline">\(k\)</span> is the number of samples. Note that the best answers will have a corresponding graphical display.</p>
+<p><strong>Solution</strong> To detect a moderate effect size of f = 0.25 with 80% power we would need 40 observations per group with a N = 200 observations in total.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>power_result <span class="ot">=</span> <span class="fu">pwr.anova.test</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a>  <span class="at">k =</span> <span class="dv">5</span>, </span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a>  <span class="at">f =</span> <span class="fl">0.25</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-label="7"></a>  <span class="at">power =</span> <span class="fl">0.80</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-label="8"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-label="9"></a>power_result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Balanced one-way analysis of variance power calculation 
+
+              k = 5
+              n = 39.1534
+              f = 0.25
+      sig.level = 0.05
+          power = 0.8
+
+NOTE: n is number in each group</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a><span class="co"># --- Power calculation under the N = 150 budget constraint ---</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a>groups <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a>per_group <span class="ot">=</span> <span class="dv">30</span>          <span class="co"># budget constraint: N = 150 / 5 groups</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a>eff_f <span class="ot">=</span> <span class="fl">0.25</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-label="7"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-label="8"></a>num_df <span class="ot">=</span> groups <span class="sc">-</span> <span class="dv">1</span>                     <span class="co"># numerator df = 4</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-label="9"></a>den_df <span class="ot">=</span> groups <span class="sc">*</span> per_group <span class="sc">-</span> groups    <span class="co"># denominator df = 145</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-label="10"></a>ncp_val <span class="ot">=</span> groups <span class="sc">*</span> per_group <span class="sc">*</span> eff_f<span class="sc">^</span><span class="dv">2</span>  <span class="co"># non-centrality parameter = 9.375</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-label="11"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-label="12"></a>crit_val <span class="ot">=</span> <span class="fu">qf</span>(<span class="fl">0.95</span>, num_df, den_df)     <span class="co"># rejection threshold at alpha = 0.05</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-label="13"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-label="14"></a>achieved_power <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(crit_val, num_df, den_df, <span class="at">ncp =</span> ncp_val)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-label="15"></a>achieved_power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6675964</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="co"># --- Graphical display ---</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>plot_dat <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">fval =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">15</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-label="3"></a>  <span class="fu">mutate</span>(<span class="at">dens_null =</span> <span class="fu">df</span>(<span class="at">x =</span> fval, <span class="at">df1 =</span> num_df, <span class="at">df2 =</span> den_df),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-label="4"></a>         <span class="at">dens_alt  =</span> <span class="fu">df</span>(<span class="at">x =</span> fval, <span class="at">df1 =</span> num_df, <span class="at">df2 =</span> den_df, <span class="at">ncp =</span> ncp_val))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-label="5"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-label="6"></a><span class="fu">ggplot</span>(plot_dat) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-label="7"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">y =</span> dens_null, <span class="at">color =</span> <span class="st">"Null"</span>)) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-label="8"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">y =</span> dens_alt, <span class="at">color =</span> <span class="st">"Alternative"</span>)) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-label="9"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-label="10"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(fval <span class="sc">&gt;=</span> crit_val),</span>
+<span id="cb15-11"><a href="#cb15-11" aria-label="11"></a>              <span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> dens_null, <span class="at">fill =</span> <span class="st">"Type I Error"</span>), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-label="12"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(fval <span class="sc">&lt;</span> crit_val),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-label="13"></a>              <span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> dens_alt, <span class="at">fill =</span> <span class="st">"Type II Error"</span>), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-label="14"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(fval <span class="sc">&gt;=</span> crit_val),</span>
+<span id="cb15-15"><a href="#cb15-15" aria-label="15"></a>              <span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> dens_alt, <span class="at">fill =</span> <span class="st">"Power"</span>), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-label="16"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-label="17"></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"F"</span>, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">round</span>(crit_val, <span class="dv">2</span>), <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">15</span>, <span class="at">by =</span> <span class="dv">5</span>))) <span class="sc">+</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-label="18"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">color =</span> <span class="st">""</span>, <span class="at">fill =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-b-1" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">2.2</span> Part b</h2>
 <p>The project was funded by several agencies. Suppose that a funding agency suggested funding limiting the researchers to <span class="math inline">\(N=150\)</span>. Evaluate this suggestion in the context of the ANOVA. Would that be large enough to be adequately powered?</p>
 <p>Compute the non-centrality parameter <span class="math display">\[\lambda = k \cdot n \cdot f^2\]</span> and use the non-central <span class="math inline">\(F\)</span> distribution to compute the power under <span class="math inline">\(H_a\)</span> for Cohen’s <span class="math inline">\(f = 0.25\)</span>. Calculate the statistical power achieved under this budget constraint. Note that the best answers will have a corresponding graphical display.</p>
+<p><strong>Solution</strong> This total sample size would not be large enough to be adequately powered. It would only have a power of .67 instead of .8 with n = 30 per group.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>groups <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>per_group <span class="ot">=</span> <span class="dv">30</span>          <span class="co"># budget constraint: N = 150 / 5 groups</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>eff_f <span class="ot">=</span> <span class="fl">0.25</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a>num_df <span class="ot">=</span> groups <span class="sc">-</span> <span class="dv">1</span>                     <span class="co"># numerator df = 4</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>den_df <span class="ot">=</span> groups <span class="sc">*</span> per_group <span class="sc">-</span> groups    <span class="co"># denominator df = 145</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a>ncp_val <span class="ot">=</span> groups <span class="sc">*</span> per_group <span class="sc">*</span> eff_f<span class="sc">^</span><span class="dv">2</span>  </span>
+<span id="cb16-8"><a href="#cb16-8" aria-label="8"></a>ncp_val <span class="co"># non-centrality parameter = 9.375</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.375</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>crit_val <span class="ot">=</span> <span class="fu">qf</span>(<span class="fl">0.95</span>, num_df, den_df)     <span class="co"># rejection threshold at alpha = 0.05</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-label="2"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-label="3"></a>achieved_power <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(crit_val, num_df, den_df, <span class="at">ncp =</span> ncp_val)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-label="4"></a>achieved_power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6675964</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>plot_dat <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">fval =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">15</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">dens_null =</span> <span class="fu">df</span>(<span class="at">x =</span> fval, <span class="at">df1 =</span> num_df, <span class="at">df2 =</span> den_df),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-label="3"></a>         <span class="at">dens_alt  =</span> <span class="fu">df</span>(<span class="at">x =</span> fval, <span class="at">df1 =</span> num_df, <span class="at">df2 =</span> den_df, <span class="at">ncp =</span> ncp_val))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-label="4"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-label="5"></a><span class="fu">ggplot</span>(plot_dat) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-label="6"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">y =</span> dens_null, <span class="at">color =</span> <span class="st">"Null"</span>)) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-label="7"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">y =</span> dens_alt, <span class="at">color =</span> <span class="st">"Alternative"</span>)) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-label="8"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-label="9"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(fval <span class="sc">&gt;=</span> crit_val),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-label="10"></a>              <span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> dens_null, <span class="at">fill =</span> <span class="st">"Type I Error"</span>), <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-label="11"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(fval <span class="sc">&lt;</span> crit_val),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-label="12"></a>              <span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> dens_alt, <span class="at">fill =</span> <span class="st">"Type II Error"</span>), <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-label="13"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> plot_dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(fval <span class="sc">&gt;=</span> crit_val),</span>
+<span id="cb20-14"><a href="#cb20-14" aria-label="14"></a>              <span class="fu">aes</span>(<span class="at">x =</span> fval, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> dens_alt, <span class="at">fill =</span> <span class="st">"Power"</span>), <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-label="15"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-label="16"></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"F"</span>, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">round</span>(crit_val, <span class="dv">2</span>), <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">15</span>, <span class="at">by =</span> <span class="dv">5</span>))) <span class="sc">+</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-label="17"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Null"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"Alternative"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>)) <span class="sc">+</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-label="18"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Type I Error"</span> <span class="ot">=</span> <span class="st">"seagreen"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-label="19"></a>                                <span class="st">"Type II Error"</span> <span class="ot">=</span> <span class="st">"blue"</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-label="20"></a>                                <span class="st">"Power"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-label="21"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">color =</span> <span class="st">""</span>, <span class="at">fill =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">2.3</span> Part c</h2>
@@ -491,6 +637,64 @@ window.Quarto = {
   \sigma^2_{\text{pooled}} &amp; = \frac{(176-1)0.85^2 + (135-1)0.84^2}{176+135-2} = 0.7152\\
   \sigma_{\text{within}}= 0.77
 \end{align*}\]</span></p>
+<p><strong>Solution</strong> The sample size calculated in part a would only result in a power or 70%. Using a while loop, we are able to calculate that the adequate number of observations for a power of 80% would be 315 per group.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="fu">library</span>(PMCMRplus)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-label="2"></a>PMCMRplus<span class="sc">::</span><span class="fu">power.tukey.test</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-label="3"></a>  <span class="at">n =</span> <span class="dv">40</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-label="4"></a>  <span class="at">groups =</span> <span class="dv">5</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-label="5"></a>  <span class="at">delta =</span> .<span class="dv">25</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-label="6"></a>  <span class="at">within.var =</span> .<span class="dv">77</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-label="7"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-label="8"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Tukey-Test power calculation 
+
+              n = 40
+         groups = 5
+          delta = 0.25
+     within.var = 0.77
+          power = 0.07194129
+    alternative = two-sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a>n_current <span class="ot">=</span> <span class="dv">40</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-label="2"></a>current_power <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-label="3"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-label="4"></a><span class="cf">while</span> (current_power <span class="sc">&lt;</span> <span class="fl">0.80</span>) {</span>
+<span id="cb23-5"><a href="#cb23-5" aria-label="5"></a>  n_current <span class="ot">=</span> n_current <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-label="6"></a>  result <span class="ot">=</span> PMCMRplus<span class="sc">::</span><span class="fu">power.tukey.test</span>(</span>
+<span id="cb23-7"><a href="#cb23-7" aria-label="7"></a>    <span class="at">n =</span> n_current,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-label="8"></a>    <span class="at">groups =</span> <span class="dv">5</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-label="9"></a>    <span class="at">delta =</span> .<span class="dv">25</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-label="10"></a>    <span class="at">within.var =</span> .<span class="dv">77</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-label="11"></a>    <span class="at">sig.level =</span> <span class="fl">0.05</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-label="12"></a>  )</span>
+<span id="cb23-13"><a href="#cb23-13" aria-label="13"></a>  current_power <span class="ot">=</span> result<span class="sc">$</span>power</span>
+<span id="cb23-14"><a href="#cb23-14" aria-label="14"></a>}</span>
+<span id="cb23-15"><a href="#cb23-15" aria-label="15"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-label="16"></a>n_current</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 315</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a>current_power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8006567</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-d" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">2.4</span> Part d</h2>
@@ -501,6 +705,148 @@ window.Quarto = {
 \end{align*}\]</span></p>
 <p>Compute the power of the researcher’s design (part a) using <code>Superpower::ANOVA_power()</code>. If the researchers were able to oversample by double, a common approach to addressing this issue, would their power be at least 80% for all pariwise comparisons?</p>
 <p><strong>Note</strong>: This code can take a minute. You may want to set <code>cache: true</code> in your <code>R</code> chunk yaml header. You will also see more power because the actual effect size was 0.55.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a><span class="fu">library</span>(Superpower)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-label="2"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-label="3"></a>group_means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.92</span>, <span class="fl">3.11</span>, <span class="fl">3.36</span>, <span class="fl">4.04</span>, <span class="fl">4.35</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-label="4"></a>pooled_sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fl">0.80</span>)   <span class="co"># given variance is 0.80, ANOVA_design wants SD</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-label="5"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-label="6"></a>design_result <span class="ot">&lt;-</span> <span class="fu">ANOVA_design</span>(</span>
+<span id="cb27-7"><a href="#cb27-7" aria-label="7"></a>  <span class="at">design =</span> <span class="st">"5b"</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-label="8"></a>  <span class="at">n =</span> <span class="dv">40</span>,               <span class="co"># part a's sample size per group</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-label="9"></a>  <span class="at">mu =</span> group_means,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-label="10"></a>  <span class="at">sd =</span> pooled_sd,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-label="11"></a>  <span class="at">labelnames =</span> <span class="fu">c</span>(<span class="st">"Stage"</span>, <span class="st">"S0"</span>, <span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>, <span class="st">"S4"</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-label="12"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a>power_result <span class="ot">&lt;-</span> <span class="fu">ANOVA_power</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-label="2"></a>  design_result,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-label="3"></a>  <span class="at">alpha_level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-label="4"></a>  <span class="at">nsims =</span> <span class="dv">1000</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-label="5"></a>  <span class="at">seed =</span> <span class="dv">7272</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-label="6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2866
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  16.3      0.2222
+p_Stage_S0_Stage_S2  58.4      0.4928
+p_Stage_S0_Stage_S3  99.9      1.2581
+p_Stage_S0_Stage_S4 100.0      1.6124
+p_Stage_S1_Stage_S2  22.0      0.2730
+p_Stage_S1_Stage_S3  99.7      1.0409
+p_Stage_S1_Stage_S4  99.9      1.3969
+p_Stage_S2_Stage_S3  93.4      0.7670
+p_Stage_S2_Stage_S4  99.9      1.1232
+p_Stage_S3_Stage_S4  34.4      0.3584</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a>power_result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2866
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  16.3      0.2222
+p_Stage_S0_Stage_S2  58.4      0.4928
+p_Stage_S0_Stage_S3  99.9      1.2581
+p_Stage_S0_Stage_S4 100.0      1.6124
+p_Stage_S1_Stage_S2  22.0      0.2730
+p_Stage_S1_Stage_S3  99.7      1.0409
+p_Stage_S1_Stage_S4  99.9      1.3969
+p_Stage_S2_Stage_S3  93.4      0.7670
+p_Stage_S2_Stage_S4  99.9      1.1232
+p_Stage_S3_Stage_S4  34.4      0.3584</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a>design_double <span class="ot">&lt;-</span> <span class="fu">ANOVA_design</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-label="2"></a>  <span class="at">design =</span> <span class="st">"5b"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-label="3"></a>  <span class="at">n =</span> <span class="dv">80</span>,               <span class="co"># doubled from 40</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-label="4"></a>  <span class="at">mu =</span> group_means,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-label="5"></a>  <span class="at">sd =</span> pooled_sd,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-label="6"></a>  <span class="at">labelnames =</span> <span class="fu">c</span>(<span class="st">"Stage"</span>, <span class="st">"S0"</span>, <span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>, <span class="st">"S4"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-label="7"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>power_double <span class="ot">&lt;-</span> <span class="fu">ANOVA_power</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-label="2"></a>  design_double,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-label="3"></a>  <span class="at">alpha_level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-label="4"></a>  <span class="at">nsims =</span> <span class="dv">1000</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-label="5"></a>  <span class="at">seed =</span> <span class="dv">7272</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-label="6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2796
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  25.9      0.2043
+p_Stage_S0_Stage_S2  86.7      0.4908
+p_Stage_S0_Stage_S3 100.0      1.2487
+p_Stage_S0_Stage_S4 100.0      1.5976
+p_Stage_S1_Stage_S2  42.5      0.2876
+p_Stage_S1_Stage_S3 100.0      1.0477
+p_Stage_S1_Stage_S4 100.0      1.3969
+p_Stage_S2_Stage_S3  99.5      0.7580
+p_Stage_S2_Stage_S4 100.0      1.1060
+p_Stage_S3_Stage_S4  57.5      0.3486</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-label="1"></a>power_double</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2796
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  25.9      0.2043
+p_Stage_S0_Stage_S2  86.7      0.4908
+p_Stage_S0_Stage_S3 100.0      1.2487
+p_Stage_S0_Stage_S4 100.0      1.5976
+p_Stage_S1_Stage_S2  42.5      0.2876
+p_Stage_S1_Stage_S3 100.0      1.0477
+p_Stage_S1_Stage_S4 100.0      1.3969
+p_Stage_S2_Stage_S3  99.5      0.7580
+p_Stage_S2_Stage_S4 100.0      1.1060
+p_Stage_S3_Stage_S4  57.5      0.3486</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 </section>
 <section id="question-3-an-application" class="level1" data-number="3">
@@ -566,10 +912,117 @@ Table&nbsp;1: <span class="math inline">\(\text{SUV}_{\text{max}}\)</span> measu
 <section id="part-a-2" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="part-a-2"><span class="header-section-number">3.1</span> Part a</h2>
 <p>State the null (<span class="math inline">\(H_0\)</span>) and alternative (<span class="math inline">\(H_a\)</span>) hypotheses for the omnibus test.</p>
+<p><strong>Solution</strong></p>
+<p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_{2M} = \mu_{6M} = \mu_{16M}\)</span> (control) <span class="math inline">\(= \mu_{16M}\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: at least one differs from the others.</p>
 </section>
 <section id="part-b-2" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="part-b-2"><span class="header-section-number">3.2</span> Part b</h2>
 <p>Perform some exploratory data analysis to provide empirical information about the researchers question.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-label="2"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-label="3"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-label="4"></a>suv_data <span class="ot">=</span> <span class="fu">tibble</span>(</span>
+<span id="cb37-5"><a href="#cb37-5" aria-label="5"></a>  <span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"2M"</span>, <span class="st">"6M"</span>, <span class="st">"16M"</span>, <span class="st">"16M_Tx"</span>), <span class="at">each =</span> <span class="dv">3</span>),</span>
+<span id="cb37-6"><a href="#cb37-6" aria-label="6"></a>  <span class="at">suvmax =</span> <span class="fu">c</span>(<span class="fl">1.48969</span>, <span class="fl">1.30168</span>, <span class="fl">1.30620</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-label="7"></a>             <span class="fl">4.36000</span>, <span class="fl">4.28807</span>, <span class="fl">3.64184</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-label="8"></a>             <span class="fl">7.30182</span>, <span class="fl">7.12416</span>, <span class="fl">8.28764</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-label="9"></a>             <span class="fl">4.69304</span>, <span class="fl">2.51326</span>, <span class="fl">2.38019</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-label="10"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-label="11"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">factor</span>(group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"2M"</span>, <span class="st">"6M"</span>, <span class="st">"16M"</span>, <span class="st">"16M_Tx"</span>)))</span>
+<span id="cb37-12"><a href="#cb37-12" aria-label="12"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-label="13"></a>suv_data <span class="sc">|&gt;</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-label="14"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-label="15"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb37-16"><a href="#cb37-16" aria-label="16"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb37-17"><a href="#cb37-17" aria-label="17"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(suvmax),</span>
+<span id="cb37-18"><a href="#cb37-18" aria-label="18"></a>    <span class="at">median =</span> <span class="fu">median</span>(suvmax),</span>
+<span id="cb37-19"><a href="#cb37-19" aria-label="19"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(suvmax),</span>
+<span id="cb37-20"><a href="#cb37-20" aria-label="20"></a>    <span class="at">min =</span> <span class="fu">min</span>(suvmax),</span>
+<span id="cb37-21"><a href="#cb37-21" aria-label="21"></a>    <span class="at">max =</span> <span class="fu">max</span>(suvmax)</span>
+<span id="cb37-22"><a href="#cb37-22" aria-label="22"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb37-23"><a href="#cb37-23" aria-label="23"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"SUVmax by Age and Treatment Group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>SUVmax by Age and Treatment Group</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.37</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">1.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4.10</td>
+<td style="text-align: right;">4.29</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">3.64</td>
+<td style="text-align: right;">4.36</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7.57</td>
+<td style="text-align: right;">7.30</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">7.12</td>
+<td style="text-align: right;">8.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16M_Tx</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3.20</td>
+<td style="text-align: right;">2.51</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">2.38</td>
+<td style="text-align: right;">4.69</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-label="1"></a><span class="fu">ggplot</span>(suv_data, <span class="fu">aes</span>(<span class="at">x =</span> suvmax, <span class="at">y =</span> group)) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-label="2"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-label="3"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> <span class="fl">0.05</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"SUVmax"</span>, <span class="at">y =</span> <span class="st">"Group"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-label="6"></a>       <span class="at">title =</span> <span class="st">"SUVmax by age and treatment group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c-1" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">3.3</span> Part c</h2>

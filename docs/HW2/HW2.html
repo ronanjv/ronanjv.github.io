@@ -912,10 +912,117 @@ Table&nbsp;1: <span class="math inline">\(\text{SUV}_{\text{max}}\)</span> measu
 <section id="part-a-2" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="part-a-2"><span class="header-section-number">3.1</span> Part a</h2>
 <p>State the null (<span class="math inline">\(H_0\)</span>) and alternative (<span class="math inline">\(H_a\)</span>) hypotheses for the omnibus test.</p>
+<p><strong>Solution</strong></p>
+<p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_{2M} = \mu_{6M} = \mu_{16M}\)</span> (control) <span class="math inline">\(= \mu_{16M}\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: at least one differs from the others.</p>
 </section>
 <section id="part-b-2" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="part-b-2"><span class="header-section-number">3.2</span> Part b</h2>
 <p>Perform some exploratory data analysis to provide empirical information about the researchers question.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-label="2"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-label="3"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-label="4"></a>suv_data <span class="ot">=</span> <span class="fu">tibble</span>(</span>
+<span id="cb37-5"><a href="#cb37-5" aria-label="5"></a>  <span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"2M"</span>, <span class="st">"6M"</span>, <span class="st">"16M"</span>, <span class="st">"16M_Tx"</span>), <span class="at">each =</span> <span class="dv">3</span>),</span>
+<span id="cb37-6"><a href="#cb37-6" aria-label="6"></a>  <span class="at">suvmax =</span> <span class="fu">c</span>(<span class="fl">1.48969</span>, <span class="fl">1.30168</span>, <span class="fl">1.30620</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-label="7"></a>             <span class="fl">4.36000</span>, <span class="fl">4.28807</span>, <span class="fl">3.64184</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-label="8"></a>             <span class="fl">7.30182</span>, <span class="fl">7.12416</span>, <span class="fl">8.28764</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-label="9"></a>             <span class="fl">4.69304</span>, <span class="fl">2.51326</span>, <span class="fl">2.38019</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-label="10"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-label="11"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">factor</span>(group, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"2M"</span>, <span class="st">"6M"</span>, <span class="st">"16M"</span>, <span class="st">"16M_Tx"</span>)))</span>
+<span id="cb37-12"><a href="#cb37-12" aria-label="12"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-label="13"></a>suv_data <span class="sc">|&gt;</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-label="14"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-label="15"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb37-16"><a href="#cb37-16" aria-label="16"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb37-17"><a href="#cb37-17" aria-label="17"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(suvmax),</span>
+<span id="cb37-18"><a href="#cb37-18" aria-label="18"></a>    <span class="at">median =</span> <span class="fu">median</span>(suvmax),</span>
+<span id="cb37-19"><a href="#cb37-19" aria-label="19"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(suvmax),</span>
+<span id="cb37-20"><a href="#cb37-20" aria-label="20"></a>    <span class="at">min =</span> <span class="fu">min</span>(suvmax),</span>
+<span id="cb37-21"><a href="#cb37-21" aria-label="21"></a>    <span class="at">max =</span> <span class="fu">max</span>(suvmax)</span>
+<span id="cb37-22"><a href="#cb37-22" aria-label="22"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb37-23"><a href="#cb37-23" aria-label="23"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"SUVmax by Age and Treatment Group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>SUVmax by Age and Treatment Group</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.37</td>
+<td style="text-align: right;">1.31</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">1.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4.10</td>
+<td style="text-align: right;">4.29</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">3.64</td>
+<td style="text-align: right;">4.36</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7.57</td>
+<td style="text-align: right;">7.30</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">7.12</td>
+<td style="text-align: right;">8.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16M_Tx</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3.20</td>
+<td style="text-align: right;">2.51</td>
+<td style="text-align: right;">1.30</td>
+<td style="text-align: right;">2.38</td>
+<td style="text-align: right;">4.69</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-label="1"></a><span class="fu">ggplot</span>(suv_data, <span class="fu">aes</span>(<span class="at">x =</span> suvmax, <span class="at">y =</span> group)) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-label="2"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-label="3"></a>  <span class="fu">geom_jitter</span>(<span class="at">height =</span> <span class="fl">0.05</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"SUVmax"</span>, <span class="at">y =</span> <span class="st">"Group"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-label="6"></a>       <span class="at">title =</span> <span class="st">"SUVmax by age and treatment group"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c-1" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">3.3</span> Part c</h2>
