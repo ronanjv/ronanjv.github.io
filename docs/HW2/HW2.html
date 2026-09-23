@@ -637,6 +637,64 @@ NOTE: n is number in each group</code></pre>
   \sigma^2_{\text{pooled}} &amp; = \frac{(176-1)0.85^2 + (135-1)0.84^2}{176+135-2} = 0.7152\\
   \sigma_{\text{within}}= 0.77
 \end{align*}\]</span></p>
+<p><strong>Solution</strong> The sample size calculated in part a would only result in a power or 70%. Using a while loop, we are able to calculate that the adequate number of observations for a power of 80% would be 315 per group.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="fu">library</span>(PMCMRplus)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-label="2"></a>PMCMRplus<span class="sc">::</span><span class="fu">power.tukey.test</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-label="3"></a>  <span class="at">n =</span> <span class="dv">40</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-label="4"></a>  <span class="at">groups =</span> <span class="dv">5</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-label="5"></a>  <span class="at">delta =</span> .<span class="dv">25</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-label="6"></a>  <span class="at">within.var =</span> .<span class="dv">77</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-label="7"></a>  <span class="at">sig.level =</span> <span class="fl">0.05</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-label="8"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Tukey-Test power calculation 
+
+              n = 40
+         groups = 5
+          delta = 0.25
+     within.var = 0.77
+          power = 0.07194129
+    alternative = two-sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a>n_current <span class="ot">=</span> <span class="dv">40</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-label="2"></a>current_power <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-label="3"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-label="4"></a><span class="cf">while</span> (current_power <span class="sc">&lt;</span> <span class="fl">0.80</span>) {</span>
+<span id="cb23-5"><a href="#cb23-5" aria-label="5"></a>  n_current <span class="ot">=</span> n_current <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-label="6"></a>  result <span class="ot">=</span> PMCMRplus<span class="sc">::</span><span class="fu">power.tukey.test</span>(</span>
+<span id="cb23-7"><a href="#cb23-7" aria-label="7"></a>    <span class="at">n =</span> n_current,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-label="8"></a>    <span class="at">groups =</span> <span class="dv">5</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-label="9"></a>    <span class="at">delta =</span> .<span class="dv">25</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-label="10"></a>    <span class="at">within.var =</span> .<span class="dv">77</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-label="11"></a>    <span class="at">sig.level =</span> <span class="fl">0.05</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-label="12"></a>  )</span>
+<span id="cb23-13"><a href="#cb23-13" aria-label="13"></a>  current_power <span class="ot">=</span> result<span class="sc">$</span>power</span>
+<span id="cb23-14"><a href="#cb23-14" aria-label="14"></a>}</span>
+<span id="cb23-15"><a href="#cb23-15" aria-label="15"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-label="16"></a>n_current</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 315</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a>current_power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8006567</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-d" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">2.4</span> Part d</h2>
@@ -647,6 +705,148 @@ NOTE: n is number in each group</code></pre>
 \end{align*}\]</span></p>
 <p>Compute the power of the researcher’s design (part a) using <code>Superpower::ANOVA_power()</code>. If the researchers were able to oversample by double, a common approach to addressing this issue, would their power be at least 80% for all pariwise comparisons?</p>
 <p><strong>Note</strong>: This code can take a minute. You may want to set <code>cache: true</code> in your <code>R</code> chunk yaml header. You will also see more power because the actual effect size was 0.55.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a><span class="fu">library</span>(Superpower)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-label="2"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-label="3"></a>group_means <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.92</span>, <span class="fl">3.11</span>, <span class="fl">3.36</span>, <span class="fl">4.04</span>, <span class="fl">4.35</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-label="4"></a>pooled_sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fl">0.80</span>)   <span class="co"># given variance is 0.80, ANOVA_design wants SD</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-label="5"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-label="6"></a>design_result <span class="ot">&lt;-</span> <span class="fu">ANOVA_design</span>(</span>
+<span id="cb27-7"><a href="#cb27-7" aria-label="7"></a>  <span class="at">design =</span> <span class="st">"5b"</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-label="8"></a>  <span class="at">n =</span> <span class="dv">40</span>,               <span class="co"># part a's sample size per group</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-label="9"></a>  <span class="at">mu =</span> group_means,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-label="10"></a>  <span class="at">sd =</span> pooled_sd,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-label="11"></a>  <span class="at">labelnames =</span> <span class="fu">c</span>(<span class="st">"Stage"</span>, <span class="st">"S0"</span>, <span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>, <span class="st">"S4"</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-label="12"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a>power_result <span class="ot">&lt;-</span> <span class="fu">ANOVA_power</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-label="2"></a>  design_result,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-label="3"></a>  <span class="at">alpha_level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-label="4"></a>  <span class="at">nsims =</span> <span class="dv">1000</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-label="5"></a>  <span class="at">seed =</span> <span class="dv">7272</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-label="6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2866
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  16.3      0.2222
+p_Stage_S0_Stage_S2  58.4      0.4928
+p_Stage_S0_Stage_S3  99.9      1.2581
+p_Stage_S0_Stage_S4 100.0      1.6124
+p_Stage_S1_Stage_S2  22.0      0.2730
+p_Stage_S1_Stage_S3  99.7      1.0409
+p_Stage_S1_Stage_S4  99.9      1.3969
+p_Stage_S2_Stage_S3  93.4      0.7670
+p_Stage_S2_Stage_S4  99.9      1.1232
+p_Stage_S3_Stage_S4  34.4      0.3584</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a>power_result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2866
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  16.3      0.2222
+p_Stage_S0_Stage_S2  58.4      0.4928
+p_Stage_S0_Stage_S3  99.9      1.2581
+p_Stage_S0_Stage_S4 100.0      1.6124
+p_Stage_S1_Stage_S2  22.0      0.2730
+p_Stage_S1_Stage_S3  99.7      1.0409
+p_Stage_S1_Stage_S4  99.9      1.3969
+p_Stage_S2_Stage_S3  93.4      0.7670
+p_Stage_S2_Stage_S4  99.9      1.1232
+p_Stage_S3_Stage_S4  34.4      0.3584</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a>design_double <span class="ot">&lt;-</span> <span class="fu">ANOVA_design</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-label="2"></a>  <span class="at">design =</span> <span class="st">"5b"</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-label="3"></a>  <span class="at">n =</span> <span class="dv">80</span>,               <span class="co"># doubled from 40</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-label="4"></a>  <span class="at">mu =</span> group_means,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-label="5"></a>  <span class="at">sd =</span> pooled_sd,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-label="6"></a>  <span class="at">labelnames =</span> <span class="fu">c</span>(<span class="st">"Stage"</span>, <span class="st">"S0"</span>, <span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>, <span class="st">"S4"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-label="7"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW2_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>power_double <span class="ot">&lt;-</span> <span class="fu">ANOVA_power</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-label="2"></a>  design_double,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-label="3"></a>  <span class="at">alpha_level =</span> <span class="fl">0.05</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-label="4"></a>  <span class="at">nsims =</span> <span class="dv">1000</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-label="5"></a>  <span class="at">seed =</span> <span class="dv">7272</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-label="6"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2796
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  25.9      0.2043
+p_Stage_S0_Stage_S2  86.7      0.4908
+p_Stage_S0_Stage_S3 100.0      1.2487
+p_Stage_S0_Stage_S4 100.0      1.5976
+p_Stage_S1_Stage_S2  42.5      0.2876
+p_Stage_S1_Stage_S3 100.0      1.0477
+p_Stage_S1_Stage_S4 100.0      1.3969
+p_Stage_S2_Stage_S3  99.5      0.7580
+p_Stage_S2_Stage_S4 100.0      1.1060
+p_Stage_S3_Stage_S4  57.5      0.3486</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-label="1"></a>power_double</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Power and Effect sizes for ANOVA tests
+            power effect_size
+anova_Stage   100      0.2796
+
+Power and Effect sizes for pairwise comparisons (t-tests)
+                    power effect_size
+p_Stage_S0_Stage_S1  25.9      0.2043
+p_Stage_S0_Stage_S2  86.7      0.4908
+p_Stage_S0_Stage_S3 100.0      1.2487
+p_Stage_S0_Stage_S4 100.0      1.5976
+p_Stage_S1_Stage_S2  42.5      0.2876
+p_Stage_S1_Stage_S3 100.0      1.0477
+p_Stage_S1_Stage_S4 100.0      1.3969
+p_Stage_S2_Stage_S3  99.5      0.7580
+p_Stage_S2_Stage_S4 100.0      1.1060
+p_Stage_S3_Stage_S4  57.5      0.3486</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 </section>
 <section id="question-3-an-application" class="level1" data-number="3">

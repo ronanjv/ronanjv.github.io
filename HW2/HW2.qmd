@@ -400,9 +400,49 @@ Using PET imaging, the researchers measured age-induced inflammatory glucose hyp
 ## Part a
 State the null ($H_0$) and alternative ($H_a$) hypotheses for the omnibus test.
 
+**Solution**
+
+$H_0$: $\mu_{2M} = \mu_{6M} = \mu_{16M}$ (control) $= \mu_{16M}$
+
+$H_a$: at least one differs from the others.
+
 
 ## Part b
 Perform some exploratory data analysis to provide empirical information about the researchers question.
+
+```{r}
+library(tidyverse)
+library(knitr)
+
+suv_data = tibble(
+  group = rep(c("2M", "6M", "16M", "16M_Tx"), each = 3),
+  suvmax = c(1.48969, 1.30168, 1.30620,
+             4.36000, 4.28807, 3.64184,
+             7.30182, 7.12416, 8.28764,
+             4.69304, 2.51326, 2.38019)
+) |>
+  mutate(group = factor(group, levels = c("2M", "6M", "16M", "16M_Tx")))
+
+suv_data |>
+  group_by(group) |>
+  summarize(
+    n = n(),
+    mean = mean(suvmax),
+    median = median(suvmax),
+    sd = sd(suvmax),
+    min = min(suvmax),
+    max = max(suvmax)
+  ) |>
+  kable(digits = 2, caption = "SUVmax by Age and Treatment Group")
+```
+```{r}
+ggplot(suv_data, aes(x = suvmax, y = group)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(height = 0.05, size = 2, alpha = 0.7) +
+  theme_bw() +
+  labs(x = "SUVmax", y = "Group",
+       title = "SUVmax by age and treatment group")
+```
 
 ## Part c
 Perform and report the results of the omnibus test. Make sure to evaluate the conditions for using the method you choose.
