@@ -187,10 +187,7 @@ num_df = groups - 1                     # numerator df = 4
 den_df = groups * per_group - groups    # denominator df = 145
 ncp_val = groups * per_group * eff_f^2  # non-centrality parameter = 9.375
 
-crit_val = qf(0.95, num_df, den_df)     # rejection threshold at alpha = 0.05
-
-achieved_power = 1 - pf(crit_val, num_df, den_df, ncp = ncp_val)
-achieved_power
+crit_val = qf(0.95, num_df, den_df)
 
 # --- Graphical display ---
 plot_dat = tibble(fval = seq(0, 15, length.out = 1000)) |>
@@ -284,7 +281,7 @@ Suppose the researcher wanted to perform a follow-up test where they want to ens
 \end{align*}
 
 **Solution**
-The sample size calculated in part a would only result in a power or 70%. Using a while loop, we are able to calculate that the adequate number of observations for a power of 80% would be 315 per group.
+The sample size calculated in part a would only result in a power of 70%. Using a while loop, we are able to calculate that the adequate number of observations for a power of 80% would be 315 per group.
 ```{r}
 library(PMCMRplus)
 PMCMRplus::power.tukey.test(
@@ -328,6 +325,7 @@ Compute the power of the researcher's design (part a) using `Superpower::ANOVA_p
 **Note**: This code can take a minute. You may want to set `cache: true` in your `R` chunk yaml header. You will also see more power because the actual effect size was 0.55.
 
 **Solution**
+If the researchers wanted adequate power for all pairwise comparisons, the required sample size would increase substantially. Instead of 40 observations per group as calculated in Part A, they would need 315 observations per group based on the Tukey power calculation in Part C. Doubling the sample size would not provide at least 80% power for all pairwise comparisons. Although the larger group would have more than the 315 observations per group identified in Part C, the smaller group would only have 270 observations. Thus, the sample size would still be insufficient to achieve 80% power for all pairwise comparisons. 
 ```{r}
 #| cache: true
 library(Superpower)
@@ -447,9 +445,33 @@ ggplot(suv_data, aes(x = suvmax, y = group)) +
 ## Part c
 Perform and report the results of the omnibus test. Make sure to evaluate the conditions for using the method you choose.
 
+**Solution**
+We cannot assume normality as there is only 3 observations per group, although the number of observations per group is the same. Because the variances are not equal, I used a welch's ANOVA test as opposed to a standard ANOVA. We can see statistically discernable support for the alternative as the p value is 0.000685 < 0.05, meaning at least one of the groups is different.
+
+```{r}
+library(effectsize)
+
+welch_result = oneway.test(suvmax ~ group, data = suv_data, var.equal = FALSE)
+welch_result
+
+omega_squared(welch_result)
+```
+
 ## Part d
 Conduct post-hoc pairwise comparisons to determine if age-induced inflammatory glucose hypermetabolism increase with age and whether low-dose nicotine reduces age-induced inflammatory glucose hypermetabolism. 
+
+**Solution**
+```{r}
+library(rstatix)
+library(knitr)
+
+games_howell_result = games_howell_test(suv_data, suvmax ~ group)
+
+games_howell_result |>
+  kable(digits = 4, caption = "Games-Howell Pairwise Comparisons for SUVmax")
+```
 
 ## Part e
 Write a short paragraph directly addressing the researcher's hypothesis using your work in (a)-(d).
 
+Overall, this analysis supports the researchers' hypothesis. Since the group variances weren't equal, I used Welch's ANOVA for the omnibus test, and it showed a significant difference in SUVmax across the four groups (F = 98.5, p = 0.00068, ω² = 0.97). This means age and/or nicotine treatment are affecting glucose hypermetabolism in the heart. Looking at the Games-Howell pairwise comparisons, SUVmax goes up significantly with age in the control mice: 2M vs 6M (p = 0.012), 6M vs 16M (p = 0.008), and 2M vs 16M (p = 0.007). So age-induced inflammatory glucose hypermetabolism really does increase over the mouse lifespan, like the researchers expected. The more interesting part is the treatment group. SUVmax in the 16-month treated mice was significantly lower than in the 16-month untreated mice (p = 0.043), and wasn't significantly different from the 2-month (p = 0.308) or 6-month (p = 0.698) groups.
