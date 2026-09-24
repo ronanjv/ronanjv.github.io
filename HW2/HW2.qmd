@@ -447,8 +447,22 @@ ggplot(suv_data, aes(x = suvmax, y = group)) +
 ## Part c
 Perform and report the results of the omnibus test. Make sure to evaluate the conditions for using the method you choose.
 
+**Solution**
+We cannot assume normality as there is only 3 observations per group, although the number of observations per group is the same. Because the variances are not equal, I used a welch's ANOVA test as opposed to a standard ANOVA. We can see statistically discernable support for the alternative as the p value is 0.000685 < 0.05, meaning at least one of the groups is different.
+
+```{r}
+library(effectsize)
+
+welch_result = oneway.test(suvmax ~ group, data = suv_data, var.equal = FALSE)
+welch_result
+
+omega_squared(welch_result)
+```
+
 ## Part d
 Conduct post-hoc pairwise comparisons to determine if age-induced inflammatory glucose hypermetabolism increase with age and whether low-dose nicotine reduces age-induced inflammatory glucose hypermetabolism. 
+
+**Solution**
 
 ## Part e
 Write a short paragraph directly addressing the researcher's hypothesis using your work in (a)-(d).
