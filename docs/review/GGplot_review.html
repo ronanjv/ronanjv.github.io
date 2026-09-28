@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Unit 2: Tidyverse &amp; Ggplot Review – Portfolio</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -65,16 +71,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../images/ColgateC.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7b1b06e26e1e2798ccde3208f86b5bbd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1bdbca75b362e6c5a8c09207907ff998.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -116,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../review/GGplot_review.html">Unit 2: Tidyverse &amp; Ggplot Review</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Unit 2: Tidyverse &amp; Ggplot Review</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -127,72 +134,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="../">Portfolio</a> 
-    </div>
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../images/ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><i class="bi bi-house" role="img">
+</i> 
  <span class="menu-text">Home</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../about.html" class="sidebar-item-text sidebar-link">
+  <a href="../about.html" class="sidebar-item-text sidebar-link"><i class="bi bi-person" role="img">
+</i> 
  <span class="menu-text">About</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Computational Statistics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab2/Lab2WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Two – Basic Tasks in R</span></a>
+ <span class="menu-text">Lab 2: Objects in R</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab3/Lab3WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Three – Matrices and Data Frames in R</span></a>
+ <span class="menu-text">Lab 3: Objects in R 2</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab4/Lab4WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Four – Programming in R</span></a>
+ <span class="menu-text">Lab 4: Programming</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab5/Lab5WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Five-Six – Data Wrangling in R</span></a>
+ <span class="menu-text">Lab 5: Data Wrangling</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab8/Lab8WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Eight – Probability</span></a>
+ <span class="menu-text">Lab 8: Probability</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab10/Lab10WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Ten – Point Estimation</span></a>
+ <span class="menu-text">Lab 10: Point Estimation</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lab11/Lab11WriteUp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lab Eleven – Point Estimation and Resampling</span></a>
+ <span class="menu-text">Lab 11: Estimation</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Data Analysis I</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../review/GGplot_review.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Unit 2: Tidyverse &amp; Ggplot Review</span></a>
+  <a href="../HW1/HW1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 1 – One Sample Inference</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../HW2/HW2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 2 – k Sample Inference</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -295,22 +333,22 @@ Tidyverse notation is easier to read and write compared to base R. Using pipes, 
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">set.seed</span>(<span class="dv">61</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="at">var1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
-<span id="cb1-4"><a href="#cb1-4"></a>  <span class="at">var2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">61</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>  <span class="at">var1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>  <span class="at">var2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>First you tell your plot what data to use. I added theme_bw() and labs() to clean up the graph by making it black and white with custom axis labels:</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2)) <span class="sc">+</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"variable1 data"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>       <span class="at">y =</span> <span class="st">"variable2 data"</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2)) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"variable1 data"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>       <span class="at">y =</span> <span class="st">"variable2 data"</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -325,11 +363,11 @@ Tidyverse notation is easier to read and write compared to base R. Using pipes, 
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2)) <span class="sc">+</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"variable1 data"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>       <span class="at">y =</span> <span class="st">"variable2 data"</span>) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> var1, <span class="at">y =</span> var2)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"variable1 data"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>       <span class="at">y =</span> <span class="st">"variable2 data"</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -380,28 +418,28 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">set.seed</span>(<span class="dv">61</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>n <span class="ot">=</span> <span class="dv">200</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    <span class="co"># One quantitative variable</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>    <span class="at">score =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">75</span>, <span class="at">sd =</span> <span class="dv">10</span>),</span>
-<span id="cb4-7"><a href="#cb4-7"></a>  </span>
-<span id="cb4-8"><a href="#cb4-8"></a>    <span class="co"># Two quantitative variables</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>    <span class="at">study_hours =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>),</span>
-<span id="cb4-10"><a href="#cb4-10"></a>    <span class="at">exam_grade  =</span> <span class="dv">50</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="dv">5</span>),</span>
-<span id="cb4-11"><a href="#cb4-11"></a>  </span>
-<span id="cb4-12"><a href="#cb4-12"></a>    <span class="co"># One categorical variable</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a>    <span class="at">genre =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Rock"</span>, <span class="st">"Pop"</span>, <span class="st">"Jazz"</span>, <span class="st">"Classical"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-14"><a href="#cb4-14"></a>  </span>
-<span id="cb4-15"><a href="#cb4-15"></a>    <span class="co"># Two categorical variables</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>    <span class="at">grade_level =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Freshman"</span>, <span class="st">"Sophomore"</span>, <span class="st">"Junior"</span>, <span class="st">"Senior"</span>), n,</span>
-<span id="cb4-17"><a href="#cb4-17"></a>                           <span class="at">replace =</span> <span class="cn">TRUE</span>), <span class="at">pass_fail   =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Pass"</span>, <span class="st">"Fail"</span>),</span>
-<span id="cb4-18"><a href="#cb4-18"></a>                           n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.75</span>, <span class="fl">0.25</span>)),</span>
-<span id="cb4-19"><a href="#cb4-19"></a></span>
-<span id="cb4-20"><a href="#cb4-20"></a>    <span class="co"># One categorical variable and one quantitative variable</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a>    <span class="at">subject =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Math"</span>, <span class="st">"English"</span>, <span class="st">"Science"</span>, <span class="st">"History"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-22"><a href="#cb4-22"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">61</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>n <span class="ot">=</span> <span class="dv">200</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>data <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>    <span class="co"># One quantitative variable</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>    <span class="at">score =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">75</span>, <span class="at">sd =</span> <span class="dv">10</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>  </span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>    <span class="co"># Two quantitative variables</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>    <span class="at">study_hours =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a>    <span class="at">exam_grade  =</span> <span class="dv">50</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="dv">5</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-label="11"></a>  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-label="12"></a>    <span class="co"># One categorical variable</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-label="13"></a>    <span class="at">genre =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Rock"</span>, <span class="st">"Pop"</span>, <span class="st">"Jazz"</span>, <span class="st">"Classical"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15" aria-label="15"></a>    <span class="co"># Two categorical variables</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-label="16"></a>    <span class="at">grade_level =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Freshman"</span>, <span class="st">"Sophomore"</span>, <span class="st">"Junior"</span>, <span class="st">"Senior"</span>), n,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-label="17"></a>                           <span class="at">replace =</span> <span class="cn">TRUE</span>), <span class="at">pass_fail   =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Pass"</span>, <span class="st">"Fail"</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-label="18"></a>                           n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.75</span>, <span class="fl">0.25</span>)),</span>
+<span id="cb4-19"><a href="#cb4-19" aria-label="19"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-label="20"></a>    <span class="co"># One categorical variable and one quantitative variable</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-label="21"></a>    <span class="at">subject =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Math"</span>, <span class="st">"English"</span>, <span class="st">"Science"</span>, <span class="st">"History"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-label="22"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Now let’s make the graphs in order.</p>
@@ -409,11 +447,11 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Bar Plot</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> genre)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Genre"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="co"># Bar Plot</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> genre)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a><span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"lightblue"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Genre"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-label="5"></a><span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -429,11 +467,11 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Histogram</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score)) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"pink"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="co"># Histogram</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"pink"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -448,12 +486,12 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Violin Plot and box plot overlay</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> score)) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">geom_violin</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="co"># Violin Plot and box plot overlay</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> score)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>  <span class="fu">geom_violin</span>(<span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -469,11 +507,11 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Grouped Bar Plot</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> grade_level, <span class="at">fill =</span> pass_fail)) <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Grade Level"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, <span class="at">fill =</span> <span class="st">"Result"</span>) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a><span class="co"># Grouped Bar Plot</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> grade_level, <span class="at">fill =</span> pass_fail)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Grade Level"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, <span class="at">fill =</span> <span class="st">"Result"</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -489,11 +527,11 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> study_hours, <span class="at">y =</span> exam_grade)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Study Hours"</span>, <span class="at">y =</span> <span class="st">"Exam Grade"</span>) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>    <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> study_hours, <span class="at">y =</span> exam_grade)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>    <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Study Hours"</span>, <span class="at">y =</span> <span class="st">"Exam Grade"</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -509,11 +547,11 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Grouped Histogram</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a><span class="co"># Grouped Histogram</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-label="5"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -528,12 +566,12 @@ Go to plots are the mosaic, grouped bar, and grouped doughnut plots.</p>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Grouped Violin Plot</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> subject, <span class="at">y =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Subject"</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="co"># Grouped Violin Plot</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> subject, <span class="at">y =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>  <span class="fu">geom_violin</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Subject"</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -554,11 +592,11 @@ Facet Wrap can be used to put graphs next to and on top of eachother. Another op
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">fill =</span> subject)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-label="3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Score"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-label="5"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -574,18 +612,18 @@ Geom_ribbon() allows us to highlight under a portion of the graph. For example, 
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>y <span class="ot">=</span> <span class="fu">dnorm</span>(x)</span>
-<span id="cb13-3"><a href="#cb13-3"></a>cutoff <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="fl">0.80</span>)</span>
-<span id="cb13-4"><a href="#cb13-4"></a></span>
-<span id="cb13-5"><a href="#cb13-5"></a>ribbon_data <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
-<span id="cb13-6"><a href="#cb13-6"></a></span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
-<span id="cb13-10"><a href="#cb13-10"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb13-11"><a href="#cb13-11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb13-12"><a href="#cb13-12"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a>y <span class="ot">=</span> <span class="fu">dnorm</span>(x)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a>cutoff <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="fl">0.80</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a>ribbon_data <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-label="7"></a><span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-label="8"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-label="9"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-label="10"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-label="11"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-label="12"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -601,38 +639,38 @@ Using alpha values, we can make the color of our graph look more transparent.</p
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>cutoff <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">0</span>)</span>
-<span id="cb14-3"><a href="#cb14-3"></a></span>
-<span id="cb14-4"><a href="#cb14-4"></a>p1 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
-<span id="cb14-7"><a href="#cb14-7"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb14-10"><a href="#cb14-10"></a></span>
-<span id="cb14-11"><a href="#cb14-11"></a>p2 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb14-12"><a href="#cb14-12"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb14-13"><a href="#cb14-13"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
-<span id="cb14-14"><a href="#cb14-14"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb14-15"><a href="#cb14-15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb14-16"><a href="#cb14-16"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb14-17"><a href="#cb14-17"></a></span>
-<span id="cb14-18"><a href="#cb14-18"></a>p3 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb14-19"><a href="#cb14-19"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb14-20"><a href="#cb14-20"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
-<span id="cb14-21"><a href="#cb14-21"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb14-22"><a href="#cb14-22"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb14-23"><a href="#cb14-23"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb14-24"><a href="#cb14-24"></a></span>
-<span id="cb14-25"><a href="#cb14-25"></a>p4 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb14-26"><a href="#cb14-26"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb14-27"><a href="#cb14-27"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
-<span id="cb14-28"><a href="#cb14-28"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb14-29"><a href="#cb14-29"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
-<span id="cb14-30"><a href="#cb14-30"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb14-31"><a href="#cb14-31"></a></span>
-<span id="cb14-32"><a href="#cb14-32"></a>(p1 <span class="sc">|</span> p2) <span class="sc">/</span> (p3 <span class="sc">+</span> p4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-label="2"></a>cutoff <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">0</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-label="3"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-label="4"></a>p1 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-label="5"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-label="6"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-label="7"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-label="8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-label="9"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-label="10"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-label="11"></a>p2 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-label="12"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-label="13"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-label="14"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-label="15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-label="16"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-17"><a href="#cb14-17" aria-label="17"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-label="18"></a>p3 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-label="19"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-label="20"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-label="21"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-label="22"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-label="23"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-24"><a href="#cb14-24" aria-label="24"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-label="25"></a>p4 <span class="ot">=</span> <span class="fu">ggplot</span>(ribbon_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-label="26"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-label="27"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">subset</span>(ribbon_data, x <span class="sc">&gt;=</span> cutoff),</span>
+<span id="cb14-28"><a href="#cb14-28" aria-label="28"></a>              <span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> y), <span class="at">fill =</span> <span class="st">"darkorchid"</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-label="29"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"X"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-label="30"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb14-31"><a href="#cb14-31" aria-label="31"></a></span>
+<span id="cb14-32"><a href="#cb14-32" aria-label="32"></a>(p1 <span class="sc">|</span> p2) <span class="sc">/</span> (p3 <span class="sc">+</span> p4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -699,13 +737,14 @@ Using alpha values, we can make the color of our graph look more transparent.</p
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
