@@ -41,6 +41,8 @@ website:
          href: HW1/HW1.qmd
        - text: "Homework 2 – k Sample Inference"
          href: HW2/HW2.qmd
+       - text: "Homework 3 – Regression"
+         href: HW3/HW3.qmd
 
 page-footer:
   left: "© 2026 Colgate University Student Portfolio"
