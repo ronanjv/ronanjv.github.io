@@ -146,6 +146,25 @@ summary(mod.q1)
 ## Part d
 Untangle and interpret the $x_3*x_4$ interaction using algebra. Use @tbl-q1d-emmeans and @fig-q1d-emmeans for context.
 
+**Solution**
+\begin{align*}
+  Y_i = \beta_3 I(x_{3i}=\text{Treat}) + \beta_4 I(x_{4i}=\text{High}) + \beta_9 (I(x_{3i}=\text{Treat}) ~\times~ I(x_{4i}=\text{High})) + C
+\end{align*}
+where C is everything else in the equation.
+
+$E(Y | \text{control, low}) = C\\
+ E(Y | \text{control, high}) = \beta_4 + C\\
+ E(Y | \text{treat, low}) = \beta_3 + C\\
+ E(Y | \text{treat, high}) = \beta_3 + \beta_4 + \beta_9 + C$
+
+ $\beta_3$: Compare Treat and Control when the condition is Low. The difference is $\beta_3$.
+
+$\beta_4$: Compare High and Low when the group is Control. The difference is $\beta_4$.
+
+$\beta_9$: The interaction tells us how much the treatment effect changes between Low and High.
+
+The interaction between $x_3$ and $x_4$ indicates that the effect of treatment on $y$ depends on whether the condition is Low or High. When the condition is Low, the estimated treatment effect is $\hat{\beta}_3=6.5116$. When the condition is High, the estimated treatment effect is $\hat{\beta}_3+\hat{\beta}_9=6.5116+15.1919=21.7035$. Therefore, the interaction coefficient $\hat{\beta}_9=15.1919$ represents the difference between these two treatment effects.
+
 ```{r}
 #| size: "scriptsize"
 library(emmeans)
@@ -186,6 +205,28 @@ ggplot(emm.q1d) +
 
 ## Part e
 Untangle and interpret the $x_5*x_6$ interaction using algebra. Use @tbl-q1e-emtrends and @fig-q1e-emtrends for context.
+
+**Solution**
+\begin{align*}
+  Y_i = \beta_5 x_{5i} + \beta_6 I( x_{6i}=\text{Group2}) +
+        & \beta_{10} (x_{5i} ~\times~ I(x_{6i}=\text{Group2})) + C
+\end{align*}
+where C is everything else in the equation.
+
+For Group1, $(I(x_6=\text{Group2})=0)$, so
+
+$E(Y\mid x_6=\text{Group1})=\beta_5x_5+C.$
+
+The slope of $x_5$ for Group1 is therefore $\beta_5$.
+
+For Group2, $(I(x_6=\text{Group2})=1)$, so
+
+$E(Y\mid x_6=\text{Group2})
+=\beta_5x_5+\beta_6+\beta_{10}x_5+C\
+=(\beta_5+\beta_{10})x_5+\beta_6+C.$
+
+
+The slope of $x_5$ for Group 2 is therefore $\beta_5+\beta_{10}$. The interaction coefficient $\beta_{10}$ represents the difference between the two slopes. Using Table 2, this difference is $9.4309-2.4835=6.9474$. Thus, the positive interaction indicates that the relationship between $x_5$ and y is approximately 6.95 units stronger for Group 2 than for Group 1. Figure 2 supports this interpretation because the Group 2 line is steeper than the Group 1 line.
 
 ```{r}
 #| size: "scriptsize"
