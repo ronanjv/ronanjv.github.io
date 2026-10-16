@@ -271,6 +271,25 @@ ggplot(emm.q1e) +
 ## Part f
 Untangle and interpret the $x_7*x_8$ interaction using algebra. Use @tbl-q1f-emtrends-x7 and @tbl-q1f-emtrends-x8 for context.
 
+**Solution**
+\begin{align*}
+  Y_i = \beta_7 x_{7i} + \beta_8 x_{8i} + \beta_{11} (x_{7i} ~\times~ x_{8i}) + C
+\end{align*}
+
+Grouping the terms involving $x_7$, we get
+
+$Y=x_7(\beta_7+\beta_{11}x_8)+\beta_8x_8+C.$
+
+Therefore, the effect of $x_7$ depends on $x_8$, through the coefficient $\beta_7+\beta_{11}x_8$.
+
+Similarly, grouping the terms involving $x_8$, we get
+
+$Y=x_8(\beta_8+\beta_{11}x_7)+\beta_7x_7+C.$
+
+Therefore, the effect of $x_8$ depends on $x_7$, through the coefficient $\beta_8+\beta_{11}x_7$.
+
+Tables 3 and 4 support this interpretation. In Table 3, the estimated slope of $x_7$ increases from 7.9230 to 11.5027 as $x_8$ increases. In Table 4, the estimated slope of $x_8$ increases from 6.8569 to 10.2716 as $x_7$ increases. These results indicate a positive interaction: as either variable increases, the effect of the other variable on Y becomes stronger.
+
 
 
 ```{r}
