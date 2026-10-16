@@ -357,6 +357,24 @@ johnson_neyman(mod.q1, pred = x8, modx = x7, control.fdr = T)
 Standardize the continuous data and refit the regression model. Redo part f. What do you notice about the coefficient estimates and why does this make the untangling process easier? 
 
 **Solution:** First, we fit the regression model using `lm()`.
+
+After standardizing the continuous variables, the interaction can be untangled using the same algebra as in part f. The relevant part of the model is
+
+$Y=\beta_7z_7+\beta_8z_8+\beta_11z_7z_8+C$
+
+Grouping the terms involving $z_7$, we get
+
+$Y=z_7(\beta_7+\beta_{11}z_8)+\beta_8z_8+C$
+
+Therefore, the effect of $z_7$ is $\beta_7+\beta_{11}z_8$. 
+
+Similarly, grouping the terms involving $z_8$, we get
+
+$Y=z_8(\beta_8+\beta_{11}z_7)+\beta_7z_7+C$
+
+Therefore, the effect of $z_8$ is $\beta_8+\beta_{11}z_7$.
+
+Standardizing makes the interaction easier to untangle because a value of $0$ represents the mean of each variable. Thus, the coefficients $\beta_7$ and $\beta_8$ represent the effects of their respective variables when the other variable is at its mean. The interaction coefficient represents how the effect changes as the other variable increases by one standard deviation.
 ```{r}
 #| size: "scriptsize"
 # Standardize Data
@@ -428,10 +446,38 @@ Compute the estimates we derived using calculus in lecture 16:
 \widehat{\beta}_1 &= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}
 
+**Solution**
+```{r}
+x = c(25, -25, -75, -125, -175)
+y = c(81.93, 76.63, 63.23, 32.13, 12.83)
+
+xbar = mean(x)
+ybar = mean(y)
+
+beta1 = sum((x - xbar) * (y - ybar)) / sum((x - xbar)^2)
+
+beta0 = ybar - beta1 * xbar
+
+beta0
+beta1
+```
+
 ## Part b
 Compute the estimates we derived using linear algebra in lecture 16: 
 $$\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y}.$$
 **Hint:** Run `?matrix()` in `R` for a quick reminder about how to create a matrix. 
+
+**Solution**
+```{r}
+x = c(25, -25, -75, -125, -175)
+y = c(81.93, 76.63, 63.23, 32.13, 12.83)
+
+X = matrix(c(rep(1, length(x)), x), ncol = 2)
+
+beta_hat = solve(t(X) %*% X) %*% t(X) %*% y
+
+beta_hat
+```
 
 
 
@@ -439,8 +485,67 @@ $$\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf
 Compute the maximum likelihood estimates using `optim()` in `R` as described in lecture 16:
 $$\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).$$
 
+**Solution**
+```{r}
+df <- data.frame(
+  x1 = c(25, -25, -75, -125, -175),
+  y1 = c(81.93, 76.63, 63.23, 32.13, 12.83)
+)
+
+neg_log = function(par, data, mle = FALSE) {
+  b0 = par[1]
+  b1 = par[2]
+  sigma = par[3]
+
+  x = data$x1
+  y = data$y1
+
+  ll = sum(dnorm(y - (b0 + b1*x), 0, sigma, log = TRUE))
+  ifelse(mle, -ll, ll)
+}
+
+# Find the maximum likelihood estimates
+mle = optim(
+  fn = neg_log,
+  par = c(mean(df$y1), 0, sd(df$y1)),
+  data = df,
+  mle = TRUE
+)
+
+# Display each estimate
+(mle$par[1])
+(mle$par[2])
+```
+
 ## Part d
 Fit the model using `lm()` and plot the resulting model. Compare to the results from parts (a) through (c). 
+
+**Solution**
+The regression estimates from lm() match the estimates calculated using calculus in part (a) and linear algebra in part (b). All three methods produce an intercept of approximately 80.755 and a slope of approximately 0.3654. The maximum likelihood estimates from part (c) also produce approximately the same values.
+
+```{r}
+mod = lm(y1 ~ x1, data = df)
+summary(mod)
+
+
+ggplot(df, aes(x = x1, y = y1)) +
+  geom_point(size = 2, color = "black") +
+  geom_smooth(method = "lm", se = TRUE, color = "red",
+              fill = "pink", linewidth = 1.2) +
+  labs(
+    title = "Effect of Temperature on Tensile Strength",
+    subtitle = "Linear regression model",
+    x = "Temperature (°C)",
+    y = "Mean Tensile Strength (MPa)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(color = "gray40"),
+    panel.grid.minor = element_blank()
+  )
+```
+
 
 # Question 3
 @Bracht16 evaluate MFAP4 as a biomarker for severity of fibrosis in hepatitic C patients. 
