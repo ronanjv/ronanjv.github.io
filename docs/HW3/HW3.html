@@ -414,6 +414,8 @@ window.Quarto = {
 <section id="part-b" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">1.2</span> Part b</h2>
 <p>Conduct a residual and outlier analysis.</p>
+<p><strong>Solution</strong> The first 2 graphs show the residual analysis for the regression model. The Q-Q plot follows the expected pattern pretty well in the middle, close to the gaussian curve, but deviated a little in the middle. The residual versus fitted plot shows that the residuals are scattered around zero without a clear nonliniear patter. It is reasonable to assume that variance is approximately constant.</p>
+<p>The next 4 graphs show outlier analysis. Although we can see several points have relatively high leverage, the Cook’s distance values show us that they are below the threshold of suggesting strong influence. The DFFITS plot identifies a few observations that exceed the reference thresholds, indicating potential influence on their fitted values and the studentized residual plot shows a number of potential outliers, including 2 observations with residuals beyond just a moderate outlier.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -447,20 +449,70 @@ window.Quarto = {
 <section id="part-c" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">1.3</span> Part c</h2>
 <p>Interpret the intercept, the coefficients on <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>.</p>
-</section>
-<section id="part-d" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">1.4</span> Part d</h2>
-<p>Untangle and interpret the <span class="math inline">\(x_3*x_4\)</span> interaction using algebra. Use <a href="#tbl-q1d-emmeans" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-q1d-emmeans" class="quarto-xref">Figure&nbsp;1</a> for context.</p>
+<p><strong>Solution</strong> intercept: The estimated intercept is 8.89. This is the predicted value of y when all other predictors are equal to zero and the categorical predictors are at their reference levels. coefficient on <span class="math inline">\(x_1\)</span>: The estimated coefficient is 2.1. Holding all other variables constant, a 1 unit increase in <span class="math inline">\(x_1\)</span> leads to an estimated increase of 2.1 units in y. coefficient on <span class="math inline">\(x_2\)</span>: The estimated coefficient is 10.02 with category A as the reference level. Holding all other variables constant, observations in category B and predicted to have y values approximately 10.02 units higher than observations in category A.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a>emm.q1d <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(mod.q1, <span class="sc">~</span>x3<span class="sc">*</span>x4) <span class="sc">|&gt;</span> <span class="co"># Don't average across levels: use |x2*x6</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Mean"</span>  <span class="ot">=</span> <span class="st">"emmean"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="fu">summary</span>(mod.q1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x2 + x3 * x4 + x5 * x6 + x7 * x8, data = dat.q1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-42.979  -9.395  -1.054  10.150  42.305 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     8.89653   26.94440   0.330 0.741554    
+x1              2.13546    0.08944  23.876  &lt; 2e-16 ***
+x2B            10.02851    1.79959   5.573 6.77e-08 ***
+x3Treat         6.51162    2.66290   2.445 0.015198 *  
+x4High          3.52182    2.53119   1.391 0.165413    
+x5              2.48350    1.29418   1.919 0.056183 .  
+x6Group2        4.98495    1.80989   2.754 0.006336 ** 
+x7              0.37174    2.61136   0.142 0.886920    
+x8             -0.92790    2.60484  -0.356 0.721990    
+x3Treat:x4High 15.19194    3.66722   4.143 4.77e-05 ***
+x5:x6Group2     6.94743    1.85460   3.746 0.000225 ***
+x7:x8           0.92871    0.25937   3.581 0.000415 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 14.03 on 238 degrees of freedom
+Multiple R-squared:  0.8562,    Adjusted R-squared:  0.8495 
+F-statistic: 128.8 on 11 and 238 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="part-d" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">1.4</span> Part d</h2>
+<p>Untangle and interpret the <span class="math inline">\(x_3*x_4\)</span> interaction using algebra. Use <a href="#tbl-q1d-emmeans" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-q1d-emmeans" class="quarto-xref">Figure&nbsp;1</a> for context.</p>
+<p><strong>Solution</strong> <span class="math display">\[\begin{align*}
+  Y_i = \beta_3 I(x_{3i}=\text{Treat}) + \beta_4 I(x_{4i}=\text{High}) + \beta_9 (I(x_{3i}=\text{Treat}) ~\times~ I(x_{4i}=\text{High})) + C
+\end{align*}\]</span> where C is everything else in the equation.</p>
+<p><span class="math inline">\(E(Y | \text{control, low}) = C\\
+E(Y | \text{control, high}) = \beta_4 + C\\
+E(Y | \text{treat, low}) = \beta_3 + C\\
+E(Y | \text{treat, high}) = \beta_3 + \beta_4 + \beta_9 + C\)</span></p>
+<p><span class="math inline">\(\beta_3\)</span>: Compare Treat and Control when the condition is Low. The difference is <span class="math inline">\(\beta_3\)</span>.</p>
+<p><span class="math inline">\(\beta_4\)</span>: Compare High and Low when the group is Control. The difference is <span class="math inline">\(\beta_4\)</span>.</p>
+<p><span class="math inline">\(\beta_9\)</span>: The interaction tells us how much the treatment effect changes between Low and High.</p>
+<p>The interaction between <span class="math inline">\(x_3\)</span> and <span class="math inline">\(x_4\)</span> indicates that the effect of treatment on <span class="math inline">\(y\)</span> depends on whether the condition is Low or High. When the condition is Low, the estimated treatment effect is <span class="math inline">\(\hat{\beta}_3=6.5116\)</span>. When the condition is High, the estimated treatment effect is <span class="math inline">\(\hat{\beta}_3+\hat{\beta}_9=6.5116+15.1919=21.7035\)</span>. Therefore, the interaction coefficient <span class="math inline">\(\hat{\beta}_9=15.1919\)</span> represents the difference between these two treatment effects.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>emm.q1d <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(mod.q1, <span class="sc">~</span>x3<span class="sc">*</span>x4) <span class="sc">|&gt;</span> <span class="co"># Don't average across levels: use |x2*x6</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Mean"</span>  <span class="ot">=</span> <span class="st">"emmean"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -534,16 +586,16 @@ Table&nbsp;1: Estimated marginal means for the model in Question 1.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>emm.q1d <span class="ot">&lt;-</span> emm.q1d <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">Observation =</span> <span class="fu">paste</span>(<span class="st">"(x3="</span>, x3, <span class="st">", "</span>, <span class="st">"x4="</span>, x4, <span class="st">")"</span>, <span class="at">sep=</span><span class="st">""</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a><span class="fu">ggplot</span>(emm.q1d) <span class="sc">+</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Mean, <span class="at">y=</span>Observation))<span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">y=</span>Observation,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>                    <span class="at">xmin=</span>Lower, <span class="at">xmax=</span>Upper),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>                <span class="at">width =</span> <span class="fl">0.25</span>)<span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>  <span class="co"># facet_wrap(~x2*x6)+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-label="9"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-label="10"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated Mean of Y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>emm.q1d <span class="ot">&lt;-</span> emm.q1d <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>  <span class="fu">mutate</span>(<span class="at">Observation =</span> <span class="fu">paste</span>(<span class="st">"(x3="</span>, x3, <span class="st">", "</span>, <span class="st">"x4="</span>, x4, <span class="st">")"</span>, <span class="at">sep=</span><span class="st">""</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a><span class="fu">ggplot</span>(emm.q1d) <span class="sc">+</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Mean, <span class="at">y=</span>Observation))<span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">y=</span>Observation,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a>                    <span class="at">xmin=</span>Lower, <span class="at">xmax=</span>Upper),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-label="7"></a>                <span class="at">width =</span> <span class="fl">0.25</span>)<span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-label="8"></a>  <span class="co"># facet_wrap(~x2*x6)+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-label="9"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-label="10"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated Mean of Y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-q1d-emmeans" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -563,16 +615,28 @@ Figure&nbsp;1: Estimated marginal means for the model in Question 1.
 <section id="part-e" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="part-e"><span class="header-section-number">1.5</span> Part e</h2>
 <p>Untangle and interpret the <span class="math inline">\(x_5*x_6\)</span> interaction using algebra. Use <a href="#tbl-q1e-emtrends" class="quarto-xref">Table&nbsp;2</a> and <a href="#fig-q1e-emtrends" class="quarto-xref">Figure&nbsp;2</a> for context.</p>
+<p><strong>Solution</strong> <span class="math display">\[\begin{align*}
+  Y_i = \beta_5 x_{5i} + \beta_6 I( x_{6i}=\text{Group2}) +
+        &amp; \beta_{10} (x_{5i} ~\times~ I(x_{6i}=\text{Group2})) + C
+\end{align*}\]</span> where C is everything else in the equation.</p>
+<p>For Group1, <span class="math inline">\((I(x_6=\text{Group2})=0)\)</span>, so</p>
+<p><span class="math inline">\(E(Y\mid x_6=\text{Group1})=\beta_5x_5+C.\)</span></p>
+<p>The slope of <span class="math inline">\(x_5\)</span> for Group1 is therefore <span class="math inline">\(\beta_5\)</span>.</p>
+<p>For Group2, <span class="math inline">\((I(x_6=\text{Group2})=1)\)</span>, so</p>
+<p><span class="math inline">\(E(Y\mid x_6=\text{Group2})
+=\beta_5x_5+\beta_6+\beta_{10}x_5+C\
+=(\beta_5+\beta_{10})x_5+\beta_6+C.\)</span></p>
+<p>The slope of <span class="math inline">\(x_5\)</span> for Group 2 is therefore <span class="math inline">\(\beta_5+\beta_{10}\)</span>. The interaction coefficient <span class="math inline">\(\beta_{10}\)</span> represents the difference between the two slopes. Using Table 2, this difference is <span class="math inline">\(9.4309-2.4835=6.9474\)</span>. Thus, the positive interaction indicates that the relationship between <span class="math inline">\(x_5\)</span> and y is approximately 6.95 units stronger for Group 2 than for Group 1. Figure 2 supports this interpretation because the Group 2 line is steeper than the Group 1 line.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a>emm.q1e <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1, <span class="at">var=</span><span class="st">"x5"</span>, <span class="sc">~</span>x5<span class="sc">|</span>x6) <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>            <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x5.trend"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(x6, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>emm.q1e <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1, <span class="at">var=</span><span class="st">"x5"</span>, <span class="sc">~</span>x5<span class="sc">|</span>x6) <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>            <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x5.trend"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(x6, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -625,18 +689,18 @@ Table&nbsp;2: Estimated marginal trends for the model in Question 1.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>emm.q1e <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(mod.q1, <span class="sc">~</span>x5<span class="sc">*</span>x6,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x5 =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="at">length.out=</span><span class="dv">500</span>))) <span class="sc">|&gt;</span> <span class="co"># Don't average across levels: use |x2*x3*x4</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Mean"</span>  <span class="ot">=</span> <span class="st">"emmean"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-label="7"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-label="8"></a><span class="fu">ggplot</span>(emm.q1e) <span class="sc">+</span> </span>
-<span id="cb8-9"><a href="#cb8-9" aria-label="9"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x5, <span class="at">y=</span>Mean, <span class="at">color=</span>x6))<span class="sc">+</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-label="10"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x=</span>x5, <span class="at">ymin=</span>Lower, <span class="at">ymax=</span>Upper, <span class="at">fill=</span>x6), <span class="at">alpha=</span><span class="fl">0.25</span>)<span class="sc">+</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-label="11"></a>  <span class="co"># facet_wrap(~x2*x3*x4)+</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-label="12"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>emm.q1e <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(mod.q1, <span class="sc">~</span>x5<span class="sc">*</span>x6,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x5 =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="at">length.out=</span><span class="dv">500</span>))) <span class="sc">|&gt;</span> <span class="co"># Don't average across levels: use |x2*x3*x4</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>  <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Mean"</span>  <span class="ot">=</span> <span class="st">"emmean"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-label="7"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-label="8"></a><span class="fu">ggplot</span>(emm.q1e) <span class="sc">+</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-label="9"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x5, <span class="at">y=</span>Mean, <span class="at">color=</span>x6))<span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-label="10"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x=</span>x5, <span class="at">ymin=</span>Lower, <span class="at">ymax=</span>Upper, <span class="at">fill=</span>x6), <span class="at">alpha=</span><span class="fl">0.25</span>)<span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-label="11"></a>  <span class="co"># facet_wrap(~x2*x3*x4)+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-label="12"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-q1e-emtrends" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -656,17 +720,27 @@ Figure&nbsp;2: Estimated marginal trends for the model in Question 1.
 <section id="part-f" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="part-f"><span class="header-section-number">1.6</span> Part f</h2>
 <p>Untangle and interpret the <span class="math inline">\(x_7*x_8\)</span> interaction using algebra. Use <a href="#tbl-q1f-emtrends-x7" class="quarto-xref">Table&nbsp;3</a> and <a href="#tbl-q1f-emtrends-x8" class="quarto-xref">Table&nbsp;4</a> for context.</p>
+<p><strong>Solution</strong> <span class="math display">\[\begin{align*}
+  Y_i = \beta_7 x_{7i} + \beta_8 x_{8i} + \beta_{11} (x_{7i} ~\times~ x_{8i}) + C
+\end{align*}\]</span></p>
+<p>Grouping the terms involving <span class="math inline">\(x_7\)</span>, we get</p>
+<p><span class="math inline">\(Y=x_7(\beta_7+\beta_{11}x_8)+\beta_8x_8+C.\)</span></p>
+<p>Therefore, the effect of <span class="math inline">\(x_7\)</span> depends on <span class="math inline">\(x_8\)</span>, through the coefficient <span class="math inline">\(\beta_7+\beta_{11}x_8\)</span>.</p>
+<p>Similarly, grouping the terms involving <span class="math inline">\(x_8\)</span>, we get</p>
+<p><span class="math inline">\(Y=x_8(\beta_8+\beta_{11}x_7)+\beta_7x_7+C.\)</span></p>
+<p>Therefore, the effect of <span class="math inline">\(x_8\)</span> depends on <span class="math inline">\(x_7\)</span>, through the coefficient <span class="math inline">\(\beta_8+\beta_{11}x_7\)</span>.</p>
+<p>Tables 3 and 4 support this interpretation. In Table 3, the estimated slope of <span class="math inline">\(x_7\)</span> increases from 7.9230 to 11.5027 as <span class="math inline">\(x_8\)</span> increases. In Table 4, the estimated slope of <span class="math inline">\(x_8\)</span> increases from 6.8569 to 10.2716 as <span class="math inline">\(x_7\)</span> increases. These results indicate a positive interaction: as either variable increases, the effect of the other variable on Y becomes stronger.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>emm.q1f.x7 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1, <span class="at">var=</span><span class="st">"x7"</span>, <span class="sc">~</span>x7<span class="sc">|</span>x8, </span>
-<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x8 =</span> <span class="fu">mean</span>(dat.q1<span class="sc">$</span>x8) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(dat.q1<span class="sc">$</span>x8))) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x7.trend"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(x8, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>emm.q1f.x7 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1, <span class="at">var=</span><span class="st">"x7"</span>, <span class="sc">~</span>x7<span class="sc">|</span>x8, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x8 =</span> <span class="fu">mean</span>(dat.q1<span class="sc">$</span>x8) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(dat.q1<span class="sc">$</span>x8))) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x7.trend"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-label="7"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(x8, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -727,13 +801,13 @@ Table&nbsp;3: Estimated marginal trends for the model in Question 1.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>emm.q1f.x8 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1, <span class="at">var=</span><span class="st">"x8"</span>, <span class="sc">~</span>x8<span class="sc">|</span>x7, </span>
-<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x7 =</span> <span class="fu">mean</span>(dat.q1<span class="sc">$</span>x7) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(dat.q1<span class="sc">$</span>x7))) <span class="sc">|&gt;</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x8.trend"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-label="7"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(x7, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a>emm.q1f.x8 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1, <span class="at">var=</span><span class="st">"x8"</span>, <span class="sc">~</span>x8<span class="sc">|</span>x7, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x7 =</span> <span class="fu">mean</span>(dat.q1<span class="sc">$</span>x7) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>)<span class="sc">*</span><span class="fu">sd</span>(dat.q1<span class="sc">$</span>x7))) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-label="3"></a>            <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-label="4"></a>            <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x8.trend"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-label="5"></a>                   <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-label="6"></a>                   <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-label="7"></a>            dplyr<span class="sc">::</span><span class="fu">select</span>(x7, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -795,8 +869,8 @@ Table&nbsp;4: Estimated marginal trends for the model in Question 1.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="fu">library</span>(interactions)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a><span class="fu">johnson_neyman</span>(mod.q1, <span class="at">pred =</span> x7, <span class="at">modx =</span> x8, <span class="at">control.fdr =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a><span class="fu">johnson_neyman</span>(mod.q1, <span class="at">pred =</span> x7, <span class="at">modx =</span> x8, <span class="at">control.fdr =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>JOHNSON-NEYMAN INTERVAL
@@ -825,7 +899,7 @@ Figure&nbsp;3: Johnson Neyman interval for the model in Question 1.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">johnson_neyman</span>(mod.q1, <span class="at">pred =</span> x8, <span class="at">modx =</span> x7, <span class="at">control.fdr =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="fu">johnson_neyman</span>(mod.q1, <span class="at">pred =</span> x8, <span class="at">modx =</span> x7, <span class="at">control.fdr =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>JOHNSON-NEYMAN INTERVAL
@@ -855,15 +929,24 @@ Figure&nbsp;4: Johnson Neyman interval for the model in Question 1.
 <h2 data-number="1.7" class="anchored" data-anchor-id="part-g"><span class="header-section-number">1.7</span> Part g</h2>
 <p>Standardize the continuous data and refit the regression model. Redo part f.&nbsp;What do you notice about the coefficient estimates and why does this make the untangling process easier?</p>
 <p><strong>Solution:</strong> First, we fit the regression model using <code>lm()</code>.</p>
+<p>After standardizing the continuous variables, the interaction can be untangled using the same algebra as in part f.&nbsp;The relevant part of the model is</p>
+<p><span class="math inline">\(Y=\beta_7z_7+\beta_8z_8+\beta_11z_7z_8+C\)</span></p>
+<p>Grouping the terms involving <span class="math inline">\(z_7\)</span>, we get</p>
+<p><span class="math inline">\(Y=z_7(\beta_7+\beta_{11}z_8)+\beta_8z_8+C\)</span></p>
+<p>Therefore, the effect of <span class="math inline">\(z_7\)</span> is <span class="math inline">\(\beta_7+\beta_{11}z_8\)</span>.</p>
+<p>Similarly, grouping the terms involving <span class="math inline">\(z_8\)</span>, we get</p>
+<p><span class="math inline">\(Y=z_8(\beta_8+\beta_{11}z_7)+\beta_7z_7+C\)</span></p>
+<p>Therefore, the effect of <span class="math inline">\(z_8\)</span> is <span class="math inline">\(\beta_8+\beta_{11}z_7\)</span>.</p>
+<p>Standardizing makes the interaction easier to untangle because a value of <span class="math inline">\(0\)</span> represents the mean of each variable. Thus, the coefficients <span class="math inline">\(\beta_7\)</span> and <span class="math inline">\(\beta_8\)</span> represent the effects of their respective variables when the other variable is at its mean. The interaction coefficient represents how the effect changes as the other variable increases by one standard deviation.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="co"># Standardize Data</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-label="2"></a>dat.z <span class="ot">&lt;-</span> dat.q1 <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-label="3"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(x1, x5, x7, x8), <span class="sc">~</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(.))))</span>
-<span id="cb15-4"><a href="#cb15-4" aria-label="4"></a><span class="co"># Refit Model</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-label="5"></a>mod.q1z <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3<span class="sc">*</span>x4 <span class="sc">+</span> x5<span class="sc">*</span>x6 <span class="sc">+</span> x7<span class="sc">*</span>x8, <span class="at">data=</span>dat.z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a><span class="co"># Standardize Data</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a>dat.z <span class="ot">&lt;-</span> dat.q1 <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-label="3"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(x1, x5, x7, x8), <span class="sc">~</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(.))))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-label="4"></a><span class="co"># Refit Model</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-label="5"></a>mod.q1z <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3<span class="sc">*</span>x4 <span class="sc">+</span> x5<span class="sc">*</span>x6 <span class="sc">+</span> x7<span class="sc">*</span>x8, <span class="at">data=</span>dat.z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -871,13 +954,13 @@ Figure&nbsp;4: Johnson Neyman interval for the model in Question 1.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>emm.q1g.z7 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1z, <span class="at">var=</span><span class="st">"x7"</span>, <span class="sc">~</span>x7<span class="sc">|</span>x8,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x8 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>          <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>          <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x7.trend"</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a>                 <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>                 <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a>          dplyr<span class="sc">::</span><span class="fu">select</span>(x8, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>emm.q1g.z7 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1z, <span class="at">var=</span><span class="st">"x7"</span>, <span class="sc">~</span>x7<span class="sc">|</span>x8,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-label="2"></a>                    <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x8 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-label="3"></a>          <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-label="4"></a>          <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x7.trend"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-label="5"></a>                 <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-label="6"></a>                 <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-label="7"></a>          dplyr<span class="sc">::</span><span class="fu">select</span>(x8, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -938,13 +1021,13 @@ Table&nbsp;5: Estimated marginal trends for the model in Question 1 when quantit
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a>emm.q1g.z8 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1z, <span class="at">var=</span><span class="st">"x8"</span>, <span class="sc">~</span>x8<span class="sc">|</span>x7,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a>                      <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x7 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>)))<span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-label="3"></a>              <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-label="4"></a>              <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x8.trend"</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-label="5"></a>                    <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
-<span id="cb17-6"><a href="#cb17-6" aria-label="6"></a>                    <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-label="7"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(x7, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a>emm.q1g.z8 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod.q1z, <span class="at">var=</span><span class="st">"x8"</span>, <span class="sc">~</span>x8<span class="sc">|</span>x7,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-label="2"></a>                      <span class="at">at =</span> <span class="fu">list</span>(<span class="at">x7 =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span> ,<span class="dv">1</span>)))<span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-label="3"></a>              <span class="fu">data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-label="4"></a>              <span class="fu">rename</span>(<span class="st">"Slope"</span>  <span class="ot">=</span> <span class="st">"x8.trend"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-label="5"></a>                    <span class="st">"Lower"</span> <span class="ot">=</span> <span class="st">"lower.CL"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-label="6"></a>                    <span class="st">"Upper"</span> <span class="ot">=</span> <span class="st">"upper.CL"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-label="7"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(x7, Slope, SE, df, Lower, Upper)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -1045,18 +1128,169 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 \widehat{\beta}_0 &amp;= \bar{y} - \widehat{\beta}_1 \bar{x}_1 \\
 \widehat{\beta}_1 &amp;= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}\]</span></p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="sc">-</span><span class="dv">25</span>, <span class="sc">-</span><span class="dv">75</span>, <span class="sc">-</span><span class="dv">125</span>, <span class="sc">-</span><span class="dv">175</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">81.93</span>, <span class="fl">76.63</span>, <span class="fl">63.23</span>, <span class="fl">32.13</span>, <span class="fl">12.83</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-label="3"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-label="4"></a>xbar <span class="ot">=</span> <span class="fu">mean</span>(x)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-label="5"></a>ybar <span class="ot">=</span> <span class="fu">mean</span>(y)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-label="6"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-label="7"></a>beta1 <span class="ot">=</span> <span class="fu">sum</span>((x <span class="sc">-</span> xbar) <span class="sc">*</span> (y <span class="sc">-</span> ybar)) <span class="sc">/</span> <span class="fu">sum</span>((x <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-label="8"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-label="9"></a>beta0 <span class="ot">=</span> ybar <span class="sc">-</span> beta1 <span class="sc">*</span> xbar</span>
+<span id="cb20-10"><a href="#cb20-10" aria-label="10"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-label="11"></a>beta0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.755</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a>beta1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3654</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-b-1" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">2.2</span> Part b</h2>
 <p>Compute the estimates we derived using linear algebra in lecture 16: <span class="math display">\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y}.\]</span> <strong>Hint:</strong> Run <code>?matrix()</code> in <code>R</code> for a quick reminder about how to create a matrix.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-label="1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="sc">-</span><span class="dv">25</span>, <span class="sc">-</span><span class="dv">75</span>, <span class="sc">-</span><span class="dv">125</span>, <span class="sc">-</span><span class="dv">175</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-label="2"></a>y <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">81.93</span>, <span class="fl">76.63</span>, <span class="fl">63.23</span>, <span class="fl">32.13</span>, <span class="fl">12.83</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-label="3"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-label="4"></a>X <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(x)), x), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-label="5"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-label="6"></a>beta_hat <span class="ot">=</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y</span>
+<span id="cb24-7"><a href="#cb24-7" aria-label="7"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-label="8"></a>beta_hat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        [,1]
+[1,] 80.7550
+[2,]  0.3654</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c-1" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">2.3</span> Part c</h2>
 <p>Compute the maximum likelihood estimates using <code>optim()</code> in <code>R</code> as described in lecture 16: <span class="math display">\[\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).\]</span></p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-label="1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-label="2"></a>  <span class="at">x1 =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="sc">-</span><span class="dv">25</span>, <span class="sc">-</span><span class="dv">75</span>, <span class="sc">-</span><span class="dv">125</span>, <span class="sc">-</span><span class="dv">175</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-label="3"></a>  <span class="at">y1 =</span> <span class="fu">c</span>(<span class="fl">81.93</span>, <span class="fl">76.63</span>, <span class="fl">63.23</span>, <span class="fl">32.13</span>, <span class="fl">12.83</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-label="4"></a>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-label="5"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-label="6"></a>neg_log <span class="ot">=</span> <span class="cf">function</span>(par, data, <span class="at">mle =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb26-7"><a href="#cb26-7" aria-label="7"></a>  b0 <span class="ot">=</span> par[<span class="dv">1</span>]</span>
+<span id="cb26-8"><a href="#cb26-8" aria-label="8"></a>  b1 <span class="ot">=</span> par[<span class="dv">2</span>]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-label="9"></a>  sigma <span class="ot">=</span> par[<span class="dv">3</span>]</span>
+<span id="cb26-10"><a href="#cb26-10" aria-label="10"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-label="11"></a>  x <span class="ot">=</span> data<span class="sc">$</span>x1</span>
+<span id="cb26-12"><a href="#cb26-12" aria-label="12"></a>  y <span class="ot">=</span> data<span class="sc">$</span>y1</span>
+<span id="cb26-13"><a href="#cb26-13" aria-label="13"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-label="14"></a>  ll <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">dnorm</span>(y <span class="sc">-</span> (b0 <span class="sc">+</span> b1<span class="sc">*</span>x), <span class="dv">0</span>, sigma, <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb26-15"><a href="#cb26-15" aria-label="15"></a>  <span class="fu">ifelse</span>(mle, <span class="sc">-</span>ll, ll)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-label="16"></a>}</span>
+<span id="cb26-17"><a href="#cb26-17" aria-label="17"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-label="18"></a><span class="co"># Find the maximum likelihood estimates</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-label="19"></a>mle <span class="ot">=</span> <span class="fu">optim</span>(</span>
+<span id="cb26-20"><a href="#cb26-20" aria-label="20"></a>  <span class="at">fn =</span> neg_log,</span>
+<span id="cb26-21"><a href="#cb26-21" aria-label="21"></a>  <span class="at">par =</span> <span class="fu">c</span>(<span class="fu">mean</span>(df<span class="sc">$</span>y1), <span class="dv">0</span>, <span class="fu">sd</span>(df<span class="sc">$</span>y1)),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-label="22"></a>  <span class="at">data =</span> df,</span>
+<span id="cb26-23"><a href="#cb26-23" aria-label="23"></a>  <span class="at">mle =</span> <span class="cn">TRUE</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-label="24"></a>)</span>
+<span id="cb26-25"><a href="#cb26-25" aria-label="25"></a></span>
+<span id="cb26-26"><a href="#cb26-26" aria-label="26"></a><span class="co"># Display each estimate</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-label="27"></a>(mle<span class="sc">$</span>par[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.75468</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a>(mle<span class="sc">$</span>par[<span class="dv">2</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3653821</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-d-1" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="part-d-1"><span class="header-section-number">2.4</span> Part d</h2>
 <p>Fit the model using <code>lm()</code> and plot the resulting model. Compare to the results from parts (a) through (c).</p>
+<p><strong>Solution</strong> The regression estimates from lm() match the estimates calculated using calculus in part (a) and linear algebra in part (b). All three methods produce an intercept of approximately 80.755 and a slope of approximately 0.3654. The maximum likelihood estimates from part (c) also produce approximately the same values.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a>mod <span class="ot">=</span> <span class="fu">lm</span>(y1 <span class="sc">~</span> x1, <span class="at">data =</span> df)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-label="2"></a><span class="fu">summary</span>(mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y1 ~ x1, data = df)
+
+Residuals:
+    1     2     3     4     5 
+-7.96  5.01  9.88 -2.95 -3.98 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 80.75500    5.46239  14.784 0.000671 ***
+x1           0.36540    0.05299   6.895 0.006250 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 8.379 on 3 degrees of freedom
+Multiple R-squared:  0.9406,    Adjusted R-squared:  0.9209 
+F-statistic: 47.54 on 1 and 3 DF,  p-value: 0.00625</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> y1)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-label="2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-label="3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-label="4"></a>              <span class="at">fill =</span> <span class="st">"pink"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-label="5"></a>  <span class="fu">labs</span>(</span>
+<span id="cb32-6"><a href="#cb32-6" aria-label="6"></a>    <span class="at">title =</span> <span class="st">"Effect of Temperature on Tensile Strength"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-label="7"></a>    <span class="at">subtitle =</span> <span class="st">"Linear regression model"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-label="8"></a>    <span class="at">x =</span> <span class="st">"Temperature (°C)"</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-label="9"></a>    <span class="at">y =</span> <span class="st">"Mean Tensile Strength (MPa)"</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-label="10"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-label="11"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-label="12"></a>  <span class="fu">theme</span>(</span>
+<span id="cb32-13"><a href="#cb32-13" aria-label="13"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb32-14"><a href="#cb32-14" aria-label="14"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray40"</span>),</span>
+<span id="cb32-15"><a href="#cb32-15" aria-label="15"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb32-16"><a href="#cb32-16" aria-label="16"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 </section>
 <section id="question-3" class="level1" data-number="3">
@@ -1066,29 +1300,202 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>dat.mfap4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Bracht2016.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>dat.mfap4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Bracht2016.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
 <section id="part-a-2" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="part-a-2"><span class="header-section-number">3.1</span> Part a</h2>
 <p>Fit the model predicting <code>MFAP4</code> using <code>Fibrosis.Stage</code>. Write out the resulting estimate model and interpret the coefficients.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-label="1"></a>mod.mfap4.a <span class="ot">=</span> <span class="fu">lm</span>(MFAP4 <span class="sc">~</span> Fibrosis.Stage, <span class="at">data =</span> dat.mfap4)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-label="2"></a><span class="fu">summary</span>(mod.mfap4.a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MFAP4 ~ Fibrosis.Stage, data = dat.mfap4)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-20.318  -5.518  -2.651   2.070  81.816 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              9.230      1.102   8.378 4.73e-16 ***
+Fibrosis.StageStage 1    1.301      1.372   0.948   0.3433    
+Fibrosis.StageStage 2    3.154      1.444   2.184   0.0294 *  
+Fibrosis.StageStage 3   11.742      1.724   6.812 2.59e-11 ***
+Fibrosis.StageStage 4   15.388      1.724   8.928  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 10.85 on 537 degrees of freedom
+Multiple R-squared:  0.1965,    Adjusted R-squared:  0.1905 
+F-statistic: 32.84 on 4 and 537 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p></p>
+<p>I fit a linear regression model with MFAP4 as the response variable and Fibrosis.Stage as the explanatory variable.</p>
+<p>The estimated regression equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\text{MFAP4}} ={}&amp; 9.230
++1.301I(\text{Stage 1})
+&amp;+3.154I(\text{Stage 2})
+&amp;+11.742I(\text{Stage 3})
+&amp;+15.388I(\text{Stage 4}).
+\end{aligned}
+\]</span></p>
+<p>The intercept, 9.230, is the predicted mean MFAP4 value for patients with Stage 0 fibrosis, the reference category. The coefficient for Stage 1 is 1.301, meaning its predicted mean MFAP4 value is 1.301 units greater than that of Stage 0 patients. Similarly, the predicted means for Stages 2, 3, and 4 are 3.154, 11.742, and 15.388 units higher than the predicted mean for Stage 0, respectively. Overall, the estimates suggest that MFAP4 tends to be higher at more advanced fibrosis stages.</p>
 </section>
 <section id="part-b-2" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="part-b-2"><span class="header-section-number">3.2</span> Part b</h2>
 <p>Conduct a residual analysis on the model in part a to demonstrate how to identify when you need a log transformation.</p>
+<p><strong>Solution</strong> Why log transform? Since MFAP4 has some unusually large values, the residuals are not normally distributed and their spread is not consistent across fitted values. Taking the natural log of MFAP4 compresses larger values more than smaller ones, which may make the residuals more normally distributed and help stabilize their variance. This is why a log transformation may improve the regression model.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-label="1"></a><span class="fu">source</span>(<span class="st">"plotResiduals.R"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-label="2"></a><span class="fu">plotResiduals</span>(mod.mfap4.a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c-2" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="part-c-2"><span class="header-section-number">3.3</span> Part c</h2>
 <p>Fit the model predicting <code>log(MFAP4)</code> using <code>Fibrosis.Stage</code>. Use the natural log, and not the <span class="math inline">\(\log_2(\cdot)\)</span> recorded in the data file. Write out the resulting estimate model and interpret the coefficients.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-label="1"></a>mod.mfap4.c <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">log</span>(MFAP4) <span class="sc">~</span> Fibrosis.Stage, <span class="at">data =</span> dat.mfap4)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-label="2"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-label="3"></a><span class="fu">summary</span>(mod.mfap4.c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(MFAP4) ~ Fibrosis.Stage, data = dat.mfap4)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.55668 -0.41861 -0.04282  0.35845  2.21571 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            2.02572    0.06178  32.789  &lt; 2e-16 ***
+Fibrosis.StageStage 1  0.13336    0.07694   1.733 0.083637 .  
+Fibrosis.StageStage 2  0.30399    0.08099   3.753 0.000193 ***
+Fibrosis.StageStage 3  0.77408    0.09666   8.009 7.24e-15 ***
+Fibrosis.StageStage 4  0.98957    0.09666  10.238  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.6085 on 537 degrees of freedom
+Multiple R-squared:  0.2312,    Adjusted R-squared:  0.2255 
+F-statistic: 40.38 on 4 and 537 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p></p>
+<p>I fit a linear regression model predicting the natural logarithm of MFAP4 using Fibrosis.Stage, with Stage 0 as the reference category. The estimated regression equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\log(\text{MFAP4})} ={}&amp; 2.02572 + 0.13336I(\text{Stage 1})\
+&amp;+ 0.30399I(\text{Stage 2})\
+&amp;+ 0.77408I(\text{Stage 3})\
+&amp;+ 0.98957I(\text{Stage 4}).
+\end{aligned}
+\]</span></p>
+<p>The intercept of 2.02572 is the predicted mean of log(MFAP4) for patients with Stage 0 fibrosis. The coefficient for Stage 1 is 0.13336, meaning the predicted log(MFAP4) is 0.13336 higher than for Stage 0 patients. Similarly, the coefficients for Stages 2, 3, and 4 are 0.30399, 0.77408, and 0.98957, respectively, relative to Stage 0.</p>
 </section>
 <section id="part-d-2" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="part-d-2"><span class="header-section-number">3.4</span> Part d</h2>
 <p>Conduct a residual analysis on the model in part c to demonstrate that the conditions for using regression are met.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-label="1"></a><span class="fu">source</span>(<span class="st">"plotResiduals.R"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-label="2"></a><span class="fu">plotResiduals</span>(mod.mfap4.c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-e-1" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="part-e-1"><span class="header-section-number">3.5</span> Part e</h2>
 <p>Fit the model predicting <code>log(MFAP4)</code> using <code>Fibrosis.Stage</code>, <code>Age</code>, and <code>Gender</code>. Use the natural log, and not the <span class="math inline">\(\log_2(\cdot)\)</span> recorded in the data file. Write out the resulting estimate model and interpret the coefficients.</p>
+<p><strong>Solution</strong> I fit a multiple linear regression model predicting the natural logarithm of MFAP4 using Fibrosis.Stage, Age, and Gender.</p>
+<p>The estimated regression equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{\log(\text{MFAP4})} ={}&amp; 1.518667\
+&amp;+0.126858I(\text{Stage 1})\
+&amp;+0.212539I(\text{Stage 2})\
+&amp;+0.598866I(\text{Stage 3})\\
+&amp;+0.828547I(\text{Stage 4})\
+&amp;+0.013110(\text{Age})\
+&amp;-0.143405I(\text{Male}).
+\end{aligned}
+\]</span></p>
+<p>The intercept of 1.518667 represents the predicted log(MFAP4) for a patient in Stage 0, in the reference gender category, at age zero. Each fibrosis-stage coefficient represents the difference in predicted log(MFAP4) between that stage and Stage 0, holding age and gender constant. The coefficients are positive and increase with fibrosis stage. The age coefficient of 0.013110 means that a one-year increase in age is associated with an increase of 0.013110 in predicted log(MFAP4), holding fibrosis stage and gender constant. The gender coefficient of -0.143405 indicates that males have a lower predicted log(MFAP4) than the reference gender category, holding age and fibrosis stage constant.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-label="1"></a>mod.mfap4.e <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">log</span>(MFAP4) <span class="sc">~</span> Fibrosis.Stage <span class="sc">+</span> Age <span class="sc">+</span> Gender,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-label="2"></a>                 <span class="at">data =</span> dat.mfap4)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-label="3"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-label="4"></a><span class="fu">summary</span>(mod.mfap4.e)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(MFAP4) ~ Fibrosis.Stage + Age + Gender, data = dat.mfap4)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.55799 -0.40010 -0.03682  0.35968  2.28903 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            1.518667   0.115808  13.114  &lt; 2e-16 ***
+Fibrosis.StageStage 1  0.126858   0.073594   1.724  0.08533 .  
+Fibrosis.StageStage 2  0.212539   0.079095   2.687  0.00743 ** 
+Fibrosis.StageStage 3  0.598866   0.096575   6.201 1.12e-09 ***
+Fibrosis.StageStage 4  0.828547   0.097208   8.523  &lt; 2e-16 ***
+Age                    0.013110   0.002123   6.175 1.31e-09 ***
+Gendermale            -0.143405   0.050807  -2.823  0.00494 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.5812 on 535 degrees of freedom
+Multiple R-squared:  0.3012,    Adjusted R-squared:  0.2934 
+F-statistic: 38.44 on 6 and 535 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 </section>
 <section id="question-4" class="level1" data-number="4">
@@ -1101,6 +1508,76 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
     y_i &amp;= 2 + 1.5 x_i + \epsilon_i\\
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">0510</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-label="2"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-label="3"></a>R <span class="ot">&lt;-</span> <span class="dv">1000</span>     <span class="co"># number of simulations</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-label="4"></a>n <span class="ot">&lt;-</span> <span class="dv">30</span>       <span class="co"># sample size</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-label="5"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-label="6"></a><span class="co"># empty tibble to store the estimates</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-label="7"></a>est<span class="fl">.4</span>a <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">beta0 =</span> <span class="fu">numeric</span>(R),</span>
+<span id="cb42-8"><a href="#cb42-8" aria-label="8"></a>                 <span class="at">beta1 =</span> <span class="fu">numeric</span>(R))</span>
+<span id="cb42-9"><a href="#cb42-9" aria-label="9"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-label="10"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb42-11"><a href="#cb42-11" aria-label="11"></a>  <span class="co"># simulate data that meets the regression assumptions</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-label="12"></a>  x   <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>)</span>
+<span id="cb42-13"><a href="#cb42-13" aria-label="13"></a>  eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-label="14"></a>  y   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> eps</span>
+<span id="cb42-15"><a href="#cb42-15" aria-label="15"></a></span>
+<span id="cb42-16"><a href="#cb42-16" aria-label="16"></a>  <span class="co"># fit the line and store the estimates</span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-label="17"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb42-18"><a href="#cb42-18" aria-label="18"></a>  est<span class="fl">.4</span>a<span class="sc">$</span>beta0[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
+<span id="cb42-19"><a href="#cb42-19" aria-label="19"></a>  est<span class="fl">.4</span>a<span class="sc">$</span>beta1[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
+<span id="cb42-20"><a href="#cb42-20" aria-label="20"></a>}</span>
+<span id="cb42-21"><a href="#cb42-21" aria-label="21"></a></span>
+<span id="cb42-22"><a href="#cb42-22" aria-label="22"></a><span class="co"># plot the estimates</span></span>
+<span id="cb42-23"><a href="#cb42-23" aria-label="23"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>a) <span class="sc">+</span></span>
+<span id="cb42-24"><a href="#cb42-24" aria-label="24"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta0), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb42-25"><a href="#cb42-25" aria-label="25"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb42-26"><a href="#cb42-26" aria-label="26"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb42-27"><a href="#cb42-27" aria-label="27"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated intercept"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-label="1"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>a) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta1), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-label="3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-label="5"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated slope"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-label="1"></a><span class="co"># average and spread of the estimates</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-label="2"></a>est<span class="fl">.4</span>a <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">mean.b0 =</span> <span class="fu">mean</span>(beta0), <span class="at">sd.b0 =</span> <span class="fu">sd</span>(beta0),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-label="4"></a>            <span class="at">mean.b1 =</span> <span class="fu">mean</span>(beta1), <span class="at">sd.b1 =</span> <span class="fu">sd</span>(beta1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  mean.b0 sd.b0 mean.b1  sd.b1
+    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1    2.00 0.385    1.50 0.0660</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-b-3" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="part-b-3"><span class="header-section-number">4.2</span> Part b</h2>

@@ -630,6 +630,31 @@ plotResiduals(mod.mfap4.c)
 ## Part e
 Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`, `Age`, and `Gender`. Use the natural log, and not the $\log_2(\cdot)$ recorded in the data file. Write out the resulting estimate model and interpret the coefficients.
 
+**Solution**
+I fit a multiple linear regression model predicting the natural logarithm of MFAP4 using Fibrosis.Stage, Age, and Gender.
+
+The estimated regression equation is
+
+$$
+\begin{aligned}
+\widehat{\log(\text{MFAP4})} ={}& 1.518667\
+&+0.126858I(\text{Stage 1})\
+&+0.212539I(\text{Stage 2})\
+&+0.598866I(\text{Stage 3})\\
+&+0.828547I(\text{Stage 4})\
+&+0.013110(\text{Age})\
+&-0.143405I(\text{Male}).
+\end{aligned}
+$$
+
+The intercept of 1.518667 represents the predicted log(MFAP4) for a patient in Stage 0, in the reference gender category, at age zero. Each fibrosis-stage coefficient represents the difference in predicted log(MFAP4) between that stage and Stage 0, holding age and gender constant. The coefficients are positive and increase with fibrosis stage. The age coefficient of 0.013110 means that a one-year increase in age is associated with an increase of 0.013110 in predicted log(MFAP4), holding fibrosis stage and gender constant. The gender coefficient of -0.143405 indicates that males have a lower predicted log(MFAP4) than the reference gender category, holding age and fibrosis stage constant.
+```{r}
+mod.mfap4.e = lm(log(MFAP4) ~ Fibrosis.Stage + Age + Gender,
+                 data = dat.mfap4)
+
+summary(mod.mfap4.e)
+```
+
 
 
 # Question 4
@@ -643,6 +668,51 @@ Simulate data to match regression assumptions in a loop that runs $R=1000$ times
     n &= 30
 \end{align*}
 In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?
+
+**Solution**
+
+Both histograms are close to bell-shaped and symmetric, which looks like a normal distribution. Some estimates are a bit off from the truth in either direction, but most land close to it, and the ones far away are rare. This makes sense because the errors were normal, so the estimates should be normal too. Overall, when the regression assumptions are met, the estimated coefficients vary randomly around the true values in a normal-looking way.
+
+```{r}
+set.seed(0510)
+
+R <- 1000     # number of simulations
+n <- 30       # sample size
+
+# empty tibble to store the estimates
+est.4a <- tibble(beta0 = numeric(R),
+                 beta1 = numeric(R))
+
+for (r in 1:R) {
+  # simulate data that meets the regression assumptions
+  x   <- runif(n, min = 0, max = 10)
+  eps <- rnorm(n, mean = 0, sd = 1)
+  y   <- 2 + 1.5 * x + eps
+
+  # fit the line and store the estimates
+  fit <- lm(y ~ x)
+  est.4a$beta0[r] <- coef(fit)[1]
+  est.4a$beta1[r] <- coef(fit)[2]
+}
+
+# plot the estimates
+ggplot(est.4a) +
+  geom_histogram(aes(x = beta0), bins = 30, color = "white") +
+  geom_vline(xintercept = 2, color = "red", linewidth = 1) +
+  theme_bw() +
+  xlab("Estimated intercept")
+
+ggplot(est.4a) +
+  geom_histogram(aes(x = beta1), bins = 30, color = "white") +
+  geom_vline(xintercept = 1.5, color = "red", linewidth = 1) +
+  theme_bw() +
+  xlab("Estimated slope")
+
+# average and spread of the estimates
+est.4a |>
+  summarize(mean.b0 = mean(beta0), sd.b0 = sd(beta0),
+            mean.b1 = mean(beta1), sd.b1 = sd(beta1))
+```
 
 ## Part b
 Simulate data to match regression assumptions in a loop that runs $R=1000$ times.
