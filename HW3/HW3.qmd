@@ -152,9 +152,9 @@ Untangle and interpret the $x_3*x_4$ interaction using algebra. Use @tbl-q1d-emm
 \end{align*}
 where C is everything else in the equation.
 
-$E(Y | \text{control, low}) = C\\
- E(Y | \text{control, high}) = \beta_4 + C\\
- E(Y | \text{treat, low}) = \beta_3 + C\\
+$E(Y | \text{control, low}) = C
+ E(Y | \text{control, high}) = \beta_4 + C
+ E(Y | \text{treat, low}) = \beta_3 + C
  E(Y | \text{treat, high}) = \beta_3 + \beta_4 + \beta_9 + C$
 
  $\beta_3$: Compare Treat and Control when the condition is Low. The difference is $\beta_3$.
@@ -360,7 +360,7 @@ Standardize the continuous data and refit the regression model. Redo part f. Wha
 
 After standardizing the continuous variables, the interaction can be untangled using the same algebra as in part f. The relevant part of the model is
 
-$Y=\beta_7z_7+\beta_8z_8+\beta_11z_7z_8+C$
+$Y=\beta_7z_7+\beta_8z_8+\beta_{11}z_7z_8+C$
 
 Grouping the terms involving $z_7$, we get
 
@@ -442,7 +442,7 @@ In the table below, the researchers record the average tensile strength for thre
 ## Part a
 Compute the estimates we derived using calculus in lecture 16: 
 \begin{align*} 
-\widehat{\beta}_0 &= \bar{y} - \widehat{\beta}_1 \bar{x}_1 \\ 
+\widehat{\beta}_0 &= \bar{y} - \widehat{\beta}_1 \bar{x}_1  
 \widehat{\beta}_1 &= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}
 
@@ -637,11 +637,11 @@ The estimated regression equation is
 
 $$
 \begin{aligned}
-\widehat{\log(\text{MFAP4})} ={}& 1.518667\
-&+0.126858I(\text{Stage 1})\
-&+0.212539I(\text{Stage 2})\
-&+0.598866I(\text{Stage 3})\\
-&+0.828547I(\text{Stage 4})\
+\widehat{\log(\text{MFAP4})} ={}& 1.518667
+&+0.126858I(\text{Stage 1})
+&+0.212539I(\text{Stage 2})
+&+0.598866I(\text{Stage 3})
+&+0.828547I(\text{Stage 4})
 &+0.013110(\text{Age})\
 &-0.143405I(\text{Male}).
 \end{aligned}
@@ -674,28 +674,24 @@ In each iteration, fit a regression line to the data and store the coefficient e
 Both histograms are close to bell-shaped and symmetric, which looks like a normal distribution. Some estimates are a bit off from the truth in either direction, but most land close to it, and the ones far away are rare. This makes sense because the errors were normal, so the estimates should be normal too. Overall, when the regression assumptions are met, the estimated coefficients vary randomly around the true values in a normal-looking way.
 
 ```{r}
-set.seed(0510)
+set.seed(123)
 
-R <- 1000     # number of simulations
-n <- 30       # sample size
+R = 1000
+n = 30
 
-# empty tibble to store the estimates
-est.4a <- tibble(beta0 = numeric(R),
+est.4a = tibble(beta0 = numeric(R),
                  beta1 = numeric(R))
 
 for (r in 1:R) {
-  # simulate data that meets the regression assumptions
   x   <- runif(n, min = 0, max = 10)
   eps <- rnorm(n, mean = 0, sd = 1)
   y   <- 2 + 1.5 * x + eps
 
-  # fit the line and store the estimates
   fit <- lm(y ~ x)
-  est.4a$beta0[r] <- coef(fit)[1]
-  est.4a$beta1[r] <- coef(fit)[2]
+  est.4a$beta0[r] = coef(fit)[1]
+  est.4a$beta1[r] = coef(fit)[2]
 }
 
-# plot the estimates
 ggplot(est.4a) +
   geom_histogram(aes(x = beta0), bins = 30, color = "white") +
   geom_vline(xintercept = 2, color = "red", linewidth = 1) +
@@ -708,7 +704,6 @@ ggplot(est.4a) +
   theme_bw() +
   xlab("Estimated slope")
 
-# average and spread of the estimates
 est.4a |>
   summarize(mean.b0 = mean(beta0), sd.b0 = sd(beta0),
             mean.b1 = mean(beta1), sd.b1 = sd(beta1))
@@ -726,6 +721,46 @@ In each iteration, fit a regression line to the data and store the coefficient e
 
 **Hint:** Use the `tolerance::r2exp()` function with `rate=1` and `shift=-1`.
 
+**Solution**
+In my simulation, the errors were skewed, but the estimates stayed centered at the true values. The slope estimates look roughly bell-shaped and symmetric around 1.5. The intercept estimates are centered around 2 but have a slight right skew, with a somewhat longer tail on the right.
+```{r}
+library(tolerance)
+
+set.seed(123)
+
+R = 1000
+n = 30
+
+est.4b = tibble(beta0 = numeric(R),
+                 beta1 = numeric(R))
+
+for (r in 1:R) {
+  x   = runif(n, min = 0, max = 10)
+  eps = r2exp(n, rate = 1, shift = -1)
+  y   = 2 + 1.5 * x + eps
+
+  fit <- lm(y ~ x)
+  est.4b$beta0[r] <- coef(fit)[1]
+  est.4b$beta1[r] <- coef(fit)[2]
+}
+
+ggplot(est.4b) +
+  geom_histogram(aes(x = beta0), bins = 30, color = "white") +
+  geom_vline(xintercept = 2, color = "red", linewidth = 1) +
+  theme_bw() +
+  xlab("Estimated intercept")
+
+ggplot(est.4b) +
+  geom_histogram(aes(x = beta1), bins = 30, color = "white") +
+  geom_vline(xintercept = 1.5, color = "red", linewidth = 1) +
+  theme_bw() +
+  xlab("Estimated slope")
+
+est.4b |>
+  summarize(mean.b0 = mean(beta0), sd.b0 = sd(beta0),
+            mean.b1 = mean(beta1), sd.b1 = sd(beta1))
+```
+
 ## Part c
 Simulate data to match regression assumptions in a loop that runs $R=1000$ times.
 \begin{align*}
@@ -735,4 +770,38 @@ Simulate data to match regression assumptions in a loop that runs $R=1000$ times
     n &= 30
 \end{align*}
 In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?
+
+**Solution**
+Almost all of the estimates are bunched up in one thin spike right around the true values (2 for the intercept and 1.5 for the slope), but a few are way out there, and the x-axis stretches from about -2000 to 2000 because of them. That means the histograms aren't bell-shaped at all.
+```{r}
+set.seed(123)
+
+R = 1000
+n = 30
+
+est.4c = tibble(beta0 = numeric(R),
+                 beta1 = numeric(R))
+
+for (r in 1:R) {
+  x   = runif(n, min = 0, max = 10)
+  eps = rcauchy(n, location = 0, scale = 1)
+  y   = 2 + 1.5 * x + eps
+
+  fit = lm(y ~ x)
+  est.4c$beta0[r] <- coef(fit)[1]
+  est.4c$beta1[r] <- coef(fit)[2]
+}
+
+ggplot(est.4c) +
+  geom_histogram(aes(x = beta0), bins = 30, color = "white") +
+  geom_vline(xintercept = 2, color = "red", linewidth = 1) +
+  theme_bw() +
+  xlab("Estimated intercept")
+
+ggplot(est.4c) +
+  geom_histogram(aes(x = beta1), bins = 30, color = "white") +
+  geom_vline(xintercept = 1.5, color = "red", linewidth = 1) +
+  theme_bw() +
+  xlab("Estimated slope")
+```
 
