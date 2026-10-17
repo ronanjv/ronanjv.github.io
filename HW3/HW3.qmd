@@ -558,16 +558,74 @@ dat.mfap4 <- read_csv("Bracht2016.csv")
 ## Part a
 Fit the model predicting `MFAP4` using `Fibrosis.Stage`. Write out the resulting estimate model and interpret the coefficients.
 
+**Solution**
+```{r}
+mod.mfap4.a = lm(MFAP4 ~ Fibrosis.Stage, data = dat.mfap4)
+summary(mod.mfap4.a)
+```
+
+I fit a linear regression model with MFAP4 as the response variable and Fibrosis.Stage as the explanatory variable.
+
+The estimated regression equation is
+
+
+$$
+\begin{aligned}
+\widehat{\text{MFAP4}} ={}& 9.230
++1.301I(\text{Stage 1})
+&+3.154I(\text{Stage 2})
+&+11.742I(\text{Stage 3})
+&+15.388I(\text{Stage 4}).
+\end{aligned}
+$$
+
+
+The intercept, 9.230, is the predicted mean MFAP4 value for patients with Stage 0 fibrosis, the reference category. The coefficient for Stage 1 is 1.301, meaning its predicted mean MFAP4 value is 1.301 units greater than that of Stage 0 patients. Similarly, the predicted means for Stages 2, 3, and 4 are 3.154, 11.742, and 15.388 units higher than the predicted mean for Stage 0, respectively. Overall, the estimates suggest that MFAP4 tends to be higher at more advanced fibrosis stages.
+
 ## Part b
 Conduct a residual analysis on the model in part a to demonstrate how to identify when you need a log transformation.
+
+**Solution**
+Why log transform? Since MFAP4 has some unusually large values, the residuals are not normally distributed and their spread is not consistent across fitted values. Taking the natural log of MFAP4 compresses larger values more than smaller ones, which may make the residuals more normally distributed and help stabilize their variance. This is why a log transformation may improve the regression model.
+
+```{r}
+source("plotResiduals.R")
+plotResiduals(mod.mfap4.a)
+```
 
 
 ## Part c
 Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`. Use the natural log, and not the $\log_2(\cdot)$ recorded in the data file. Write out the resulting estimate model and interpret the coefficients.
 
+**Solution**
+```{r}
+mod.mfap4.c = lm(log(MFAP4) ~ Fibrosis.Stage, data = dat.mfap4)
+
+summary(mod.mfap4.c)
+```
+
+I fit a linear regression model predicting the natural logarithm of MFAP4 using Fibrosis.Stage, with Stage 0 as the reference category. The estimated regression equation is
+
+$$
+\begin{aligned}
+\widehat{\log(\text{MFAP4})} ={}& 2.02572 + 0.13336I(\text{Stage 1})\
+&+ 0.30399I(\text{Stage 2})\
+&+ 0.77408I(\text{Stage 3})\
+&+ 0.98957I(\text{Stage 4}).
+\end{aligned}
+$$
+
+The intercept of 2.02572 is the predicted mean of log(MFAP4) for patients with Stage 0 fibrosis. The coefficient for Stage 1 is 0.13336, meaning the predicted log(MFAP4) is 0.13336 higher than for Stage 0 patients. Similarly, the coefficients for Stages 2, 3, and 4 are 0.30399, 0.77408, and 0.98957, respectively, relative to Stage 0.
+
 
 ## Part d
 Conduct a residual analysis on the model in part c to demonstrate that the conditions for using regression are met.
+
+**Solution**
+```{r}
+source("plotResiduals.R")
+plotResiduals(mod.mfap4.c)
+```
 
 ## Part e
 Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`, `Age`, and `Gender`. Use the natural log, and not the $\log_2(\cdot)$ recorded in the data file. Write out the resulting estimate model and interpret the coefficients.
