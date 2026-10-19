@@ -495,9 +495,9 @@ F-statistic: 128.8 on 11 and 238 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><strong>Solution</strong> <span class="math display">\[\begin{align*}
   Y_i = \beta_3 I(x_{3i}=\text{Treat}) + \beta_4 I(x_{4i}=\text{High}) + \beta_9 (I(x_{3i}=\text{Treat}) ~\times~ I(x_{4i}=\text{High})) + C
 \end{align*}\]</span> where C is everything else in the equation.</p>
-<p><span class="math inline">\(E(Y | \text{control, low}) = C\\
-E(Y | \text{control, high}) = \beta_4 + C\\
-E(Y | \text{treat, low}) = \beta_3 + C\\
+<p><span class="math inline">\(E(Y | \text{control, low}) = C
+E(Y | \text{control, high}) = \beta_4 + C
+E(Y | \text{treat, low}) = \beta_3 + C
 E(Y | \text{treat, high}) = \beta_3 + \beta_4 + \beta_9 + C\)</span></p>
 <p><span class="math inline">\(\beta_3\)</span>: Compare Treat and Control when the condition is Low. The difference is <span class="math inline">\(\beta_3\)</span>.</p>
 <p><span class="math inline">\(\beta_4\)</span>: Compare High and Low when the group is Control. The difference is <span class="math inline">\(\beta_4\)</span>.</p>
@@ -930,7 +930,7 @@ Figure&nbsp;4: Johnson Neyman interval for the model in Question 1.
 <p>Standardize the continuous data and refit the regression model. Redo part f.&nbsp;What do you notice about the coefficient estimates and why does this make the untangling process easier?</p>
 <p><strong>Solution:</strong> First, we fit the regression model using <code>lm()</code>.</p>
 <p>After standardizing the continuous variables, the interaction can be untangled using the same algebra as in part f.&nbsp;The relevant part of the model is</p>
-<p><span class="math inline">\(Y=\beta_7z_7+\beta_8z_8+\beta_11z_7z_8+C\)</span></p>
+<p><span class="math inline">\(Y=\beta_7z_7+\beta_8z_8+\beta_{11}z_7z_8+C\)</span></p>
 <p>Grouping the terms involving <span class="math inline">\(z_7\)</span>, we get</p>
 <p><span class="math inline">\(Y=z_7(\beta_7+\beta_{11}z_8)+\beta_8z_8+C\)</span></p>
 <p>Therefore, the effect of <span class="math inline">\(z_7\)</span> is <span class="math inline">\(\beta_7+\beta_{11}z_8\)</span>.</p>
@@ -1125,7 +1125,7 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 <section id="part-a-1" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">2.1</span> Part a</h2>
 <p>Compute the estimates we derived using calculus in lecture 16: <span class="math display">\[\begin{align*}
-\widehat{\beta}_0 &amp;= \bar{y} - \widehat{\beta}_1 \bar{x}_1 \\
+\widehat{\beta}_0 &amp;= \bar{y} - \widehat{\beta}_1 \bar{x}_1  
 \widehat{\beta}_1 &amp;= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}\]</span></p>
 <p><strong>Solution</strong></p>
@@ -1450,11 +1450,11 @@ F-statistic: 40.38 on 4 and 537 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The estimated regression equation is</p>
 <p><span class="math display">\[
 \begin{aligned}
-\widehat{\log(\text{MFAP4})} ={}&amp; 1.518667\
-&amp;+0.126858I(\text{Stage 1})\
-&amp;+0.212539I(\text{Stage 2})\
-&amp;+0.598866I(\text{Stage 3})\\
-&amp;+0.828547I(\text{Stage 4})\
+\widehat{\log(\text{MFAP4})} ={}&amp; 1.518667
+&amp;+0.126858I(\text{Stage 1})
+&amp;+0.212539I(\text{Stage 2})
+&amp;+0.598866I(\text{Stage 3})
+&amp;+0.828547I(\text{Stage 4})
 &amp;+0.013110(\text{Age})\
 &amp;-0.143405I(\text{Male}).
 \end{aligned}
@@ -1509,37 +1509,34 @@ F-statistic: 38.44 on 6 and 535 DF,  p-value: &lt; 2.2e-16</code></pre>
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
 <p><strong>Solution</strong></p>
+<p>Both histograms are close to bell-shaped and symmetric, which looks like a normal distribution. Some estimates are a bit off from the truth in either direction, but most land close to it, and the ones far away are rare. This makes sense because the errors were normal, so the estimates should be normal too. Overall, when the regression assumptions are met, the estimated coefficients vary randomly around the true values in a normal-looking way.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">0510</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-label="2"></a></span>
-<span id="cb42-3"><a href="#cb42-3" aria-label="3"></a>R <span class="ot">&lt;-</span> <span class="dv">1000</span>     <span class="co"># number of simulations</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-label="4"></a>n <span class="ot">&lt;-</span> <span class="dv">30</span>       <span class="co"># sample size</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-label="3"></a>R <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-label="4"></a>n <span class="ot">=</span> <span class="dv">30</span></span>
 <span id="cb42-5"><a href="#cb42-5" aria-label="5"></a></span>
-<span id="cb42-6"><a href="#cb42-6" aria-label="6"></a><span class="co"># empty tibble to store the estimates</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-label="7"></a>est<span class="fl">.4</span>a <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">beta0 =</span> <span class="fu">numeric</span>(R),</span>
-<span id="cb42-8"><a href="#cb42-8" aria-label="8"></a>                 <span class="at">beta1 =</span> <span class="fu">numeric</span>(R))</span>
-<span id="cb42-9"><a href="#cb42-9" aria-label="9"></a></span>
-<span id="cb42-10"><a href="#cb42-10" aria-label="10"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
-<span id="cb42-11"><a href="#cb42-11" aria-label="11"></a>  <span class="co"># simulate data that meets the regression assumptions</span></span>
-<span id="cb42-12"><a href="#cb42-12" aria-label="12"></a>  x   <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>)</span>
-<span id="cb42-13"><a href="#cb42-13" aria-label="13"></a>  eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb42-14"><a href="#cb42-14" aria-label="14"></a>  y   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> eps</span>
-<span id="cb42-15"><a href="#cb42-15" aria-label="15"></a></span>
-<span id="cb42-16"><a href="#cb42-16" aria-label="16"></a>  <span class="co"># fit the line and store the estimates</span></span>
-<span id="cb42-17"><a href="#cb42-17" aria-label="17"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
-<span id="cb42-18"><a href="#cb42-18" aria-label="18"></a>  est<span class="fl">.4</span>a<span class="sc">$</span>beta0[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
-<span id="cb42-19"><a href="#cb42-19" aria-label="19"></a>  est<span class="fl">.4</span>a<span class="sc">$</span>beta1[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
-<span id="cb42-20"><a href="#cb42-20" aria-label="20"></a>}</span>
-<span id="cb42-21"><a href="#cb42-21" aria-label="21"></a></span>
-<span id="cb42-22"><a href="#cb42-22" aria-label="22"></a><span class="co"># plot the estimates</span></span>
-<span id="cb42-23"><a href="#cb42-23" aria-label="23"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>a) <span class="sc">+</span></span>
-<span id="cb42-24"><a href="#cb42-24" aria-label="24"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta0), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb42-25"><a href="#cb42-25" aria-label="25"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb42-26"><a href="#cb42-26" aria-label="26"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb42-27"><a href="#cb42-27" aria-label="27"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated intercept"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb42-6"><a href="#cb42-6" aria-label="6"></a>est<span class="fl">.4</span>a <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">beta0 =</span> <span class="fu">numeric</span>(R),</span>
+<span id="cb42-7"><a href="#cb42-7" aria-label="7"></a>                 <span class="at">beta1 =</span> <span class="fu">numeric</span>(R))</span>
+<span id="cb42-8"><a href="#cb42-8" aria-label="8"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-label="9"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb42-10"><a href="#cb42-10" aria-label="10"></a>  x   <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-label="11"></a>  eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb42-12"><a href="#cb42-12" aria-label="12"></a>  y   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> eps</span>
+<span id="cb42-13"><a href="#cb42-13" aria-label="13"></a></span>
+<span id="cb42-14"><a href="#cb42-14" aria-label="14"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb42-15"><a href="#cb42-15" aria-label="15"></a>  est<span class="fl">.4</span>a<span class="sc">$</span>beta0[r] <span class="ot">=</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
+<span id="cb42-16"><a href="#cb42-16" aria-label="16"></a>  est<span class="fl">.4</span>a<span class="sc">$</span>beta1[r] <span class="ot">=</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
+<span id="cb42-17"><a href="#cb42-17" aria-label="17"></a>}</span>
+<span id="cb42-18"><a href="#cb42-18" aria-label="18"></a></span>
+<span id="cb42-19"><a href="#cb42-19" aria-label="19"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>a) <span class="sc">+</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-label="20"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta0), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb42-21"><a href="#cb42-21" aria-label="21"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb42-22"><a href="#cb42-22" aria-label="22"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb42-23"><a href="#cb42-23" aria-label="23"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated intercept"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1565,16 +1562,15 @@ F-statistic: 38.44 on 6 and 535 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-label="1"></a><span class="co"># average and spread of the estimates</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-label="2"></a>est<span class="fl">.4</span>a <span class="sc">|&gt;</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-label="3"></a>  <span class="fu">summarize</span>(<span class="at">mean.b0 =</span> <span class="fu">mean</span>(beta0), <span class="at">sd.b0 =</span> <span class="fu">sd</span>(beta0),</span>
-<span id="cb44-4"><a href="#cb44-4" aria-label="4"></a>            <span class="at">mean.b1 =</span> <span class="fu">mean</span>(beta1), <span class="at">sd.b1 =</span> <span class="fu">sd</span>(beta1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-label="1"></a>est<span class="fl">.4</span>a <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-label="2"></a>  <span class="fu">summarize</span>(<span class="at">mean.b0 =</span> <span class="fu">mean</span>(beta0), <span class="at">sd.b0 =</span> <span class="fu">sd</span>(beta0),</span>
+<span id="cb44-3"><a href="#cb44-3" aria-label="3"></a>            <span class="at">mean.b1 =</span> <span class="fu">mean</span>(beta1), <span class="at">sd.b1 =</span> <span class="fu">sd</span>(beta1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
   mean.b0 sd.b0 mean.b1  sd.b1
     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-1    2.00 0.385    1.50 0.0660</code></pre>
+1    2.01 0.387    1.50 0.0667</code></pre>
 </div>
 </div>
 <p></p>
@@ -1588,6 +1584,73 @@ F-statistic: 38.44 on 6 and 535 DF,  p-value: &lt; 2.2e-16</code></pre>
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
 <p><strong>Hint:</strong> Use the <code>tolerance::r2exp()</code> function with <code>rate=1</code> and <code>shift=-1</code>.</p>
+<p><strong>Solution</strong> In my simulation, the errors were skewed, but the estimates stayed centered at the true values. The slope estimates look roughly bell-shaped and symmetric around 1.5. The intercept estimates are centered around 2 but have a slight right skew, with a somewhat longer tail on the right.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-label="1"></a><span class="fu">library</span>(tolerance)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-label="2"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-label="3"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-label="4"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-label="5"></a>R <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-label="6"></a>n <span class="ot">=</span> <span class="dv">30</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-label="7"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-label="8"></a>est<span class="fl">.4</span>b <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">beta0 =</span> <span class="fu">numeric</span>(R),</span>
+<span id="cb46-9"><a href="#cb46-9" aria-label="9"></a>                 <span class="at">beta1 =</span> <span class="fu">numeric</span>(R))</span>
+<span id="cb46-10"><a href="#cb46-10" aria-label="10"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-label="11"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb46-12"><a href="#cb46-12" aria-label="12"></a>  x   <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-label="13"></a>  eps <span class="ot">=</span> <span class="fu">r2exp</span>(n, <span class="at">rate =</span> <span class="dv">1</span>, <span class="at">shift =</span> <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-label="14"></a>  y   <span class="ot">=</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> eps</span>
+<span id="cb46-15"><a href="#cb46-15" aria-label="15"></a></span>
+<span id="cb46-16"><a href="#cb46-16" aria-label="16"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb46-17"><a href="#cb46-17" aria-label="17"></a>  est<span class="fl">.4</span>b<span class="sc">$</span>beta0[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
+<span id="cb46-18"><a href="#cb46-18" aria-label="18"></a>  est<span class="fl">.4</span>b<span class="sc">$</span>beta1[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
+<span id="cb46-19"><a href="#cb46-19" aria-label="19"></a>}</span>
+<span id="cb46-20"><a href="#cb46-20" aria-label="20"></a></span>
+<span id="cb46-21"><a href="#cb46-21" aria-label="21"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>b) <span class="sc">+</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-label="22"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta0), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb46-23"><a href="#cb46-23" aria-label="23"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb46-24"><a href="#cb46-24" aria-label="24"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb46-25"><a href="#cb46-25" aria-label="25"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated intercept"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-label="1"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>b) <span class="sc">+</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta1), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-label="3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-label="5"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated slope"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-label="1"></a>est<span class="fl">.4</span>b <span class="sc">|&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-label="2"></a>  <span class="fu">summarize</span>(<span class="at">mean.b0 =</span> <span class="fu">mean</span>(beta0), <span class="at">sd.b0 =</span> <span class="fu">sd</span>(beta0),</span>
+<span id="cb48-3"><a href="#cb48-3" aria-label="3"></a>            <span class="at">mean.b1 =</span> <span class="fu">mean</span>(beta1), <span class="at">sd.b1 =</span> <span class="fu">sd</span>(beta1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  mean.b0 sd.b0 mean.b1  sd.b1
+    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1    1.99 0.367    1.50 0.0635</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c-3" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="part-c-3"><span class="header-section-number">4.3</span> Part c</h2>
@@ -1597,6 +1660,59 @@ F-statistic: 38.44 on 6 and 535 DF,  p-value: &lt; 2.2e-16</code></pre>
     y_i &amp;= 2 + 1.5 x_i + \epsilon_i\\
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
+<p><strong>Solution</strong> Almost all of the estimates are bunched up in one thin spike right around the true values (2 for the intercept and 1.5 for the slope), but a few are way out there, and the x-axis stretches from about -2000 to 2000 because of them. That means the histograms aren’t bell-shaped at all.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-label="2"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-label="3"></a>R <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-label="4"></a>n <span class="ot">=</span> <span class="dv">30</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-label="5"></a></span>
+<span id="cb50-6"><a href="#cb50-6" aria-label="6"></a>est<span class="fl">.4</span>c <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">beta0 =</span> <span class="fu">numeric</span>(R),</span>
+<span id="cb50-7"><a href="#cb50-7" aria-label="7"></a>                 <span class="at">beta1 =</span> <span class="fu">numeric</span>(R))</span>
+<span id="cb50-8"><a href="#cb50-8" aria-label="8"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-label="9"></a><span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>R) {</span>
+<span id="cb50-10"><a href="#cb50-10" aria-label="10"></a>  x   <span class="ot">=</span> <span class="fu">runif</span>(n, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-label="11"></a>  eps <span class="ot">=</span> <span class="fu">rcauchy</span>(n, <span class="at">location =</span> <span class="dv">0</span>, <span class="at">scale =</span> <span class="dv">1</span>)</span>
+<span id="cb50-12"><a href="#cb50-12" aria-label="12"></a>  y   <span class="ot">=</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> eps</span>
+<span id="cb50-13"><a href="#cb50-13" aria-label="13"></a></span>
+<span id="cb50-14"><a href="#cb50-14" aria-label="14"></a>  fit <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-label="15"></a>  est<span class="fl">.4</span>c<span class="sc">$</span>beta0[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
+<span id="cb50-16"><a href="#cb50-16" aria-label="16"></a>  est<span class="fl">.4</span>c<span class="sc">$</span>beta1[r] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
+<span id="cb50-17"><a href="#cb50-17" aria-label="17"></a>}</span>
+<span id="cb50-18"><a href="#cb50-18" aria-label="18"></a></span>
+<span id="cb50-19"><a href="#cb50-19" aria-label="19"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>c) <span class="sc">+</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-label="20"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta0), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb50-21"><a href="#cb50-21" aria-label="21"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb50-22"><a href="#cb50-22" aria-label="22"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb50-23"><a href="#cb50-23" aria-label="23"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated intercept"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-label="1"></a><span class="fu">ggplot</span>(est<span class="fl">.4</span>c) <span class="sc">+</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> beta1), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-label="3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-label="4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-label="5"></a>  <span class="fu">xlab</span>(<span class="st">"Estimated slope"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW3_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
 
 
 
