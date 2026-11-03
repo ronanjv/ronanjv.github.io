@@ -1,0 +1,348 @@
+---
+title: Homework 4 -- Regression Consult # Title of the document
+
+# Bibliography Details
+bibliography: HW4References.bib  # Name of bib file in the same folder 
+bibliographystyle: apa            # Bibliography style
+
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("HW4.qmd")
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+  html:       # Specify HTML formatting options 
+    number-sections: true      # Number Sections
+    code-fold: true            # Button to show code
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables and figures
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+library(patchwork)
+```
+
+When people make decisions, their choices are often swayed by how information is presented. This is often described as "the framing effect." One example of this, is how commercials describe new medications. As an example, Nereus (tradipitant), a new drug for motion-induced vomiting like sea-sickness, is marketed with a **positive frame** as reducing vomiting incidence from 44% to 18% (a reduction of 60%). This marketing makes it seem more effective than a **negative frame** that says just 18% of patients still experienced vomiting, even though both statements are true. 
+
+@Xu24 aimed to evaluate whether older adults are more or less vulnerable to framing than younger adults. They collected a sample of 696 adults aged 18 to 71 and exposed them to three different scenarios
+
+**Scenario 1:** Rate Drug Efficacy (1 = very bad, 6 = very good)
+
+* **Positive Frame:** 70 out of 100 patients felt better
+* **Negative Frame:** 30 out of 100 patients did not feel better
+
+**Scenario 2:** Likelihood to stop drinking cocoa (1 = surely stop, 6 = surely continue)
+
+* **Positive Frame:** Stopping drinking hot cocoa reduces cadmium and cancer risk.
+* **Negative Frame:** Continuing to drink hot cocoa increases cadmium and cancer risk.
+
+**Scenario 3:** Preference for chance choice (1 = surely safe option, 6 = surely risky)
+
+* **Positive Frame:** Choice between 200 saved vs 1/3 chance all 600 are saved.
+* **Negative Frame:** Choice between 400 die vs 2/3 chance all 600 die.
+
+
+In each scenario, participants were randomly assigned a positive or negative frame. They rated their response on a 1-6 scale. The researchers want to build three models, one for each scenario adjusting for simultaneous linear changes in demographic variables (gender, ethnicity, education level, political affiliation).
+ 
+They want to evaluate whether, as adults age, the way choices are worded have more influence on their judgments and ultimate choices. If there is a change, are those changes driven by positive or negative framings? At what age does this effect onset? 
+
+**Your Goals:**
+
+* Determine the correct analysis strategy and conduct the necessary analyses. 
+    * Hint 1: Ensure to assess and communicate results about the model fit. 
+    * Hint 2: Ensure to think about whether or which interactions need to be included.
+    * Hint 3: You will need run various post hoc procedures (e.g., `emmeans`, `emtrends` or `johnson_neyman`).
+    * Hint 4: Looking at the paper may be helpful. They do include `R` code, but I expect you to do a much better job using the techniques we discussed (they do somethings differently)
+* Write a clear, concise, complete, and correct report conveying an answer to their research question.
+
+The data are in `HW4Data.csv` but they will require some manual and `tidyverse` cleaning.
+
+# Loading and Cleaning the Data
+
+**Solutin**
+```{r}
+library(tidyverse)
+
+dat4 = read.csv("HW4Data.csv", skip = 2)
+
+dat4 = filter(dat4, finished == "True")
+nrow(dat4)
+
+dat4$age_c = dat4$age - 40
+
+dat4$gender = ifelse(dat4$gender == "Female" | dat4$gender == "Male", dat4$gender, "Other")
+
+dat4$ethnicity = ifelse(dat4$ethnicity == "White" | dat4$ethnicity == "Asian" |
+                        dat4$ethnicity == "Black or African American", dat4$ethnicity, "Other")
+
+dat4$politics = ifelse(dat4$politics == "Democrat" | dat4$politics == "Republican" |
+                       dat4$politics == "Independent", dat4$politics, "Other")
+
+dat4$education[dat4$education == "Less than high school"] = "HS or less"
+dat4$education[dat4$education == "High school graduate"] = "HS or less"
+dat4$education[dat4$education == "Some college"] = "Some college"
+dat4$education[dat4$education == "2 year degree"] = "Some college"
+dat4$education[dat4$education == "Professional degree"] = "Graduate"
+dat4$education[dat4$education == "Doctorate"] = "Graduate"
+
+dat4$gender = factor(dat4$gender, levels = c("Female", "Male", "Other"))
+dat4$ethnicity = factor(dat4$ethnicity, levels = c("White", "Asian", "Black or African American", "Other"))
+dat4$politics = factor(dat4$politics, levels = c("Democrat", "Republican", "Independent", "Other"))
+dat4$education = factor(dat4$education, levels = c("HS or less", "Some college", "4 year degree", "Graduate"))
+
+dat4$frame1 = factor(ifelse(dat4$treatment1 == "pos1", "Positive", "Negative"), 
+                                                levels = c("Negative", "Positive"))
+dat4$frame2 = factor(ifelse(dat4$treatment2 == "pos2", "Positive", "Negative"), 
+                                                levels = c("Negative", "Positive"))
+dat4$frame3 = factor(ifelse(dat4$treatment3 == "pos3", "Positive", "Negative"), 
+                                                levels = c("Negative", "Positive"))
+
+d1 = dat4
+d1$rating = d1$pick1
+d1$frame = d1$frame1
+d1 = d1[!is.na(d1$rating), ]
+
+d2 = dat4
+d2$rating = d2$pick2
+d2$frame = d2$frame2
+d2 = d2[!is.na(d2$rating), ]
+
+d3 = dat4
+d3$rating = d3$pick3
+d3$frame = d3$frame3
+d3 = d3[!is.na(d3$rating), ]
+
+c(nrow(d1), nrow(d2), nrow(d3))
+```
+
+# Exploratory Data Analyses
+
+```{r}
+library(GGally)
+
+ggpairs(dat4,
+        columns = c("age", "pick1", "pick2", "pick3"),
+        columnLabels = c("Age", "Drug efficacy", "Stop cocoa", "Risky choice"),
+        lower = list(continuous = wrap("smooth", alpha = 0.3, size = 0.8)))
+
+ggpairs(dat4,
+        columns = c("age", "gender", "ethnicity", "education", "politics", "frame1", "pick1"),
+        columnLabels = c("Age", "Gender", "Ethnicity", "Education", "Politics", "Frame", "Drug efficacy"),
+        progress = FALSE) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6),
+        axis.text.y = element_text(size = 6),
+        strip.text = element_text(size = 7))
+```
+
+# Regression Analyses
+
+## Rating Drug Efficacy
+
+```{r}
+source("plotResiduals.R")
+source("plotInfluence.R")
+
+
+mod1 = lm(rating ~ frame * age_c + gender + ethnicity + education + politics, data = d1)
+```
+
+### Residual and Outlier Analysis
+```{r}
+plotResiduals(mod1)
+plotInfluence(mod1)
+
+```
+
+### Multicolinearity
+```{r}
+car::vif(mod1)|> 
+  knitr::kable(digits = 4)
+
+
+anova(mod1)|> 
+  knitr::kable(digits = 4)
+```
+
+### Effect Size
+```{r}
+library(effectsize)
+
+sum.mod1 = summary(mod1)
+
+F_to_omega2(f = sum.mod1$fstatistic[1],
+            df = sum.mod1$fstatistic[2],
+            df_error = sum.mod1$fstatistic[3])
+
+interpret_omega_squared(0.18, "cohen1992")
+```
+
+### Post Hoc Testing
+
+```{r}
+library(emmeans)
+
+emt.mod1 = emtrends(mod1, ~ frame, var = "age_c")
+test(emt.mod1) |>
+  knitr::kable(digits = 5)
+```
+
+## Likelihood to Stop Drinking Cocoa
+
+```{r}
+source("plotResiduals.R")
+source("plotInfluence.R")
+
+
+mod2 = lm(rating ~ frame * age_c + gender + ethnicity + education + politics, data = d2)
+```
+
+### Residual and Outlier Analysis
+```{r}
+plotResiduals(mod2)
+plotInfluence(mod2)
+
+```
+
+### Multicolinearity
+```{r}
+car::vif(mod2)|> 
+  knitr::kable(digits = 4)
+
+
+anova(mod2)|> 
+  knitr::kable(digits = 4)
+```
+
+### Effect Size
+```{r}
+library(effectsize)
+
+sum.mod2 = summary(mod2)
+
+F_to_omega2(f = sum.mod2$fstatistic[1],
+            df = sum.mod2$fstatistic[2],
+            df_error = sum.mod2$fstatistic[3])
+
+interpret_omega_squared(0.04, "cohen1992")
+```
+
+### Post Hoc Testing
+
+```{r}
+library(emmeans)
+library(interactions)
+
+emt.mod2 = emtrends(mod2, ~ frame, var = "age_c")
+test(emt.mod2) |>
+  knitr::kable(digits = 5)
+
+d2$pos = ifelse(d2$frame == "Positive", 1, 0)
+mod2b = lm(rating ~ pos * age_c + gender + ethnicity + education + politics, data = d2)
+
+interactions::johnson_neyman(mod2b,
+                             pred = "pos", modx = "age_c",
+                             control.fdr = T)
+```
+
+
+
+## Preference for Chance Choice
+
+```{r}
+source("plotResiduals.R")
+source("plotInfluence.R")
+
+
+mod3 = lm(rating ~ frame * age_c + gender + ethnicity + education + politics, data = d3)
+```
+
+### Residual and Outlier Analysis
+```{r}
+plotResiduals(mod3)
+plotInfluence(mod3)
+
+```
+
+### Multicolinearity
+```{r}
+car::vif(mod3)|> 
+  knitr::kable(digits = 4)
+
+
+anova(mod3)|> 
+  knitr::kable(digits = 4)
+```
+
+### Effect Size
+```{r}
+library(effectsize)
+
+sum.mod3 = summary(mod3)
+
+F_to_omega2(f = sum.mod3$fstatistic[1],
+            df = sum.mod3$fstatistic[2],
+            df_error = sum.mod3$fstatistic[3])
+
+interpret_omega_squared(0.04, "cohen1992")
+```
+
+### Post Hoc Testing
+
+```{r}
+library(emmeans)
+library(interactions)
+
+emt.mod3 = emtrends(mod3, ~ frame, var = "age_c")
+test(emt.mod3) |>
+  knitr::kable(digits = 5)
+
+d2$pos = ifelse(d2$frame == "Positive", 1, 0)
+mod3b = lm(rating ~ pos * age_c + gender + ethnicity + education + politics, data = d2)
+
+interactions::johnson_neyman(mod3b,
+                             pred = "pos", modx = "age_c",
+                             control.fdr = T)
+```
+
+
+# Discussion
+
