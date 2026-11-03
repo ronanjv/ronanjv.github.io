@@ -98,7 +98,7 @@ The data are in `HW4Data.csv` but they will require some manual and `tidyverse` 
 
 # Loading and Cleaning the Data
 
-**Solutin**
+**Solution**
 ```{r}
 library(tidyverse)
 
@@ -175,7 +175,11 @@ ggpairs(dat4,
 
 # Regression Analyses
 
+For each scenario I fit a linear regression predicting the rating from frame (positive or negative), age, and the frame by age interaction, adjusting for gender, ethnicity, education, and political affiliation.
+
 ## Rating Drug Efficacy
+
+The residuals versus fitted plot shows no curved pattern, so a linear model is reasonable for this scenario. The residuals form diagonal stripes because the rating only takes the whole numbers 1 to 6. The Q-Q plot follows the line in the middle but skews on the ends. No observation is influential: the largest Cook's distance is hardly visible, and only 5 people have studentized residuals beyond 3.
 
 ```{r}
 source("plotResiduals.R")
@@ -193,6 +197,8 @@ plotInfluence(mod1)
 ```
 
 ### Multicolinearity
+
+The variance inflation factors are all low. The generalized VIF is under 2 for every term, and the highest values are for age 1.87 and the frame by age interaction 1.86. Those two are expected to be a little higher since the interaction is built from age. In the ANOVA table, the frame by age interaction is not significant, F(1, 681) = 2.98, p = .085.
 ```{r}
 car::vif(mod1)|> 
   knitr::kable(digits = 4)
@@ -217,6 +223,8 @@ interpret_omega_squared(0.18, "cohen1992")
 
 ### Post Hoc Testing
 
+The slope of age was not significantly different from 0 in either frame (negative frame: -0.0055 per year, p = .071; positive frame: 0.0023 per year, p = .50), so neither frame clearly drives a change with age. The positive frame was rated higher than the negative frame.
+
 ```{r}
 library(emmeans)
 
@@ -226,6 +234,8 @@ test(emt.mod1) |>
 ```
 
 ## Likelihood to Stop Drinking Cocoa
+
+The residuals versus fitted plot shows no curved pattern, so a linear model is reasonable. No observation is influential: the largest Cook's distance is hardly visible, and only 4 people have studentized residuals beyond 3.
 
 ```{r}
 source("plotResiduals.R")
@@ -243,6 +253,8 @@ plotInfluence(mod2)
 ```
 
 ### Multicolinearity
+
+The variance inflation factors are all low. The generalized VIF is about 2 or less for every term, with the highest values for age 2.06 and the frame by age interaction 2.04, which is expected since the interaction is built from age. The frame by age interaction is not significant, F(1, 681) = 2.42, p = .12.
 ```{r}
 car::vif(mod2)|> 
   knitr::kable(digits = 4)
@@ -266,6 +278,8 @@ interpret_omega_squared(0.04, "cohen1992")
 ```
 
 ### Post Hoc Testing
+
+In the negative frame, each year of age lowered the rating by 0.013 points (p = .021), so older people were somewhat more likely to say they would stop drinking cocoa. In the positive frame the slope was about zero (-0.0007 per year, p = .89). Even though only one slope is significant, the two slopes were not significantly different from each other, so I can't say the negative frame is really driving a change with age. The positive frame was rated as more likely to continue than the negative frame. The Johnson-Neyman analysis shows the framing effect is significant from about age 25 onward and grows with age, from about 0.5 points at age 40 to about 0.7 at age 60. The effect is not significant for the youngest adults.
 
 ```{r}
 library(emmeans)
@@ -296,10 +310,12 @@ mod3 = lm(rating ~ frame * age_c + gender + ethnicity + education + politics, da
 ```
 
 ### Residual and Outlier Analysis
+
+The residuals versus fitted plot shows no clear pattern, so a linear model is reasonable. The ratings use the whole 1 to 6 range in this scenario, so the residuals look closer to normal than in the other scenarios, though the ends of the Q-Q plot still depart from the line. No observation is influential: the largest Cook's distance is 0.054 and no one has a studentized residual beyond 3.
+
 ```{r}
 plotResiduals(mod3)
 plotInfluence(mod3)
-
 ```
 
 ### Multicolinearity
@@ -327,6 +343,8 @@ interpret_omega_squared(0.04, "cohen1992")
 
 ### Post Hoc Testing
 
+In the negative frame, each year of age raised the preference for the risky option by 0.016 (p = .009), while in the positive frame the slope was close to zero (-0.003 per year, p = .69). So older adults became more risk seeking when the choice was framed as a loss, and stayed about the same when it was framed as a gain. The Johnson-Neyman analysis shows the framing effect is significant from about age 27 onward. This is the age where the effect becomes large enough to detect.
+
 ```{r}
 library(emmeans)
 library(interactions)
@@ -345,4 +363,6 @@ interactions::johnson_neyman(mod3b,
 
 
 # Discussion
+
+Framing affected people of every age in this data, but there's only limited evidence that it affects older adults more. For drug efficacy, the positive frame was rated higher than the negative frame at every age, and the interaction with age wasn't significant (p = .085), so I can't say the effect changes with age. Cocoa was similar (p = .12). The effect looked bigger for older people, but only the negative frame had a significant age slope and the two slopes weren't different from each other, so I wouldn't read much into it. Chance choice was the only scenario with a significant interaction (p = .034). The positive frame led to a safer choice than the negative frame, and this gap grew with age because older adults became more risk seeking when the choice was framed as a loss. It became significant around age 27. Also, only 34 people were 65 or older, and age wasn't randomly assigned, so older and younger people could differ for other reasons.
 
