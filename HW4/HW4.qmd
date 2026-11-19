@@ -156,6 +156,8 @@ c(nrow(d1), nrow(d2), nrow(d3))
 
 # Exploratory Data Analyses
 
+The ratings only take the whole numbers 1 to 6, so the scatterplots look like rows of dots, and the three ratings are distributed differently: drug efficacy piles up at 4 and 5, cocoa at 1 and 2, and chance choice is more spread out. The correlations between age and each rating are close to zero, but these plots ignore which frame people saw, so they could hide a relationship that goes in different directions in the two frames, which is why the models include a frame by age interaction. The sample is mostly white (about 80%), 57% female, and about 63% have a 4 year degree or more. The positive and negative frame groups look similar on each demographic, as expected from random assignment.
+
 ```{r}
 library(GGally)
 
