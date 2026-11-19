@@ -45,6 +45,8 @@ website:
          href: HW3/HW3.qmd
        - text: "Homework 4 – Regression Consult"
          href: HW4/HW4.qmd
+       - text: "Homework 5 – Regression 2"
+         href: HW5/HW5.qmd
 
 page-footer:
   left: "© 2026 Colgate University Student Portfolio"
