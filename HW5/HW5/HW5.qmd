@@ -90,8 +90,6 @@ where $\mathbf{X}_i$ adjusts for simultaneous linear differences across **gender
 
 \textcolor{blue}{I like that the regression model includes an interaction between age and framing, which allows us to examine whether framing effects change as people get older. I also like that it controls for gender, ethnicity, education, and political affiliation, since these factors could influence people's responses.}
 
-\textcolor{red}{The explanation could be improved by defining what each coefficient in the regression equation represents, particularly the intercept}
-
 ---
 
 ## Data Import and Cleaning
@@ -144,7 +142,7 @@ cat("Total valid respondents:", nrow(df_clean), "\n")
 cat("Age range:", min(df_clean$age, na.rm = TRUE), "to", max(df_clean$age, na.rm = TRUE), "\n")
 ```
 
-\textcolor{blue}{I like that the code removes empty columns and cleans up the variable names before beginning the analysis. It also correctly converts age and response variables into numeric values and changes framing, gender, ethnicity, education, and political affiliation into factors.}
+\textcolor{blue}{I like that the code removes empty columns and cleans up the variable names before beginning the analysis. It also converts age and response variables into numeric values and changes framing, gender, ethnicity, education, and political affiliation into factors.}
 
 \textcolor{red}{The code could do a better job checking for missing or invalid data. Filtering out respondents with missing response IDs does not necessarily mean that all remaining respondents have complete or valid answers.}
 
@@ -202,11 +200,11 @@ bind_rows(slopes_s1, slopes_s2, slopes_s3) |>
 
 **Solution**
 
-\textcolor{blue}{}
-
-\textcolor{red}{}
+\textcolor{red}{Some scenarios had a p-value > .05 and were therefore not statistically discernable. Didn't need to do emtrends on them.}
 
 ## Johnson-Neyman Analysis: Age of Onset
+
+\textcolor{red}{The analysis does not explain how to read the Johnson-Neyman plot or what the shaded regions and confidence bands mean, and the threshold ages only show up in the summary table instead of being discussed with the output. It is hard to understand these plots.}
 
 Using the Johnson-Neyman technique (interactions::johnson_neyman), we identify the exact age at which the conditional difference between Positive and Negative frames crosses the $\alpha = .05$ significance threshold.
 
@@ -244,6 +242,8 @@ jn3$plot + labs(title = "Scenario 3: Chance Choice (Framing Effect Across Age)",
 
 ## Visualization of Predicted Trajectories
 
+\textcolor{red}{It would be helpful to have the plot interpreted. It should say which frame is changing with age in these results.}
+
 ```{r}
 #| size: "scriptsize"
 #| label: trajectory-plots
@@ -278,6 +278,8 @@ bind_rows(p1, p2, p3) |>
 ```
 
 ## Summary of Empirical Findings from `HW4Data.csv`
+
+\textcolor{red}{The summary says framing influence grows with age in all three scenarios, but only Scenario 3 has a significant interaction (p = 0.032), so Scenarios 1 and 2 should not be called a trend. It also says the changes are driven entirely by the negative framing, but a significant slope in one frame and not the other does not show the slopes are different, and in Scenario 1 the negative slope is not even significant (p = 0.071).}
 
 When rendered on `HW4Data.csv`, the code produces the following results across the three scenarios:
 
@@ -464,6 +466,35 @@ where $\epsilon \sim \mathcal{N}(0, 1)$, $\beta_1 = 0.25$ is the target effect, 
 
 **Conduct a power analysis to determine the required sample size $n$ to achieve $80\%$ power for inference on $\beta_1$ for $\text{VIF}$ values of 1.0, 1.5, 2.0, 5.0, and 10. What happens as $\text{VIF}$ increases?**
 
+**Solution**
+
+$$f^2 = \frac{\beta_1^2 \sigma_{X_1}^2 (1 - R_1^2)}{\sigma^2}$$
+
+Since $\text{VIF}_1 = \frac{1}{1 - R_1^2}$, we have $1 - R_1^2 = \frac{1}{\text{VIF}_1}$, so
+
+$$f^2 = \frac{\beta_1^2 \sigma_{X_1}^2}{\sigma^2 \, \text{VIF}_1} = \frac{(0.25)^2 (1)^2}{(1)^2 \, \text{VIF}_1} = \frac{0.0625}{\text{VIF}_1}$$
+
+As the VIF increases, $f^2$ decreases.
+
+```{r}
+beta1 = 0.25
+sigma = 1
+sigma.x1 = 1
+p = 3
+vif = c(1, 1.5, 2, 5, 10)
+f2 = beta1^2 * sigma.x1^2 / (vif * sigma^2)
+
+n.vif = sapply(f2, function(x) {
+  res = pwr.f2.test(u = 1, f2 = x, sig.level = 0.05, power = 0.80)
+  ceiling(res$v + p)
+})
+
+tibble(VIF = vif, f2 = f2, n = n.vif) |>
+  kable(digits = 4, caption = "Required Sample Size for 80% Power by VIF")
+```
+
+The required sample size for $80\%$ power was $n = 129$ at VIF $= 1$, $192$ at $1.5$, $255$ at $2$, $631$ at $5$, and $1259$ at $10$. As the VIF increases, the required $n$ goes up by about the same factor, so at VIF $= 10$ we need roughly ten times as much data.
+
 ## Part c
 Now, suppose we're doing something fun like an interaction model.
 $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 X_2) + \epsilon$$
@@ -490,6 +521,37 @@ and $\beta_0=\beta_1=\beta_2=0$, $\beta_3=0.50$, and $\sigma=1$.
 
 **Assess whether what we did in the previous step worked. Conduct a simulation for the proposed interaction model where $\beta_3=0.50$. At each iteration, generate data of the size recommended in part (c) and test the interaction coefficient. What is the empirical power?**
 
+
+**Solution**
+```{r}
+f2.c = 0.5^2 * 0.25 / 1
+
+res.one = pwr.f2.test(u = 1, f2 = f2.c, sig.level = 0.05, power = 0.80)
+n.one = ceiling(res.one$v + 2)
+n.one
+
+res.three = pwr.f2.test(u = 1, f2 = f2.c, sig.level = 0.05, power = 0.80)
+n.three = ceiling(res.three$v + 4)
+n.three
+
+
+set.seed(123)
+pvals = c()
+
+for (i in 1:10000) {
+  x1 = rbinom(n.three, 1, 0.5)
+  x2 = rbinom(n.three, 1, 0.5)
+  y = 0.5 * x1 * x2 + rnorm(n.three)
+  fit = lm(y ~ x1 * x2)
+  pvals[i] = summary(fit)$coefficients[4, 4]
+}
+
+mean(pvals < 0.05)
+```
+
+The simple model needs $n = 128$ for $80\%$ power. Treating the interaction as just another predictor needs $n = 130$. When I simulated the real interaction model at that sample size, the empirical power was only about $0.28$, so the previous step did not work.
+
+
 ## Part d
 
 **Compute the variance of the product, noting here that $(X_1 X_2) \sim \text{Bernoulli}(0.25)$.**
@@ -500,6 +562,44 @@ and $\beta_0=\beta_1=\beta_2=0$, $\beta_3=0.50$, and $\sigma=1$.
 $$\beta_3^2 \sigma^2_{X_1 X_2}(1 - R^2_{X_1 X_2})$$
 
 **How would this change if we specified $X_1$ and $X_2$ as being independently drawn from a Bernoulli($0.2$) distribution? A Normal(0,1)?**
+
+**Solution**
+```{r}
+var.x3 = 0.25 * 0.75
+
+x1 = c(0, 0, 1, 1)
+x2 = c(0, 1, 0, 1)
+x3 = x1 * x2
+
+mod.x3 = lm(x3 ~ x1 + x2)
+r2.x3 = summary(mod.x3)$r.squared
+r2.x3
+
+f2.d = 0.5^2 * var.x3 * (1 - r2.x3) / 1
+res.d = pwr.f2.test(u = 1, f2 = f2.d, sig.level = 0.05, power = 0.80)
+n.d = ceiling(res.d$v + 4)
+n.d
+
+
+
+
+w = c(0.8 * 0.8, 0.8 * 0.2, 0.2 * 0.8, 0.2 * 0.2)
+
+var.x3.b2 = 0.04 * 0.96
+r2.b2 = summary(lm(x3 ~ x1 + x2, weights = w))$r.squared
+
+f2.b2 = 0.5^2 * var.x3.b2 * (1 - r2.b2) / 1
+res.b2 = pwr.f2.test(u = 1, f2 = f2.b2, sig.level = 0.05, power = 0.80)
+n.b2 = ceiling(res.b2$v + 4)
+n.b2
+
+f2.norm = 0.5^2 * 1 * (1 - 0) / 1
+res.norm = pwr.f2.test(u = 1, f2 = f2.norm, sig.level = 0.05, power = 0.80)
+n.norm = ceiling(res.norm$v + 4)
+n.norm
+```
+
+When $X_1$ and $X_2$ are drawn independently from a Bernoulli(0.2) distribution we need around $2.43$ times more observations than in the Bernoulli(0.5) case.When 𝑋1 and 𝑋2 are drawn independently from a Gaussian(0,1) distribution, we need 37 observations to achieve 80% power.
 
 # Extra Practice
 * I initially had an IRWLS/Quantile regression question that I replaced with Question 1 (which is better practice for y'all). 
