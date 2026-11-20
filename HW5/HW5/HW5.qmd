@@ -144,6 +144,10 @@ cat("Total valid respondents:", nrow(df_clean), "\n")
 cat("Age range:", min(df_clean$age, na.rm = TRUE), "to", max(df_clean$age, na.rm = TRUE), "\n")
 ```
 
+\textcolor{blue}{I like that the code removes empty columns and cleans up the variable names before beginning the analysis. It also correctly converts age and response variables into numeric values and changes framing, gender, ethnicity, education, and political affiliation into factors.}
+
+\textcolor{red}{The code could do a better job checking for missing or invalid data. Filtering out respondents with missing response IDs does not necessarily mean that all remaining respondents have complete or valid answers.}
+
 ## Covariate-Adjusted Regression Models
 ```{r}
 #| size: "scriptsize"
@@ -173,6 +177,12 @@ bind_rows(
   kable(digits = 4, caption = "Focal Regression Estimates (Adjusting for Demographics)")
 ```
 
+**Solution**
+
+\textcolor{blue}{I like that the analysis uses three separate regression models, one for each scenario, which makes it easier to compare how framing affects responses in different situations.}
+
+\textcolor{red}{The analysis should explain more clearly what the coefficients and p-values mean rather than just presenting them in a table. Analysis as to what it means for each p value would be helpful.}
+
 ## Simple Slopes: Positive vs. Negative Framing Drivers
 
 To test whether age-related shifts are driven by reactions to the positive or negative frame, we estimate the linear age trend ($\partial Y / \partial \text{Age}$) separately within each framing condition.
@@ -189,6 +199,12 @@ bind_rows(slopes_s1, slopes_s2, slopes_s3) |>
   select(Scenario, Frame, age.trend, SE, df, lower.CL, upper.CL, t.ratio, p.value) |>
   kable(digits = 4, caption = "Age Slopes Within Positive and Negative Frames")
 ```
+
+**Solution**
+
+\textcolor{blue}{}
+
+\textcolor{red}{}
 
 ## Johnson-Neyman Analysis: Age of Onset
 
@@ -290,6 +306,60 @@ Root biomass is highly relevant to research into plant responses to climate chan
 dat.trees <- read_csv("LaiTreeData.csv")
 ```
 
+**Solution**
+```{r}
+library(GGally)
+
+ggpairs(
+  dat.trees,
+  columns = c("dbh", "rootbiomass", "sp"))
+
+
+source("plotResiduals.R")
+source("plotInfluence.R")
+
+mod1 <- lm(rootbiomass ~ dbh * sp, data = dat.trees)
+summary(mod1)
+
+plotResiduals(mod1)
+```
+
+**Log Transform**
+
+```{r}
+mod1.log <- lm(logrootbiomass ~ logdbh * sp, data = dat.trees)
+plotResiduals(mod1.log)
+
+plotInfluence(mod1.log)
+
+car::vif(mod1.log)|> 
+  knitr::kable(digits = 4)
+
+
+anova(mod1.log)|> 
+  knitr::kable(digits = 4)
+
+library(effectsize)
+
+sum.mod1.log = summary(mod1.log)
+
+F_to_omega2(f = sum.mod1.log$fstatistic[1],
+            df = sum.mod1.log$fstatistic[2],
+            df_error = sum.mod1.log$fstatistic[3])
+
+interpret_omega_squared(0.18, "cohen1992")
+
+
+library(emmeans)
+
+slopes = emtrends(mod1.log, pairwise ~ sp, var = "logdbh")
+
+slopes$emtrends |>
+  knitr::kable(digits = 4)
+```
+
+The goal here was to see whether we can predict root biomass from the diameter at breast height of a tree, and whether that relationship is different for Castanopsis eyrei, Pinus massoniana, and Schima superba. The log transformed model fit better. To check whether the relationship is unique by species, I compared the model with only a species shift to the model that also lets the slope change by species. The fitted slopes were $2.15$ for Castanopsis, $2.69$ for Pinus, and $2.32$ for Schima. The Pinus confidence interval ($2.60$ to $2.8$) doesn’t overlap with the other two, so Pinus is the clear outlier. Castanopsis and Schima are pretty close to each other. Overall my answer to the research question is yes, we can predict root biomass from diameter.
+
 
 # Question 3
 
@@ -348,6 +418,39 @@ res.small <- pwr.f2.test(u = 1,              # Suppose our research was interest
 
 ## Part a
 **Plot the power analysis I conducted above. Ensure to highlight Type I error, Type II error region, and Power. Note this should be similar to the one sample $t$-test.**
+
+**Solution**
+```{r}
+n = n.small
+p = 3
+v = n - p
+f = sqrt(f2.small)
+ncp = f * sqrt(n)
+alpha = 0.05
+t.crit = qt(1 - alpha/2, df = v)
+
+t.grid = seq(-5, 9, length.out = 2000)
+plot.dat = tibble(t = t.grid,
+                  null = dt(t.grid, df = v),
+                  alt = dt(t.grid, df = v, ncp = ncp))
+
+ggplot(plot.dat, aes(x = t)) +
+  geom_ribbon(data = filter(plot.dat, t <= t.crit),
+              aes(ymin = 0, ymax = alt, fill = "Type II Error"), alpha = 0.25) +
+  geom_ribbon(data = filter(plot.dat, t >= t.crit),
+              aes(ymin = 0, ymax = alt, fill = "Power"), alpha = 0.25) +
+  geom_ribbon(data = filter(plot.dat, t <= -t.crit),
+              aes(ymin = 0, ymax = null, fill = "Type I Error"), alpha = 0.25) +
+  geom_ribbon(data = filter(plot.dat, t >= t.crit),
+              aes(ymin = 0, ymax = null, fill = "Type I Error"), alpha = 0.25) +
+  geom_line(aes(y = null, color = "Null")) +
+  geom_line(aes(y = alt, color = "Alternative")) +
+  geom_hline(yintercept = 0) +
+  scale_x_continuous(breaks = c(-t.crit, 0, t.crit, ncp),
+                     labels = sprintf("%.2f", c(-t.crit, 0, t.crit, ncp))) +
+  labs(x = "T", y = "Density", color = NULL, fill = NULL) +
+  theme_bw()
+```
 
 ## Part b
 
